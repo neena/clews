@@ -1,38 +1,70 @@
+require 'rubygems'
+require 'thread'
+require 'socket'
+require 'ruby-hl7'
+
 def parseHL7(raw_data)
-	raw_data = raw_data.split("\r")
 	hl7 = HL7::Message.new(raw_data)
-	puts hl7.length
-	if hl7[:PID]
-		p = Patient.new
-		p.MRN = hl7[:PID].patient_id_list
-		p.surname = hl7[:PID].patient_name.split('^')[0]
-		p.save
+	puts "Recieved HL7 message with #{hl7.length} segments"
+ 
+	if hl7[:PID] 
+		#Save patient data if patient doesn't already exist.
+		if !Patient.find_by_MRN(hl7[:PID].patient_id_list)
+			p = Patient.new
+			p.MRN = hl7[:PID].patient_id_list
+			p.surname = hl7[:PID].patient_name.split('^')[0]
+		else
+			p = Patient.find_by_MRN(hl7[:PID].patient_id_list)
+		end
+
+		#Loop through OBXs and save relevant patient data 
+		#UNTESTED 26 NOV 8PM
+		hl7[:OBX].each do |segment|
+			case segment.observation_id.first(10) 
+			when'0002-4182'
+				m = PulseMeasurement.new
+				m.value = segment.observation_value
+				m.datetime = DateTime.parse(segment.observation_date, "%Y%m%d%H%M%S")
+				p << m
+			end
+		end
+		puts "All data parsed."
 	end
+	if p.save
+		puts "HL7 parsed and saved! Attempting to send ACK."
+		ack = HL7::Message.new
+		msh = HL7::Message::Segment::MSH.new
+		msh.message_type = "ACK^^ACK_ALL"
+		msh.message_control_id = hl7[:MSH].message_control_id
+		msh.processing_id = "P"
+		msh.version_id = "2.4"
+		ack << msh
+		msa = HL7::Message::Segment::MSA.new
+		msa.ack_code = "AA"
+		msa.control_id = hl7[:MSH].message_control_id
+		ack << msa
+	end
+	ack.to_mllp
 end
 
 
 Thread.new do
-	require 'rubygems'
-	require 'thread'
-	require 'socket'
-	require 'ruby-hl7'
-
 	TCP_IP = '192.168.1.39'
 	PORT = 2100
-	BUFFER = 10
-	Thread.abort_on_exception = true
+	Thread.abort_on_exception = true #Kill any useless failure threads
 
 	srv = TCPServer.open(TCP_IP, PORT)
 	puts "proxy_server listening on port: %i" % PORT
 
 	loop do
 		Thread.start(srv.accept) do |message|
+			# This first section (looping through the data may be unecessary)
 			raw_data = ""
 			while (m = message.recv(10))
 				raw_data += m
 				break if m.empty? 
 			end
-			parseHL7(raw_data)
+			message.puts(parseHL7(raw_data.split("\r")))
 		end
 	end
 end
