@@ -1,0 +1,13 @@
+%h1
+	= @patient.name if @patient.surname
+	%span.score{:style => "background: #{getEWSColor(@patient.earlyWarningScore, true)};"} 
+		= @patient.earlyWarningScore
+%h3= @patient.mrn
+= @pulse_chart
+#pulse-chart.col-lg-12.chart
+
+= @oxygen_chart
+#oxygen-chart.col-lg-12.chart
+
+= @temperature_chart
+#temperature-chart.col-lg-12.chart

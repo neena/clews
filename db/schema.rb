@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131207155241) do
+ActiveRecord::Schema.define(version: 20131219205753) do
+
+  create_table "oxygen_sat_measurements", force: true do |t|
+    t.integer  "patient_id"
+    t.float    "value"
+    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "oxygen_supp_measurements", force: true do |t|
+    t.integer  "patient_id"
+    t.boolean  "value"
+    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "patients", force: true do |t|
     t.string   "mrn"
@@ -25,6 +41,14 @@ ActiveRecord::Schema.define(version: 20131207155241) do
     t.integer  "patient_id"
     t.float    "value"
     t.datetime "datetime"
+  end
+
+  create_table "temperature_measurements", force: true do |t|
+    t.integer  "patient_id"
+    t.float    "value"
+    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
 end

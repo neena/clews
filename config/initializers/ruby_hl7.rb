@@ -39,7 +39,9 @@ def parseHL7(raw_data)
 		puts "HL7 parsed and saved! Attempting to send ACK."
 		ack = HL7::Message.new
 		msh = HL7::Message::Segment::MSH.new
+		msh.enc_chars = '^~\&'
 		msh.message_type = "ACK^^ACK_ALL"
+		msh.time = DateTime.now.strftime("%Y%m%d%H%M%S")
 		msh.message_control_id = hl7.first.e9
 		msh.processing_id = "P"
 		msh.version_id = "2.4"
@@ -48,14 +50,14 @@ def parseHL7(raw_data)
 		msa.ack_code = "AA"
 		msa.control_id = hl7.first.e9
 		ack << msa
-		p ack.to_mllp
-		ack.to_mllp
+		p ack.to_hl7
+		ack.to_hl7 + "\r"
 	end
 end
 
 
 Thread.new do
-	TCP_IP = '192.168.1.39'
+	TCP_IP = '127.0.0.1'
 	PORT = 2100
 	Thread.abort_on_exception = true #Kill any useless failure threads
 
@@ -77,3 +79,4 @@ Thread.new do
 		end
 	end
 end
+

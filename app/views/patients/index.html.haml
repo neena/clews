@@ -1,0 +1,8 @@
+%ul
+	- @patients.each do |patient|
+		%li.lead 
+			%strong= link_to patient.name, patient 
+			= patient.mrn
+			%span.score{:style => "background: #{getEWSColor(patient.earlyWarningScore, true)};"} 
+				= patient.earlyWarningScore
+

@@ -31,9 +31,9 @@ gem 'ruby-hl7'
 
 gem 'haml'
 
-gem 'eventmachine'
-
 gem 'thin'
+
+gem 'highcharts-js-rails'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.

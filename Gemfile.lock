@@ -41,6 +41,8 @@ GEM
     execjs (2.0.2)
     haml (4.0.3)
       tilt
+    highcharts-js-rails (1.0.0)
+      railties (>= 3.1, < 4.1)
     hike (1.2.3)
     i18n (0.6.5)
     jbuilder (1.5.2)
@@ -123,8 +125,8 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 4.0.0)
-  eventmachine
   haml
+  highcharts-js-rails
   jbuilder (~> 1.2)
   jquery-rails
   rails (= 4.0.0)
