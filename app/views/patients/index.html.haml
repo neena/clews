@@ -3,6 +3,6 @@
 		%li.lead 
 			%strong= link_to patient.name, patient 
 			= patient.mrn
-			%span.score{:style => "background: #{getEWSColor(patient.earlyWarningScore, true)};"} 
-				= patient.earlyWarningScore
+			%span.score{:style => "background: #{EWSColor(patient.getEWS[:rating])};"} 
+				= patient.getEWS[:score]
 

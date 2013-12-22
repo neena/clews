@@ -12,15 +12,15 @@ module ChartHelper
   	@chart
   end
 
-  def getEWSColor score, patient
-  	case 
-  	when score == 0
+  def EWSColor score
+  	case score
+  	when 0
 			"#6d6d6d"
-  	when (score < 5 && patient) || (score == 1 && !patient)
+  	when 1
   		"#54c72e"
-  	when (score < 7 && patient) || (score == 2 && !patient)
+  	when 2
   		"#ffa53f"
-  	when (score >= 7 && patient) || (score == 3 && !patient)
+  	when 3
   		"#ba0001"
   	end	  
   end
