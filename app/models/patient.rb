@@ -6,6 +6,7 @@ class Patient < ActiveRecord::Base
 	has_many :concious_measurements, :dependent => :destroy
 	has_many :respiration_rate_measurements, :dependent => :destroy
 	has_many :sys_bp_measurements, :dependent => :destroy
+	has_many :dia_bp_measurements, :dependent => :destroy
 
 	validates :mrn, :uniqueness => true
 
@@ -19,11 +20,21 @@ class Patient < ActiveRecord::Base
 		end
 	end
 
-	def getData type
-		eval(type).inject([]) {|data, item| data.push([item.datetime.to_i*1000, item.value])}
+	def getData type #in HighCharts ready format. 
+		if type == 'bp_measurements'
+			sys_bp_measurements.inject([]) do |data, item|
+				data.push({
+					x: item.datetime.to_i*1000, 
+					y: item.value,
+					low: dia_bp_measurements.where(datetime: item.datetime.advance(:minutes => -1)..item.datetime.advance(:minutes => +1)).first.value
+				})
+			end
+		else
+			eval(type).inject([]) {|data, item| data.push([item.datetime.to_i*1000, item.value])}
+		end
 	end
 
-	def getLatest type
+	def getLatest type #maybe move logic to a view helper? 
 		if eval(type).last
 			if eval(type).last.value == true
 				'yes'
@@ -52,7 +63,7 @@ class Patient < ActiveRecord::Base
 		
 		if output[:score] > 15 #Handle exceptions from regression line
 			output[:rating] = 3
-		elsif output[:rating] < 2 && data.any? {|datum| datum.getNEWS == 3}
+		elsif output[:rating] < 2 && data.any? {|datum| !datum.blank? && datum.getNEWS == 3}
 			output[:rating] = 2
 		end
 		

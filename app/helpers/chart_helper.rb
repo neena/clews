@@ -1,11 +1,11 @@
 module ChartHelper
-  def createChart title, units, data, renderTo
+  def createChart title, units, type
   	@chart = Highcharts.new do |chart|
-	  chart.chart(renderTo: renderTo, zoomType: 'x')
+	  chart.chart(renderTo: type.gsub(" ","-")+"-chart", zoomType: 'x')
 	  chart.title(title)
 	  chart.xAxis(type: 'datetime', minorTickInterval: 14400000, dateTimeLabelFormats: {day: '%e %b %y', hour: '%I:%M%P'})
 	  chart.yAxis(title: "#{title} (#{units})")
-	  chart.series(name: @patient.name, data: data)
+	  chart.series(name: @patient.name, data: @patient.getData(type.gsub(" ","_")+"_measurements"))
 	  chart.legend(enabled: false)
 	  chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + this.y + '#{units}'; }")
     end

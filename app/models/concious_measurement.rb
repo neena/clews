@@ -8,7 +8,7 @@ class ConciousMeasurement < ActiveRecord::Base
 	end
 
 	def getNEWS
-		if value == "3"
+		if value == "A"
 			0
 		else 
 			3

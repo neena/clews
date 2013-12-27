@@ -30,6 +30,25 @@ span.score {
   padding-left: 0;
   list-style: none;
 }
+
+.patient-header{
+  h1{
+    display: inline !important;
+    position: relative;
+    top: 10px;
+    margin-right: 10px;
+    @media (max-width: 768px) {
+    display: none !important;
+    }
+  }
+  select{ 
+    @media (max-width: 768px) {
+    margin-bottom: 10px;
+  }
+  }
+  margin-bottom: 20px;
+}
+
 #main{
   padding: 0 15px;
 }

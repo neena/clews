@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131221181500) do
+ActiveRecord::Schema.define(version: 20131222223749) do
 
   create_table "concious_measurements", force: true do |t|
     t.integer  "patient_id"
     t.string   "value"
+    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "dia_bp_measurements", force: true do |t|
+    t.integer  "patient_id"
+    t.float    "value"
     t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -43,6 +51,7 @@ ActiveRecord::Schema.define(version: 20131221181500) do
     t.string   "surname"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "ward"
   end
 
   create_table "pulse_measurements", force: true do |t|
