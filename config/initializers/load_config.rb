@@ -1,0 +1,1 @@
+EWSConfig = YAML.load_file("#{Rails.root}/config/ews_boundaries.yml")

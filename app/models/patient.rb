@@ -20,6 +20,10 @@ class Patient < ActiveRecord::Base
 		end
 	end
 
+	def to_param
+		mrn
+	end
+
 	def getData type #in HighCharts ready format. 
 		if type == 'bp_measurements'
 			sys_bp_measurements.inject([]) do |data, item|
