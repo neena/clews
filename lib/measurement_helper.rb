@@ -13,11 +13,20 @@ module MeasurementHelper
 		end
 
 		def getEWS
+			config = EWSConfig[self.class.name.slice("Measurement")]
 			# Not currently implemented as yml file lacks complete data.
 			if value.is_a? Numeric
-				[3,2,1].detect {|group| (EWSConfig[self.class.name]["max#{group-1}"] && value >= EWSConfig[self.class.name]["max#{group-1}"]) || (EWSConfig[self.class.name]["min#{group-1}"] && value <= EWSConfig[self.class.name]["min#{group-1}"])} || 0
+				[3,2,1].detect do |group| 
+					config["max#{group-1}"].try {|bound| value >= bound} || config["min#{group-1}".try {|bound| value <= bound} 
+				end || 0
 			else
-				getNEWS
+				[3,2,1,0].detect do |group| 
+					begin
+						config[group].any? {|val| val == value}
+					rescue NoMethodError
+						config[group].try {|val| val == value}
+					end
+				end
 			end
 		end
 	end

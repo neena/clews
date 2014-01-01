@@ -1,7 +1,23 @@
-PulseMeasurement:
+Pulse:
   min2: 40
   min1: nil
   min0: 50
   max0: 91
   max1: 111
   max2: 131
+
+RespirationRate:
+  min2: 40
+  min1: nil
+  min0: 50
+  max0: 91
+  max1: 111
+  max2: 131
+
+Concious:
+  0:
+    - A
+  3:
+    - V
+    - P
+    - U
