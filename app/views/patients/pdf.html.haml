@@ -1,5 +1,4 @@
 %h1
-	.pull-right= link_to 'Download PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
 	= @patient.name || "Name not recorded"
 	%span.score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"} 
 		= @patient.getEWS[:score]

@@ -31,10 +31,12 @@ class Patient < ActiveRecord::Base
 					x: item.datetime.to_i*1000, 
 					y: item.value,
 					low: dia_bp_measurements.where(datetime: item.datetime.advance(:minutes => -1)..item.datetime.advance(:minutes => +1)).first.value
-				})
+				}).sort_by {|point| point[:x]}
 			end
 		else
-			eval(type).inject([]) {|data, item| data.push([item.datetime.to_i*1000, item.value])}
+			eval(type).inject([]) do |data, item| 
+				data.push([item.datetime.to_i*1000, item.value])
+			end.sort_by {|point| point[0]}
 		end
 	end
 

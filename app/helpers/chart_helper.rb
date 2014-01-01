@@ -13,7 +13,7 @@ module ChartHelper
       #Handle special case of blood pressure
       if type == "bp" 
         chart.chart(renderTo: type.gsub(" ","-")+"-chart", zoomType: 'x', type: 'column', events: {load:"renderImages", redraw:"renderImages"})
-        chart.plotOptions(column: {pointWidth:20})
+        chart.plotOptions(column: {pointWidth:20}, line: { animation: false, enableMouseTracking: false, shadow: false})
         chart.series(name: @patient.name,borderWidth: 0,data: @patient.getData('bp_measurements'), color: 'rgba(10,10,10,0)')
         chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + this.point.low + 'mmHg '; }")
       end

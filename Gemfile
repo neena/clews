@@ -35,6 +35,10 @@ gem 'thin'
 
 gem 'highcharts-js-rails'
 
+gem 'wicked_pdf'
+
+gem 'wkhtmltopdf-binary'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
