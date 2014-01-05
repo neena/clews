@@ -1,5 +1,5 @@
-class RespirationRateMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class RespirationRateMeasurement < Measurement
+	
 	def getNEWS
 		case 
 		when value <= 8 || value >= 25

@@ -1,5 +1,4 @@
-class PulseMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class PulseMeasurement < Measurement
 
 	def getNEWS
 		case 

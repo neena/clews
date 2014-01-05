@@ -1,5 +1,4 @@
-class TemperatureMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class TemperatureMeasurement < Measurement
 
 	def getNEWS
 		case 

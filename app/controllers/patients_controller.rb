@@ -13,15 +13,16 @@ class PatientsController < ApplicationController
 	end
 
 	def show
-		load_patient_and_charts
-		#Replace this with a download link. 
 		respond_to do |format|
-			format.html
+			format.html do
+				load_patient_and_charts
+			end
 			format.pdf do 
+				load_patient_and_charts true
 				render  :pdf => "patient-#{@patient.name}-#{@patient.mrn}", 
 						:template => 'patients/pdf.html.haml', 
 						:layout => "pdf.html",
-						:redirect_delay => 3000 
+						:redirect_delay => 1000 
 			end
 		end
 	end
@@ -30,9 +31,9 @@ class PatientsController < ApplicationController
 		load_patient_and_charts true
 
 		pdf_file = render_to_string :pdf => "patient-#{@patient.name}-#{@patient.mrn}",
-										:template => 'patients/pdf.html.haml', 
-										:layout => "pdf.html"
-		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}.pdf"
+									:template => 'patients/pdf.html.haml', 
+									:layout => "pdf.html"
+		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}"
 	end
 
 	private

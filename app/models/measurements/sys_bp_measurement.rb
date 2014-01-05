@@ -1,5 +1,5 @@
-class SysBpMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class SysBpMeasurement < Measurement
+
 	def getNEWS
 		case 
 		when value <= 90 || value >= 220

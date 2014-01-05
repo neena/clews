@@ -1,3 +1,3 @@
-class DiaBpMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class DiaBpMeasurement < Measurement
+
 end

@@ -1,5 +1,5 @@
-class OxygenSuppMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class OxygenSuppMeasurement < Measurement
+	
 	def getNEWS
 		if value 
 			2

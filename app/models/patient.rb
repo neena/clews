@@ -47,13 +47,13 @@ class Patient < ActiveRecord::Base
 	end
 
 	def getLatest type #Deprecate once view is clean. 
-		if eval(type).last
-			if eval(type).last.value == true
+		type.chop! if type[-1,1] == "s"
+		val = eval("observations.last.#{type}").try {|m| m.value}
+		if val
+			if val == true
 				'yes'
-			elsif eval(type).last.value == false
+			elsif val == false
 				'no'
-			else
-				eval(type).last.value
 			end
 		else
 			nil

@@ -1,5 +1,4 @@
-class ConciousMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class ConciousMeasurement < Measurement
 
 	validates_inclusion_of :value, :in => ["A", "V", "P", "U"]
 

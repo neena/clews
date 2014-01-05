@@ -1,5 +1,4 @@
-class OxygenSatMeasurement < ActiveRecord::Base
-	include MeasurementHelper
+class OxygenSatMeasurement < Measurement
 
 	def getNEWS
 		case 
