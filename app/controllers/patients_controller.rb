@@ -13,26 +13,37 @@ class PatientsController < ApplicationController
 	end
 
 	def show
-		@patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
-
-		#Create charts
-		@pulse_chart = createChart('Pulse', 'bpm', 'pulse')
-		@oxygen_chart = createChart('Oxygen', '%', 'oxygen sat')
-		@temperature_chart = createChart('Temperature', "\u00B0c", 'temperature')
-		@respiration_rate_chart = createChart('Respiratory Rate', "/mins", 'respiration rate')
-		@bp_chart = createChart('Blood Presure', 'mmHg', 'bp')
-
+		load_patient_and_charts
 		#Replace this with a download link. 
 		respond_to do |format|
 			format.html
-			format.pdf do
-				render  :pdf => "patient-#{@patient.name}", 
-								:template => 'patients/pdf.html.haml', 
-								:layout => "pdf.html",
-								:redirect_delay => 10000 
+			format.pdf do 
+				render  :pdf => "patient-#{@patient.name}-#{@patient.mrn}", 
+						:template => 'patients/pdf.html.haml', 
+						:layout => "pdf.html",
+						:redirect_delay => 3000 
 			end
 		end
 	end
 
+	def download 
+		load_patient_and_charts true
 
+		pdf_file = render_to_string :pdf => "patient-#{@patient.name}-#{@patient.mrn}",
+										:template => 'patients/pdf.html.haml', 
+										:layout => "pdf.html"
+		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}.pdf"
+	end
+
+	private
+	def load_patient_and_charts pdf=false
+		@patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
+
+		#Create charts
+		@pulse_chart = createChart('Pulse', 'bpm', 'pulse', pdf)
+		@oxygen_chart = createChart('Oxygen', '%', 'oxygen sat', pdf)
+		@temperature_chart = createChart('Temperature', "\u00B0c", 'temperature', pdf)
+		@respiration_rate_chart = createChart('Respiratory Rate', "/mins", 'respiration rate', pdf)
+		@bp_chart = createChart('Blood Presure', 'mmHg', 'bp', pdf)
+	end
 end

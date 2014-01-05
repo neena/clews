@@ -1,22 +1,49 @@
+RespirationRate:
+  min2: 8
+  min1: ~
+  min0: 12
+  max0: ~
+  max1: 20
+  max2: 25
+
+OxygenSat:
+  min2: 91
+  min1: 93
+  min0: 96
+  max0: ~
+  max1: ~
+  max2: ~
+
+OxygenSupp:
+  2: true
+  0: false
+
+Temperature:
+  min2: 35
+  min1: ~
+  min0: 36
+  max0: 38
+  max1: 39
+  max2: ~
+
+SysBp:
+  min2: 90
+  min1: 100
+  min0: 110
+  max0: ~
+  max1: ~
+  max2: 220
+
 Pulse:
   min2: 40
-  min1: nil
-  min0: 50
-  max0: 91
-  max1: 111
-  max2: 131
-
-RespirationRate:
-  min2: 40
-  min1: nil
+  min1: ~
   min0: 50
   max0: 91
   max1: 111
   max2: 131
 
 Concious:
-  0:
-    - A
+  0: A
   3:
     - V
     - P

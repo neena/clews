@@ -17,16 +17,16 @@ module MeasurementHelper
 			# Not currently implemented as yml file lacks complete data.
 			if value.is_a? Numeric
 				[3,2,1].detect do |group| 
-					config["max#{group-1}"].try {|bound| value >= bound} || config["min#{group-1}".try {|bound| value <= bound} 
+					config["max#{group-1}"].try {|bound| value >= bound} || config["min#{group-1}"].try {|bound| value <= bound} 
 				end || 0
 			else
 				[3,2,1,0].detect do |group| 
-					begin
+					if config[group].is_a? Array
 						config[group].any? {|val| val == value}
-					rescue NoMethodError
+					else
 						config[group].try {|val| val == value}
 					end
-				end
+				end || 0
 			end
 		end
 	end

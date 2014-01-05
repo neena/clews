@@ -1,5 +1,5 @@
 module ChartHelper
-  def createChart title, units, type
+  def createChart title, units, type, pdf=false
     @table = type.gsub(" ","_")+"_measurements"
   	@chart = Highcharts.new do |chart|
   	  chart.chart(renderTo: type.gsub(" ","-")+"-chart", zoomType: 'x')
@@ -10,10 +10,11 @@ module ChartHelper
   	  chart.series(name: @patient.name, data: @patient.getData(@table))
   	  chart.legend(enabled: false)
   	  chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + this.y + '#{units}'; }")
+      chart.plotOptions(line: { animation: false, enableMouseTracking: false, shadow: false}) if pdf
       #Handle special case of blood pressure
       if type == "bp" 
         chart.chart(renderTo: type.gsub(" ","-")+"-chart", zoomType: 'x', type: 'column', events: {load:"renderImages", redraw:"renderImages"})
-        chart.plotOptions(column: {pointWidth:20}, line: { animation: false, enableMouseTracking: false, shadow: false})
+        chart.plotOptions(column: {pointWidth:20})
         chart.series(name: @patient.name,borderWidth: 0,data: @patient.getData('bp_measurements'), color: 'rgba(10,10,10,0)')
         chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + this.point.low + 'mmHg '; }")
       end
