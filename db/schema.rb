@@ -11,39 +11,50 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131222223749) do
+ActiveRecord::Schema.define(version: 20140105175000) do
 
   create_table "concious_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.string   "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
 
+  add_index "concious_measurements", ["observation_id"], name: "index_concious_measurements_on_observation_id"
+
   create_table "dia_bp_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.float    "value"
-    t.datetime "datetime"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "observation_id"
+  end
+
+  add_index "dia_bp_measurements", ["observation_id"], name: "index_dia_bp_measurements_on_observation_id"
+
+  create_table "observations", force: true do |t|
+    t.integer  "patient_id"
+    t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "oxygen_sat_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.float    "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
 
+  add_index "oxygen_sat_measurements", ["observation_id"], name: "index_oxygen_sat_measurements_on_observation_id"
+
   create_table "oxygen_supp_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.boolean  "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
+
+  add_index "oxygen_supp_measurements", ["observation_id"], name: "index_oxygen_supp_measurements_on_observation_id"
 
   create_table "patients", force: true do |t|
     t.string   "mrn"
@@ -55,33 +66,37 @@ ActiveRecord::Schema.define(version: 20131222223749) do
   end
 
   create_table "pulse_measurements", force: true do |t|
-    t.integer  "patient_id"
-    t.float    "value"
-    t.datetime "datetime"
+    t.float   "value"
+    t.integer "observation_id"
   end
+
+  add_index "pulse_measurements", ["observation_id"], name: "index_pulse_measurements_on_observation_id"
 
   create_table "respiration_rate_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.float    "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
+
+  add_index "respiration_rate_measurements", ["observation_id"], name: "index_respiration_rate_measurements_on_observation_id"
 
   create_table "sys_bp_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.float    "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
 
+  add_index "sys_bp_measurements", ["observation_id"], name: "index_sys_bp_measurements_on_observation_id"
+
   create_table "temperature_measurements", force: true do |t|
-    t.integer  "patient_id"
     t.float    "value"
-    t.datetime "datetime"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "observation_id"
   end
+
+  add_index "temperature_measurements", ["observation_id"], name: "index_temperature_measurements_on_observation_id"
 
 end

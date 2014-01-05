@@ -1,12 +1,14 @@
 class Patient < ActiveRecord::Base
-	has_many :pulse_measurements, :dependent => :destroy
-	has_many :oxygen_sat_measurements, :dependent => :destroy
-	has_many :oxygen_supp_measurements, :dependent => :destroy
-	has_many :temperature_measurements, :dependent => :destroy
-	has_many :concious_measurements, :dependent => :destroy
-	has_many :respiration_rate_measurements, :dependent => :destroy
-	has_many :sys_bp_measurements, :dependent => :destroy
-	has_many :dia_bp_measurements, :dependent => :destroy
+	has_many :observations, dependent: :destroy
+
+	has_many :pulse_measurements, dependent: :destroy, through: :observations
+	has_many :oxygen_sat_measurements, dependent: :destroy, through: :observations
+	has_many :oxygen_supp_measurements, dependent: :destroy, through: :observations
+	has_many :temperature_measurements, dependent: :destroy, through: :observations
+	has_many :concious_measurements, dependent: :destroy, through: :observations
+	has_many :respiration_rate_measurements, dependent: :destroy, through: :observations
+	has_many :sys_bp_measurements, dependent: :destroy, through: :observations
+	has_many :dia_bp_measurements, dependent: :destroy, through: :observations
 
 	validates :mrn, :uniqueness => true
 
@@ -25,22 +27,26 @@ class Patient < ActiveRecord::Base
 	end
 
 	def getData type #in HighCharts ready format. 
-		if type == 'bp_measurements'
-			sys_bp_measurements.inject([]) do |data, item|
+		type.chop! if type[-1,1] == "s"
+		if type == 'bp_measurement'
+			observations.sort_by{|o| o.recorded_at}.inject([]) do |data, item|
 				data.push({
-					x: item.datetime.to_i*1000, 
-					y: item.value,
-					low: dia_bp_measurements.where(datetime: item.datetime.advance(:minutes => -1)..item.datetime.advance(:minutes => +1)).first.value
-				}).sort_by {|point| point[:x]}
+					x: item.recorded_at.to_i*1000, 
+					y: item.sys_bp_measurement.value,
+					low: item.dia_bp_measurement.value
+				}) if item.sys_bp_measurement && item.dia_bp_measurement
 			end
-		else
-			eval(type).inject([]) do |data, item| 
-				data.push([item.datetime.to_i*1000, item.value])
-			end.sort_by {|point| point[0]}
-		end
+		else		
+			observations.sort_by{|o| o.recorded_at}.inject([]) do |data, item|
+				data.push({
+					x: item.recorded_at.to_i*1000, 
+					y: eval("item.#{type}").value,
+				}) if eval("item.#{type}")
+			end
+		end || []
 	end
 
-	def getLatest type #maybe move logic to a view helper? 
+	def getLatest type #Deprecate once view is clean. 
 		if eval(type).last
 			if eval(type).last.value == true
 				'yes'
@@ -55,28 +61,6 @@ class Patient < ActiveRecord::Base
 	end
 
 	def getEWS
-		output = {}
-
-		#Calucalate Score
-		data = [concious_measurements, sys_bp_measurements, pulse_measurements, oxygen_sat_measurements, oxygen_supp_measurements, respiration_rate_measurements, temperature_measurements].map{|set| set.last}
-		output[:score] = data.inject(0) do |sum, mes|
-			sum += mes.getEWS if mes
-			sum
-		end
-
-		#Calculate rating (scale from 0 to 3)
-		output[:rating] = (0.318 + output[:score]*0.164 + 0.0431*output[:score]*output[:score] + -0.00291*output[:score]*output[:score]*output[:score]).round #Polynomial regression of scores to power of 3
-		
-		if output[:score] > 15 #Handle exceptions from regression line
-			output[:rating] = 3
-		elsif output[:rating] < 2 && data.any? {|datum| datum.try{|d| d.getEWS == 3}}
-			output[:rating] = 2
-		end
-		
-		#Check if data was complete
-		output[:complete] = !data.any?{|datum| datum.blank?}
-		
-		#Return all output
-		return output
+		observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
 	end
 end
