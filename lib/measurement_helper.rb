@@ -13,7 +13,7 @@ module MeasurementHelper
 		end
 
 		def getEWS
-			config = EWSConfig[self.class.name.slice("Measurement")]
+			config = EWSConfig[self.class.name.sub("Measurement", "")]
 			# Not currently implemented as yml file lacks complete data.
 			if value.is_a? Numeric
 				[3,2,1].detect do |group| 

@@ -60,7 +60,7 @@ class Patient < ActiveRecord::Base
 		#Calucalate Score
 		data = [concious_measurements, sys_bp_measurements, pulse_measurements, oxygen_sat_measurements, oxygen_supp_measurements, respiration_rate_measurements, temperature_measurements].map{|set| set.last}
 		output[:score] = data.inject(0) do |sum, mes|
-			sum += mes.getNEWS if mes
+			sum += mes.getEWS if mes
 			sum
 		end
 
@@ -69,7 +69,7 @@ class Patient < ActiveRecord::Base
 		
 		if output[:score] > 15 #Handle exceptions from regression line
 			output[:rating] = 3
-		elsif output[:rating] < 2 && data.any? {|datum| !datum.blank? && datum.getNEWS == 3}
+		elsif output[:rating] < 2 && data.any? {|datum| datum.try{|d| d.getEWS == 3}}
 			output[:rating] = 2
 		end
 		
