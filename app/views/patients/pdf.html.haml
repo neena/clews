@@ -31,23 +31,4 @@
 = @respiration_rate_chart
 #respiration-rate-chart.chart
 
-.footer
-	%table
-		%tr
-			%th AVPU
-			- @patient.observations.each do |observation|
-				%td
-					%span.score{:style => "background: #{EWSColor(observation.concious_measurement.getEWS)};"}
-						= observation.concious_measurement.value
-		%tr
-			%th Oxygen?
-			- @patient.observations.each do |observation|
-				%td
-					%span.score{:style => "background: #{EWSColor(observation.oxygen_supp_measurement.getEWS)};"}
-						= observation.oxygen_supp_measurement.value ? 'y' : 'n'
-		%tr
-			%th EWS
-			- @patient.observations.each do |observation|
-				%td
-					%span.score{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
-						= observation.getEWS[:score]
+= render "footer"

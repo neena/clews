@@ -23,4 +23,6 @@ Patient.all.each do |patient|
 			o.dia_bp_measurement = DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
 		end
 	end 
+	patient.ward = rand(1..5) unless patient.ward
+	patient.save
 end

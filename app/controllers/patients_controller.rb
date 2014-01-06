@@ -3,7 +3,7 @@ class PatientsController < ApplicationController
 
 	def index
 		@ward = params[:ward]
-		@filter = Patient.select(:ward).distinct.select{|p| p.ward?}.collect{|p| ["Ward #{p.ward}", p.ward]}.unshift(["All Wards", "all"])
+		@filter = Patient.select(:ward).distinct.select{|p| p.ward?}.sort_by{|p| p.ward}.collect{|p| ["Ward #{p.ward}", p.ward]}.unshift(["All Wards", "all"])
 		
 		if @ward && @ward != "all"
 			@patients = Patient.where(ward: params[:ward])
@@ -22,7 +22,7 @@ class PatientsController < ApplicationController
 				render  :pdf => "patient-#{@patient.name}-#{@patient.mrn}", 
 						:template => 'patients/pdf.html.haml', 
 						:layout => "pdf.html",
-						:redirect_delay => 3000,
+						:redirect_delay => 1000,
 						:margin => {top: 5, bottom: 5, left: 5, right: 5}
 			end
 		end
@@ -34,7 +34,7 @@ class PatientsController < ApplicationController
 		pdf_file = render_to_string :pdf => "patient-#{@patient.name}-#{@patient.mrn}",
 									:template => 'patients/pdf.html.haml', 
 									:layout => "pdf.html",
-									:redirect_delay => 3000,
+									:redirect_delay => 1000,
 									:margin => {top: 5, bottom: 5, left: 5, right: 5}
 		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}.pdf"
 	end
