@@ -3,10 +3,10 @@ module ChartHelper
     @table = type.gsub(" ","_")+"_measurements"
   	@chart = Highcharts.new do |chart|
   	  chart.chart(renderTo: type.gsub(" ","-")+"-chart", zoomType: 'x')
-  	  chart.title(title)
+  	  chart.title(!pdf ? title : "") 
       chart.credits(enabled: false)
   	  chart.xAxis(type: 'datetime', minorTickInterval: 14400000, dateTimeLabelFormats: {day: '%e %b %y', hour: '%I:%M%P'})
-  	  chart.yAxis(title: "#{title} (#{units})")
+  	  chart.yAxis(title: "#{title} (#{units})", minorTickInterval: 'auto')
   	  chart.series(name: @patient.name, data: @patient.getData(@table))
   	  chart.legend(enabled: false)
   	  chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + this.y + '#{units}'; }")

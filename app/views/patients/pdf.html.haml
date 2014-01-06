@@ -1,26 +1,53 @@
-%h1
-	= @patient.name || "Name not recorded"
-	%span.score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"} 
-		= @patient.getEWS[:score]
-	- unless @patient.getEWS[:complete]
-		%small [Data Missing]
-	.h2= @patient.mrn
-
-%ul#details
-	%li= "Supplementary Oxygen: #{@patient.getLatest('oxygen_supp_measurements') || 'N/R'}" 
-	%li= "Conciousness Level: #{@patient.getLatest('concious_measurements') || 'N/R'}" 
-
-= @pulse_chart
-#pulse-chart.col-lg-12.chart
-
-= @oxygen_chart
-#oxygen-sat-chart.col-lg-12.chart
-
-= @temperature_chart
-#temperature-chart.col-lg-12.chart
-
-= @respiration_rate_chart
-#respiration-rate-chart.col-lg-12.chart
+%ul.lead#details
+	%li 
+		%strong NHS Number:
+		= @patient.mrn
+	%li 
+		%strong Surname:
+		= @patient.surname
+	%li 
+		%strong Forname(s):
+		= @patient.given_name
+	%li
+		%strong Ward:
+		= @patient.ward
+	%li 
+		%strong Address: 
+	%li
+		%strong D.o.B.:
 
 = @bp_chart
-#bp-chart.col-lg-12.chart
+#bp-chart.chart
+
+= @pulse_chart
+#pulse-chart.chart
+
+= @oxygen_chart
+#oxygen-sat-chart.chart
+
+= @temperature_chart
+#temperature-chart.chart
+
+= @respiration_rate_chart
+#respiration-rate-chart.chart
+
+.footer
+	%table
+		%tr
+			%th AVPU
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.concious_measurement.getEWS)};"}
+						= observation.concious_measurement.value
+		%tr
+			%th Oxygen?
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.oxygen_supp_measurement.getEWS)};"}
+						= observation.oxygen_supp_measurement.value ? 'y' : 'n'
+		%tr
+			%th EWS
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
+						= observation.getEWS[:score]

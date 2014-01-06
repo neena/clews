@@ -32,3 +32,27 @@
 
 = @bp_chart
 #bp-chart.col-lg-12.chart
+
+.footer
+	%table
+		%tr
+			%td
+				%strong Conciousness
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.concious_measurement.getEWS)};"}
+						= observation.concious_measurement.value
+		%tr
+			%td
+				%strong Oxygen?
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.oxygen_supp_measurement.getEWS)};"}
+						= observation.oxygen_supp_measurement.value ? 'y' : 'n'
+		%tr
+			%td
+				%strong EWS
+			- @patient.observations.each do |observation|
+				%td
+					%span.score{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
+						= observation.getEWS[:score]

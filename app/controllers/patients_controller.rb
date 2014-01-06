@@ -22,7 +22,8 @@ class PatientsController < ApplicationController
 				render  :pdf => "patient-#{@patient.name}-#{@patient.mrn}", 
 						:template => 'patients/pdf.html.haml', 
 						:layout => "pdf.html",
-						:redirect_delay => 1000 
+						:redirect_delay => 3000,
+						:margin => {top: 5, bottom: 5, left: 5, right: 5}
 			end
 		end
 	end
@@ -32,8 +33,10 @@ class PatientsController < ApplicationController
 
 		pdf_file = render_to_string :pdf => "patient-#{@patient.name}-#{@patient.mrn}",
 									:template => 'patients/pdf.html.haml', 
-									:layout => "pdf.html"
-		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}"
+									:layout => "pdf.html",
+									:redirect_delay => 3000,
+									:margin => {top: 5, bottom: 5, left: 5, right: 5}
+		send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}.pdf"
 	end
 
 	private

@@ -48,7 +48,7 @@ class Patient < ActiveRecord::Base
 
 	def getLatest type #Deprecate once view is clean. 
 		type.chop! if type[-1,1] == "s"
-		val = eval("observations.last.#{type}").try {|m| m.value}
+		val = eval("observations.sort_by{|o| o.recorded_at}.last.#{type}").try {|m| m.value}
 		if val
 			if val == true
 				'yes'
@@ -61,6 +61,6 @@ class Patient < ActiveRecord::Base
 	end
 
 	def getEWS
-		observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
+		observations.sort_by{|o| o.recorded_at}.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
 	end
 end
