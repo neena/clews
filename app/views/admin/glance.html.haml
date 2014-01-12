@@ -1,0 +1,16 @@
+%h1 Observations with incomplete data. 
+#accordion.panel-group
+	- @observations.each_with_index do |observation, i|
+		.panel.panel-default
+			.panel-heading
+				%h4.panel-title
+					%a{"data-parent" => "#accordion", "data-toggle" => "collapse", href: "#collapse#{i}"}
+						%strong= observation.patient.name
+						%small= l observation.recorded_at, format: :short
+			.panel-collapse.collapse{:id => "collapse#{i}"}
+				.panel-body
+					%ul
+						- observation.measurements.each do | type, mes |
+							%li
+								%strong= "#{type.to_s.humanize}:"
+								.label.label-primary{:style => "background: #{EWSColor(mes.try {|m| m.getEWS})};"}= mes.try {|m| m.value.humanize} || '?'

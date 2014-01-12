@@ -1,0 +1,16 @@
+= semantic_form_for @observation do |f|
+  = f.inputs do
+    = f.input :patient, as: :select, collection: Patient.all
+    = f.semantic_fields_for :pulse_measurement do |m|
+      = m.input :value, label: "Pulse (bpm)", input_html: {type: 'tel'}
+    = f.semantic_fields_for :temperature_measurement do |m|
+      = m.input :value, label: "Temperature (ºC)", input_html: {type: 'tel'}
+    = f.semantic_fields_for :sys_bp_measurement do |m|
+      = m.input :value, label: "Systolic BP (mmHg)", input_html: {type: 'tel'}
+    = f.semantic_fields_for :sys_bp_measurement do |m|
+      = m.input :value, label: "Diastolic BP (mmHg)", input_html: {type: 'tel'}
+    = f.semantic_fields_for :oxygen_supp_measurement do |m|
+      = m.input :value, as: :boolean, label: "Supplementary Oxygen"
+  / - Observation.measurement_types.each do |type|
+  /   = f.semantic_fields_for "#{type}_measurement".to_sym do |m|
+  /     = m.input :value

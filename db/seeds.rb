@@ -10,7 +10,7 @@
 
 Patient.all.each do |patient|
 	if patient.observations.blank?
-		18.times do |i|
+		72.times do |i|
 			puts "Creating observation #{i} for #{patient.name}"
 			o = Observation.create(patient: patient, recorded_at: (DateTime.now - (i*4).hours))
 			o.pulse_measurement = PulseMeasurement.create(value: rand(EWSConfig["Pulse"]["min2"]..EWSConfig["Pulse"]["max2"]))

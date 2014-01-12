@@ -1,17 +1,20 @@
 class Observation < ActiveRecord::Base
 	belongs_to :patient
 
-	has_one :pulse_measurement, :dependent => :destroy
-	has_one :oxygen_sat_measurement, :dependent => :destroy
-	has_one :oxygen_supp_measurement, :dependent => :destroy
-	has_one :temperature_measurement, :dependent => :destroy
-	has_one :concious_measurement, :dependent => :destroy
-	has_one :respiration_rate_measurement, :dependent => :destroy
-	has_one :sys_bp_measurement, :dependent => :destroy
-	has_one :dia_bp_measurement, :dependent => :destroy
+	default_scope { order('recorded_at ASC') }
+
+	@@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
+	def self.measurement_types 
+		@@measurement_types
+	end
+
+	@@measurement_types.each do |m|
+		has_one "#{m}_measurement".to_sym, :dependent => :destroy
+		accepts_nested_attributes_for "#{m}_measurement".to_sym
+	end
 
 	validates :recorded_at, :uniqueness => true
-	validates_presence_of :recorded_at
+	validates_presence_of :recorded_at, :patient_id
 
 	def getEWS
 		output = {}
@@ -36,5 +39,12 @@ class Observation < ActiveRecord::Base
 		
 		#Return all output
 		return output
+	end
+
+	def measurements
+		@@measurement_types.inject({}) do |data, m|
+			data[m.to_sym] = eval("#{m}_measurement")
+			data
+		end
 	end
 end
