@@ -1,5 +1,9 @@
 class OxygenSatMeasurement < Measurement
 
+	def self.units
+		"%"
+	end
+
 	def getNEWS
 		case 
 		when value <= 91
@@ -13,5 +17,5 @@ class OxygenSatMeasurement < Measurement
 		end			
 	end
 
-	validates :value, :presence => true, :numericality => {:greater_than => 0, :less_than_or_equal_to => 100}
+	validates :value, :presence => true, :numericality => {:greater_than_or_equal_to => 0, :less_than_or_equal_to => 100}
 end

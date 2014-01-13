@@ -4,9 +4,6 @@ class Observation < ActiveRecord::Base
 	default_scope { order('recorded_at ASC') }
 
 	@@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
-	def self.measurement_types 
-		@@measurement_types
-	end
 
 	@@measurement_types.each do |m|
 		has_one "#{m}_measurement".to_sym, :dependent => :destroy
@@ -46,5 +43,9 @@ class Observation < ActiveRecord::Base
 			data[m.to_sym] = eval("#{m}_measurement")
 			data
 		end
+	end
+
+	def self.measurement_types 
+		@@measurement_types
 	end
 end

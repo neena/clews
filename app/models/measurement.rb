@@ -4,6 +4,10 @@ class Measurement < ActiveRecord::Base
 	belongs_to :observation 
 	validate :valid_value
 
+	def self.units
+		nil
+	end
+
 	def valid_value
 		errors.add(:value, 'Measurement must have value') if !(value || value == false)
 	end
@@ -26,6 +30,10 @@ class Measurement < ActiveRecord::Base
 		else
 			raise StandardError, "Could not load data for #{self.class.name} from YML file"
 		end
+	end
+
+	def self.title 
+		"#{name.titleize} #{"(#{units})" if units.present?}"
 	end
 end
 

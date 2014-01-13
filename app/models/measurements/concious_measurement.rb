@@ -1,5 +1,4 @@
-class ConciousMeasurement < Measurement
-
+class ConciousMeasurement < Measurement	
 	validates_inclusion_of :value, :in => ["A", "V", "P", "U"]
 
 	def before_save 

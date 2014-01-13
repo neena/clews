@@ -1,5 +1,7 @@
 class RespirationRateMeasurement < Measurement
-	
+	def self.units
+		"/min"
+	end
 	def getNEWS
 		case 
 		when value <= 8 || value >= 25

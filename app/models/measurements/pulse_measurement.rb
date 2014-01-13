@@ -1,5 +1,7 @@
 class PulseMeasurement < Measurement
-
+	def self.units
+		"bpm"
+	end
 	def getNEWS
 		case 
 		when value >= 131 || value <= 40

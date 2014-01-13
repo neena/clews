@@ -1,5 +1,7 @@
 class SysBpMeasurement < Measurement
-
+	def self.units
+		"mmHg"
+	end
 	def getNEWS
 		case 
 		when value <= 90 || value >= 220
