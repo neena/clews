@@ -25,7 +25,8 @@ class PatientsController < ApplicationController
 						:template => 'patients/pdf.html.haml', 
 						:layout => "pdf.html",
 						:redirect_delay => 1000,
-						:margin => {top: 5, bottom: 5, left: 5, right: 5}
+						:margin => {top: 5, bottom: 5, left: 5, right: 5},
+						:footer => { :right => "Page [page] of [topage]\n" }
 			end
 		end
 	end
