@@ -2,11 +2,13 @@ class PatientsController < ApplicationController
 	include ChartHelper
 
 	def index
-		@ward = params[:ward]
+		@ward = params[:ward] || cookies[:ward]
+		cookies.delete :ward
+		cookies.permanent[:ward] = params[:ward] || "all"
 		@filter = Patient.select(:ward).distinct.select{|p| p.ward?}.sort_by{|p| p.ward}.collect{|p| ["Ward #{p.ward}", p.ward]}.unshift(["All Wards", "all"])
 		
 		if @ward && @ward != "all"
-			@patients = Patient.where(ward: params[:ward])
+			@patients = Patient.where(ward: @ward)
 		else
 			@patients = Patient.all
 		end
@@ -44,10 +46,10 @@ class PatientsController < ApplicationController
 		@patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
 
 		#Create charts
-		@pulse_chart = createChart('Pulse', 'bpm', 'pulse', pdf)
-		@oxygen_chart = createChart('Oxygen', '%', 'oxygen sat', pdf)
-		@temperature_chart = createChart('Temperature', "\u00B0c", 'temperature', pdf)
-		@respiration_rate_chart = createChart('Respiratory Rate', "/mins", 'respiration rate', pdf)
-		@bp_chart = createChart('Blood Presure', 'mmHg', 'bp', pdf)
+		@pulse_chart = createChart('Pulse', 'pulse', pdf)
+		@oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)
+		@temperature_chart = createChart('Temperature', 'temperature', pdf)
+		@respiration_rate_chart = createChart('Respiratory Rate', 'respiration rate', pdf)
+		@bp_chart = createChart('Blood Presure', 'bp', pdf)
 	end
 end

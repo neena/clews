@@ -4,7 +4,7 @@ class ObservationsController < ApplicationController
 		@observation = Observation.new
 		# Observation.where(recorded_at: (DateTime.now - 5.minutes)..DateTime.now).select {|o| o.measurements.any?{|k,v| v.nil?} }.last || Observation.new
 		Observation.measurement_types.each do |type|
-			eval("@observation.build_#{type}_measurement") unless eval("@observation.#{type}_measurement")
+			eval("@observation.build_#{type}_measurement") #unless eval("@observation.#{type}_measurement")
 		end
 	end
 
