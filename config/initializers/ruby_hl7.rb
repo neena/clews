@@ -3,6 +3,9 @@ require 'thread'
 require 'socket'
 require 'ruby-hl7'
 
+TCP_IP = '192.168.1.39'
+PORT = 2100
+
 def parseHL7(raw_data)
 	hl7 = HL7::Message.new(raw_data)
 	puts "Recieved HL7 message with #{hl7.length} segments"
@@ -10,27 +13,26 @@ def parseHL7(raw_data)
 	if hl7[:PID] 
 		#Save patient data if patient doesn't already exist.
 		if !Patient.find_by_mrn(hl7[:PID].patient_id_list)
-			p = Patient.new
-			p.mrn = hl7[:PID].patient_id_list
-			p.surname = hl7[:PID].patient_name.split('^')[0]
-			p.save
+			p = Patient.create(
+				mrn: hl7[:PID].patient_id_list,
+				surname: hl7[:PID].patient_name.split('^')[0]
+			)
 		else
 			p = Patient.find_by_mrn(hl7[:PID].patient_id_list)
 		end
-
-		#Loop through OBXs and save relevant patient data 
-		hl7[:OBX].each do |segment|
-			case segment.observation_id.first(9) 
-			when'0002-4182'
-				m = PulseMeasurement.new
-				m.patient = p
-				m.value = segment.observation_value
-				if segment.observation_date.blank?
-					m.datetime = DateTime.now 
-				else
-					m.datetime = DateTime.parse(segment.observation_date, "%Y%m%d%H%M%S")
+		if o = Observation.create(
+			patient: p,
+			recorded_at: DateTime.parse(hl7[:OBR].e7, "%Y%m%d%H%M%S")
+		)
+			#Loop through OBXs and save relevant patient data 
+			hl7[:OBX].each do |segment|
+				case segment.observation_id.first(9) 
+				when'0002-4182'
+					m = PulseMeasurement.new
+					m.observation = o
+					m.value = segment.observation_value
+					m.save
 				end
-				m.save
 			end
 		end
 		puts "All data parsed."
@@ -50,15 +52,13 @@ def parseHL7(raw_data)
 		msa.ack_code = "AA"
 		msa.control_id = hl7.first.e9
 		ack << msa
-		p ack.to_hl7
-		ack.to_hl7 + "\r"
+		p ack.to_mllp
+		ack.to_mllp
 	end
 end
 
 
 Thread.new do
-	TCP_IP = '127.0.0.1'
-	PORT = 2100
 	Thread.abort_on_exception = true #Kill any useless failure threads
 
 	srv = TCPServer.open(TCP_IP, PORT)
@@ -75,7 +75,9 @@ Thread.new do
 				break if m.empty? 
 			end
 			p raw_data
-			message.write(parseHL7(raw_data.split("\r")))
+			# message.write(parseHL7(raw_data.split("\r")))
+			message.send_data parseHL7(raw_data.split("\r"))
+			message.close
 		end
 	end
 end

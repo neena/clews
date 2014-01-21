@@ -1,15 +1,6 @@
 class Patient < ActiveRecord::Base
 	has_many :observations, dependent: :destroy
 
-	# has_many :pulse_measurements, dependent: :destroy, through: :observations
-	# has_many :oxygen_sat_measurements, dependent: :destroy, through: :observations
-	# has_many :oxygen_supp_measurements, dependent: :destroy, through: :observations
-	# has_many :temperature_measurements, dependent: :destroy, through: :observations
-	# has_many :concious_measurements, dependent: :destroy, through: :observations
-	# has_many :respiration_rate_measurements, dependent: :destroy, through: :observations
-	# has_many :sys_bp_measurements, dependent: :destroy, through: :observations
-	# has_many :dia_bp_measurements, dependent: :destroy, through: :observations
-
 	validates :mrn, :uniqueness => true
 
 	def name 
@@ -53,11 +44,6 @@ class Patient < ActiveRecord::Base
 			end
 		end || []
 		# Attempt to implement this at some point http://www.highcharts.com/demo/area-missing/gray
-	end
-
-	def getLatest type #Deprecate once view is clean. 
-		type.chop! if type[-1,1] == "s"
-		eval("observations.last.#{type}").try {|m| m.value}
 	end
 
 	def getEWS

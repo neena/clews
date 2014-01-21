@@ -1,7 +1,6 @@
 %h1
 	.pull-right.hidden-sm.hidden-xs
-		= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
-		= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+		= render "patientbuttons"
 	= @patient.name || "Name not recorded"
 	%span.score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"} 
 		= @patient.getEWS[:score]
@@ -10,14 +9,13 @@
 	.h2= @patient.mrn
 
 %ul#details
-	%li= "Supplementary Oxygen: #{@patient.getLatest('oxygen_supp_measurement').humanize || 'N/R'}" 
-	%li= "Conciousness Level: #{@patient.getLatest('concious_measurements') || 'N/R'}" 
-	%li= "Time on Ward: #{distance_of_time_in_words(@patient.observations.last.recorded_at - @patient.observations.first.recorded_at)}"
-
+	%li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.value.humanize || 'N/R'}" 
+	%li= "Conciousness Level: #{@patient.observations.last.concious_measurement.value || 'N/R'}" 
+	%li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
+	%li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
 
 .visible-sm.visible-xs
-	= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
-	= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+	= render "patientbuttons"
 
 = @pulse_chart
 #pulse-chart.col-lg-12.chart
@@ -33,8 +31,6 @@
 
 = @bp_chart
 #bp-chart.col-lg-12.chart
-
-/ = text_field_tag 'name', nil, :type => 'tel'
 
 .table-wrapper
 	%table.footer.lead
