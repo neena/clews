@@ -12,6 +12,11 @@ class PatientsController < ApplicationController
 		else
 			@patients = Patient.all
 		end
+
+		respond_to do |format|
+			format.html
+			format.json { render json: @patients.to_json }
+		end
 	end
 
 	def show
