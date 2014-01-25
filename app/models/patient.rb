@@ -8,6 +8,9 @@ class Patient < ActiveRecord::Base
 
   default_scope { order(:surname) }
 
+  scope :no_observation, -> { where(:observation_due_at, nil) }
+  scope :due_observation, -> (h) { where(['observation_due_at < ?', Time.zone.now + h.hours]) }
+
   def name
     if surname && given_name
       "#{surname}, #{given_name}"
@@ -54,6 +57,7 @@ class Patient < ActiveRecord::Base
   def getEWS
     observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
   end
+>>>>>>> 4b50c92f08395a69bf9c0fe19027c145c53fb76b
 
   private
 

@@ -40,6 +40,18 @@ class Observation < ActiveRecord::Base
 		@@measurement_types
 	end
 
+  def rating
+    getEWS[:rating]
+  end
+
+  def score
+    getEWS[:score]
+  end
+
+  def complete?
+    getEWS[:complete]
+  end
+
   private
 
   def measurement_data
