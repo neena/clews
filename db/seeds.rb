@@ -9,8 +9,17 @@
 # Not perfect, works with EWSConfig but pretty hack-ily
 require 'securerandom'
 
-53.times do |i|
-  Patient.create(mrn: SecureRandom.uuid)
+20.times do |i|
+  p = Patient.create(mrn: SecureRandom.uuid,
+                     given_name: Faker::Name.first_name,
+                     surname: Faker::Name.last_name)
+                 
+  puts "Created patient: #{ p.name }"
+end
+
+5.times do
+	w = Ward.create(name: Faker::Lorem.word.titleize + " Ward")
+	puts "Created ward: #{ w.name }"
 end
 
 Patient.all.each do |patient|
@@ -28,6 +37,6 @@ Patient.all.each do |patient|
 			o.dia_bp_measurement = DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
 		end
 	end 
-	patient.ward = rand(1..5) unless patient.ward
+	patient.ward = Ward.first(:order => "RANDOM()") unless patient.ward_id?
 	patient.save
 end

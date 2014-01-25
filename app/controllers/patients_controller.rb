@@ -5,17 +5,17 @@ class PatientsController < ApplicationController
 		@ward = params[:ward] || cookies[:ward]
 		cookies.delete :ward
 		cookies.permanent[:ward] = @ward || "all"
-		@filter = Patient.select(:ward).distinct.select{|p| p.ward?}.sort_by{|p| p.ward}.collect{|p| ["Ward #{p.ward}", p.ward]}.unshift(["All Wards", "all"])
+		@filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
 		
 		if @ward && @ward != "all"
-			@patients = Patient.where(ward: @ward)
+			@patients = Ward.find(@ward).patients
 		else
 			@patients = Patient.all
 		end
 
 		respond_to do |format|
 			format.html
-			format.json { render json: @patients.to_json }
+			format.json { render json: @patients.to_json(methods: [:getEWS]) }
 		end
 	end
 
