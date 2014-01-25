@@ -11,7 +11,7 @@
 			= @patient.given_name
 		%li
 			%strong Ward:
-			= @patient.ward
+			= @patient.ward.try{|w| w.name}
 		%li 
 			%strong Address: 
 		%li
