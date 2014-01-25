@@ -26,3 +26,9 @@ end
 group :development do
   gem 'faker'
 end
+
+group :test do
+  gem 'delorean'
+  gem 'mocha'
+end
+

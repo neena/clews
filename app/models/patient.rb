@@ -1,5 +1,8 @@
 class Patient < ActiveRecord::Base
-	has_many :observations, dependent: :destroy
+	belongs_to :ward
+	has_many :observations,
+           dependent: :destroy,
+           after_add: :update_observation_due_at
 
 	validates :mrn, :uniqueness => true
 
@@ -49,4 +52,12 @@ class Patient < ActiveRecord::Base
 	def getEWS
 		observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
 	end
+
+  private
+
+  def update_observation_due_at(observation)
+    next_observation = NextObservationDue.calculate(observation.recorded_at, observation.rating)
+    self.update_attribute(:observation_due_at, next_observation)
+  end
+
 end
