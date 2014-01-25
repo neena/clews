@@ -15,7 +15,7 @@ class PatientsController < ApplicationController
 
 		respond_to do |format|
 			format.html
-			format.json { render json: @patients.to_json }
+			format.json { render json: @patients.to_json(methods: [:getEWS]) }
 		end
 	end
 
