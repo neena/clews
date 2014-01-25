@@ -78,12 +78,13 @@ class Patient < ActiveRecord::Base
     end
 	end
 	
-	# If the patient EWS score is above a preset 
-	# level then send a notification
+	# If the patient EWS score is above 5 send the { ward manager ?? } an email
 	def check_threshold!
 	  puts "CHECKING THRESHOLD"
 		ews_score = getEWS[:score]
 		message   = get_ews_message(ews_score)
-		NotificationMailer.observation_email(self, message).deliver
+		if ews_score > 5
+		  NotificationMailer.observation_email(self, message).deliver
+	  end
 	end
 end
