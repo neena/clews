@@ -35,7 +35,7 @@
 .table-wrapper
 	%table.footer.lead
 		= render "row", observations: @patient.observations, title: 'Conciousness', type: 'concious'
-		= render "row"observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
+		= render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
 		%tr
 			%td
 				%strong EWS
