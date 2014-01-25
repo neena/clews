@@ -3,7 +3,7 @@ require 'thread'
 require 'socket'
 require 'ruby-hl7'
 
-TCP_IP = '192.168.1.39'
+TCP_IP = ENV['HL7_IP'] || 'localhost'
 PORT = 2100
 
 def parseHL7(raw_data)
