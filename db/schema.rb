@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 20140125145458) do
     t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score",       default: 0
+    t.integer  "rating",      default: 0
+    t.string   "status",      default: "incomplete"
   end
 
   create_table "oxygen_sat_measurements", force: true do |t|

@@ -1,6 +1,6 @@
 = semantic_form_for @observation do |f|
   = f.inputs do
-    = f.input :patient, as: :select, collection: Patient.order(:surname)
+    = f.input :patient, as: :select, collection: Patient.all
   - Observation.measurement_types.each do |type|
     = f.semantic_fields_for "#{type}_measurement".to_sym do |m|
       - case type
