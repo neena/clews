@@ -1,4 +1,5 @@
 class Patient < ActiveRecord::Base
+	belongs_to :ward
 	has_many :observations, dependent: :destroy
 
 	validates :mrn, :uniqueness => true

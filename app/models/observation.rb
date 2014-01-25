@@ -38,26 +38,60 @@ class Observation < ActiveRecord::Base
 
 	def generate_ews
 		#Calucalate Score
-		data = [concious_measurement, sys_bp_measurement, pulse_measurement, oxygen_sat_measurement, oxygen_supp_measurement, respiration_rate_measurement, temperature_measurement]
-		score = data.inject(0) do |sum, mes|
-			mes ? sum + mes.getEWS : sum
-		end
+		self.score = sum_measurement_scores(measurement_data)
 
 		#Calculate rating (scale from 0 to 3)
-		rating = (0.318 + score*0.164 + 0.0431*score*score  -0.00291*score*score*score).round #Polynomial regression of scores to power of 3
-
-		if score > 15 #Handle exceptions from regression line
-			rating = 3
-		elsif rating < 2 && data.any? {|datum| datum.try{|d| d.getEWS == 3}}
-			rating = 2
-		end
+		self.rating = calculate_rating(self.score, measurement_data)
 
 		#Check if data was complete
-		case !data.any?{|datum| datum.blank?}
+		case incomplete_data?(measurement_data)
 		when true
-			status = 'complete'
+			self.status = 'complete'
 		else
-			status = 'incomplete'
+			self.status = 'incomplete'
 		end
 	end
+
+	def measurement_data
+		[concious_measurement,
+		 sys_bp_measurement,
+		 pulse_measurement,
+		 oxygen_sat_measurement,
+		 oxygen_supp_measurement,
+		 respiration_rate_measurement,
+		 temperature_measurement]
+	end
+
+	def sum_measurement_scores(measurements)
+		measurements.inject(0) do |sum, mesurement|
+			mesurement ? sum + mesurement.getEWS : sum
+		end
+	end
+
+	def calculate_rating(score, measurements)
+		rating = 0
+
+		case
+		when score == 0
+			rating = 0
+		when score <= 4
+			rating = 1
+		when score <= 6
+			rating = 2
+		when score >= 7
+			rating = 3
+		end
+
+		 # Handle exception
+		if rating < 2 && measurements.any? {|measurement| measurement.try{ |m| m.getEWS == 3} }
+			 rating = 2
+		end
+
+		return rating
+	end
+
+	def incomplete_data?(measurements)
+		measurements.any?(&:blank?)
+	end
+
 end

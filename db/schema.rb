@@ -65,8 +65,10 @@ ActiveRecord::Schema.define(version: 20140125134637) do
     t.string   "surname"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ward"
+    t.integer  "ward_id"
   end
+
+  add_index "patients", ["ward_id"], name: "index_patients_on_ward_id"
 
   create_table "pulse_measurements", force: true do |t|
     t.float   "value"
@@ -101,5 +103,11 @@ ActiveRecord::Schema.define(version: 20140125134637) do
   end
 
   add_index "temperature_measurements", ["observation_id"], name: "index_temperature_measurements_on_observation_id"
+
+  create_table "wards", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end
