@@ -25,7 +25,7 @@ class Observation < ActiveRecord::Base
 		
 		#Return all output
     { score: score,
-      rating: rating
+      rating: rating,
       complete: complete }
 	end
 
