@@ -65,8 +65,11 @@ GEM
     mail (2.5.4)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.2)
     mime-types (1.25)
     minitest (4.7.5)
+    mocha (1.0.0)
+      metaclass (~> 0.0.1)
     multi_json (1.8.4)
     polyglot (0.3.3)
     rack (1.5.2)
@@ -145,6 +148,7 @@ DEPENDENCIES
   highcharts-js-rails
   jbuilder (~> 1.2)
   jquery-rails
+  mocha
   rails (= 4.0.0)
   ruby-hl7
   sass-rails (~> 4.0.0)

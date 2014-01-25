@@ -29,5 +29,6 @@ end
 
 group :test do
   gem 'delorean'
+  gem 'mocha'
 end
 
