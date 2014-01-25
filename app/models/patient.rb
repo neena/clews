@@ -8,8 +8,8 @@ class Patient < ActiveRecord::Base
 
   default_scope { order(:surname) }
 
-  scope :no_observation, -> { where(['observation_due_at IS NULL']) }
-  scope :due_observation, -> (h) { where(['observation_due_at < ?', Time.zone.now + h.hours]) }
+  scope :no_observation, lambda { where(['observation_due_at IS NULL']) }
+  scope :due_observation, lambda { |h| where(['observation_due_at < ?', Time.zone.now + h.hours]).order('observation_due_at ASC') }
 
   def name
     if surname && given_name
