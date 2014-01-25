@@ -25,11 +25,12 @@ class PatientsController < ApplicationController
 		cookies.permanent[:ward] = @ward || "all"
 		@filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
 
-		if @ward && @ward != "all"
-			@patients = Ward.find(@ward).patients
-		else
-			@patients = Patient.all
-		end
+    if @ward && @ward != "all"
+      ward = Ward.find(@ward)
+      @patients = (ward.patients.due_observation(1) + ward.patients.no_observation).flatten
+    else
+			@patients = (Patient.due_observation(1) + Patient.no_observation).flatten
+    end
 
 		respond_to do |format|
 			format.html
