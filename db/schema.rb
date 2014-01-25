@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140105175000) do
+ActiveRecord::Schema.define(version: 20140125134637) do
 
   create_table "concious_measurements", force: true do |t|
     t.string   "value"
@@ -36,6 +36,9 @@ ActiveRecord::Schema.define(version: 20140105175000) do
     t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score",       default: 0
+    t.integer  "rating",      default: 0
+    t.string   "status",      default: "incomplete"
   end
 
   create_table "oxygen_sat_measurements", force: true do |t|
