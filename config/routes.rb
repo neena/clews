@@ -8,7 +8,9 @@ EwsSystem::Application.routes.draw do
 
     resources :observations
 
-    get 'glance' => 'glance#index'
+    namespace :admin do
+      get 'glance' => 'glance#index'
+    end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

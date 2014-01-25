@@ -1,5 +1,4 @@
-class GlanceController < ApplicationController
-
+class Admin::GlanceController < AdminController
 	def index
 		@observations = Patient.all.inject([]) do |data, patient|
 			patient.observations.each do |obs|
