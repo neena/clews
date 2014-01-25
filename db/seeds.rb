@@ -7,6 +7,11 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Not perfect, works with EWSConfig but pretty hack-ily
+require 'securerandom'
+
+53.times do |i|
+  Patient.create(mrn: SecureRandom.uuid)
+end
 
 Patient.all.each do |patient|
 	if patient.observations.blank?
