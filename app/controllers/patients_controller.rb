@@ -8,7 +8,7 @@ class PatientsController < ApplicationController
 		@filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
 		
 		if @ward && @ward != "all"
-			@patients = Patient.where(ward: @ward)
+			@patients = Ward.find(@ward).patients
 		else
 			@patients = Patient.all
 		end
