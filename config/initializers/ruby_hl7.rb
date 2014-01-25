@@ -29,6 +29,18 @@ def parseHL7(raw_data)
 				case segment.observation_id.first(9) 
 				when'0002-4182'
 					m = PulseMeasurement.new
+				when '0002-4a05'
+					m = SysBpMeasurement.new
+				when '0002-4a06'
+					m = DiaBpMeasurement.new
+				when '0002-500a'
+					m = RespirationRateMeasurement.new
+				when '0401-0b54'
+					m = TemperatureMeasurement.new
+				when '0002-4bb8'
+					m = OxygenSatMeasurement.new
+				end
+				if m
 					m.observation = o
 					m.value = segment.observation_value
 					m.save
@@ -36,25 +48,24 @@ def parseHL7(raw_data)
 			end
 		end
 		puts "All data parsed."
-
-		#Generate ACK
-		puts "HL7 parsed and saved! Attempting to send ACK."
-		ack = HL7::Message.new
-		msh = HL7::Message::Segment::MSH.new
-		msh.enc_chars = '^~\&'
-		msh.message_type = "ACK^^ACK_ALL"
-		msh.time = DateTime.now.strftime("%Y%m%d%H%M%S")
-		msh.message_control_id = hl7.first.e9
-		msh.processing_id = "P"
-		msh.version_id = "2.4"
-		ack << msh
-		msa = HL7::Message::Segment::MSA.new
-		msa.ack_code = "AA"
-		msa.control_id = hl7.first.e9
-		ack << msa
-		p ack.to_mllp
-		ack.to_mllp
 	end
+	#Generate ACK
+	puts "HL7 parsed and saved! Attempting to send ACK."
+	ack = HL7::Message.new
+	msh = HL7::Message::Segment::MSH.new
+	msh.enc_chars = '^~\&'
+	msh.message_type = "ACK^^ACK_ALL"
+	msh.time = DateTime.now.strftime("%Y%m%d%H%M%S")
+	msh.message_control_id = hl7.first.e9
+	msh.processing_id = "P"
+	msh.version_id = "2.4"
+	ack << msh
+	msa = HL7::Message::Segment::MSA.new
+	msa.ack_code = "AA"
+	msa.control_id = hl7.first.e9
+	ack << msa
+	p ack.to_mllp
+	ack.to_mllp.sub("\u001C\r","\r\u001C\r")
 end
 
 
@@ -67,16 +78,19 @@ Thread.new do
 	loop do
 		Thread.start(srv.accept) do |message|
 			puts "Recieved message"
-
-			# This first section (looping through the data may be unecessary)
+			# message.puts "\vMSH|^~\\&|||||20140122192021||ACK^^ACK_ALL|US232012490000000018|P|2.4\rMSA|AA|US232012490000000018\u001C\r"
 			raw_data = ""
+			# This first section (looping through the data may be unecessary)
+			# raw_data = message.read
+
 			while (m = message.recv(10))
 				raw_data += m
-				break if m.empty? 
+				break if raw_data.include? "\r\x1C\r"
 			end
 			p raw_data
+			# message.puts 
 			# message.write(parseHL7(raw_data.split("\r")))
-			message.send_data parseHL7(raw_data.split("\r"))
+			message.puts parseHL7(raw_data.split("\r"))
 			message.close
 		end
 	end
