@@ -57,7 +57,6 @@ class Patient < ActiveRecord::Base
   def getEWS
     observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
   end
->>>>>>> 4b50c92f08395a69bf9c0fe19027c145c53fb76b
 
   private
 
