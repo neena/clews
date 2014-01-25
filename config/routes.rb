@@ -3,6 +3,7 @@ EwsSystem::Application.routes.draw do
 
     resources :patients do
       get 'download', on: :member
+      get 'rounds',   on: :collection
     end
 
     resources :observations
