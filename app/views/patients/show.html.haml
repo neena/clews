@@ -9,8 +9,8 @@
 	.h2= @patient.mrn
 
 %ul#details
-	%li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try{|m| m.value}.humanize || 'N/R'}" 
-	%li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try{|m| m.value} || 'N/R'}" 
+	%li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
+	%li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 
 	%li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
 	%li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
 
