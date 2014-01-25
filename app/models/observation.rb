@@ -68,7 +68,7 @@ class Observation < ActiveRecord::Base
       rating = 1
     when score <= 6
       rating = 2
-    when score <= 7
+    when score >= 7
       rating = 3
     end
 
@@ -76,6 +76,8 @@ class Observation < ActiveRecord::Base
     if rating < 2 && measurements.any? {|measurement| measurement.try{ |m| m.getEWS == 3} }
        rating = 2
     end
+
+    return rating
   end
 
   def incomplete_data?(measurements)
