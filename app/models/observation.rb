@@ -61,18 +61,21 @@ class Observation < ActiveRecord::Base
   def calculate_rating(score, measurements)
     rating = 0
 
-    # Calculate rating (scale from 0 to 3)
-    # Polynomial regression of scores to power of 3
-    total_score = (0.318 + score * 0.164 + 0.0431 * score * score
-     + -0.00291 * score * score * score).round 
+    case 
+    when score == 0
+      rating = 0 
+    when score <= 4
+      rating = 1
+    when score <= 6
+      rating = 2
+    when score <= 7
+      rating = 3
+    end
 
-
-     # Handle exceptions from regression line
-     if total_score > 15
-       rating = 3
-     elsif rating < 2 && measurements.any? {|measurement| measurement.try{ |m| m.getEWS == 3} }
+     # Handle exception
+    if rating < 2 && measurements.any? {|measurement| measurement.try{ |m| m.getEWS == 3} }
        rating = 2
-     end
+    end
   end
 
   def incomplete_data?(measurements)
