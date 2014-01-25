@@ -6,7 +6,7 @@ class Patient < ActiveRecord::Base
 
 	validates :mrn, :uniqueness => true
 
-  scope :no_observation, -> { where(:observation_due_at, nil) }
+  scope :no_observation, -> { where(['observation_due_at IS NULL']) }
   scope :due_observation, -> (h) { where(['observation_due_at < ?', Time.zone.now + h.hours]) }
 
 	def name 
