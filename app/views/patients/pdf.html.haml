@@ -26,10 +26,10 @@
 	.chart{:id => "temperature-chart#{i}"}
 
 	%table.footer
-		= render partial: "row", locals: {observations: observations, title: 'Conciousness', type: 'concious'}
-		= render partial: "row", locals: {observations: observations, title: 'Oxygen?', type: 'oxygen_supp'}
-		= render partial: "row", locals: {observations: observations, title: 'Oxygen Sat', type: 'oxygen_sat'}
-		= render partial: "row", locals: {observations: observations, title: 'Respiration Rate', type: 'respiration_rate'}
+		= render "row", observations: observations, title: 'Conciousness', type: 'concious'
+		= render "row", observations: observations, title: 'Oxygen?', type: 'oxygen_supp'
+		= render "row", observations: observations, title: 'Oxygen Sat', type: 'oxygen_sat'
+		= render "row", observations: observations, title: 'Respiration Rate', type: 'respiration_rate'
 		%tr
 			%td
 				%strong EWS
