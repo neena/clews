@@ -21,7 +21,7 @@ class Observation < ActiveRecord::Base
 		rating = calculate_rating(score, measurement_data)
 
 		#Check if data was complete
-		complete = incomplete_data?(measurement_data)
+		complete = !incomplete_data?(measurement_data)
 		
 		#Return all output
     { score: score,
