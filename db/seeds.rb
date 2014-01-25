@@ -7,13 +7,16 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Not perfect, works with EWSConfig but pretty hack-ily
+
 require 'securerandom'
+
+Admin.create email: 'admin@example.com', password: 'password'
 
 20.times do |i|
   p = Patient.create(mrn: SecureRandom.uuid,
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name)
-                 
+
   puts "Created patient: #{ p.name }"
 end
 
@@ -36,7 +39,7 @@ Patient.all.each do |patient|
 			o.sys_bp_measurement = SysBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
 			o.dia_bp_measurement = DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
 		end
-	end 
+	end
 	patient.ward = Ward.first(:order => "RANDOM()") unless patient.ward_id?
 	patient.save
 end
