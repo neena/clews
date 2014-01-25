@@ -8,7 +8,7 @@ EwsSystem::Application.routes.draw do
 
     resources :observations
 
-    get 'glance' => 'admin#glance'
+    get 'glance' => 'glance#index'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -50,7 +50,7 @@ EwsSystem::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'
