@@ -93,7 +93,7 @@ class Observation < ActiveRecord::Base
   end
 
   def incomplete_data?(measurements)
-    measurements.any?(&:blank?)
+    measurements.any?(&:nil?)
   end
 
 end
