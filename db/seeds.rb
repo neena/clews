@@ -10,7 +10,11 @@
 require 'securerandom'
 
 53.times do |i|
-  Patient.create(mrn: SecureRandom.uuid)
+  p = Patient.create(mrn: SecureRandom.uuid,
+                     given_name: Faker::Name.first_name,
+                     surname: Faker::Name.last_name)
+                 
+  puts "Created patient: #{ p.name }"
 end
 
 Patient.all.each do |patient|
