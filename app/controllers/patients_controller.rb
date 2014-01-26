@@ -42,7 +42,7 @@ class PatientsController < ApplicationController
 		respond_to do |format|
       format.json do
         load_patient_and_charts
-        render json: @patient.to_json(methods: [:latest_observation])
+        render json: @patient.to_json(methods: [:latest_observations])
       end
 			format.html do
 				load_patient_and_charts

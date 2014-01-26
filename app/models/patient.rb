@@ -28,8 +28,8 @@ class Patient < ActiveRecord::Base
   # Public: Returns just the relevant Observation
   #
   # Returns one Observation
-  def latest_observation
-    observations.first
+  def latest_observations
+    observations.limit(10)
   end
 
   def getData type #in HighCharts ready format.

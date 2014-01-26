@@ -5,6 +5,13 @@ class PatientTest < ActiveSupport::TestCase
   setup do
     @patient = Patient.create(mrn: SecureRandom.uuid)
     Observation.any_instance.stubs(:rating).returns(0)
+    Observation.any_instance.stubs(:recorded_at).returns(Time.zone.now)
+  end
+
+  test '#latest_observations should return 10 observations' do
+    11.times { @patient.observations.create }
+
+    assert_equal 10, @patient.latest_observations.size
   end
 
   test 'updates next observation date after adding an observation' do
