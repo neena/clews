@@ -50,53 +50,7 @@ end
     puts "- Creating historic observation #{i+1}"
   end
 
+  # Probably don't need this as calling default_values effectively
+  # resets them anyway
   reset_values
 end
-
-# Create a few healthy patients!
-# puts "\n\n>> Healthy Patients! \n\n"
-# 
-# 1.times do |i|
-#   default_values
-# 
-#   p = Patient.create(mrn: SecureRandom.uuid,
-#                      given_name: Faker::Name.first_name,
-#                      surname: Faker::Name.last_name,
-#                      ward: Ward.first(:order => "RANDOM()"))
-# 
-#   puts "= Created patient: #{ p.name }"
-# 
-#   30.times do |i|
-#     p.observations.create(
-#       recorded_at:                  (Time.zone.now - (i*rand(1..8)).hours),
-#       pulse_measurement:            PulseMeasurement.create(value: 80),
-#       oxygen_sat_measurement:       OxygenSatMeasurement.create(value: 100),
-#       oxygen_supp_measurement:      OxygenSuppMeasurement.create(value: false),
-#       temperature_measurement:      TemperatureMeasurement.create(value: 37),
-#       concious_measurement:         ConciousMeasurement.create(value: 'A'),
-#       respiration_rate_measurement: RespirationRateMeasurement.create(value: 18),
-#       sys_bp_measurement:           SysBpMeasurement.create(value: 110),
-#       dia_bp_measurement:           DiaBpMeasurement.create(value: (110*0.8).floor)
-#     )
-# 
-#     puts "- Creating historic observation #{i+1}"
-#   end
-# 
-#   p.observations.create(
-#     recorded_at:                  Time.zone.now,
-#     pulse_measurement:            PulseMeasurement.create(value: 80),
-#     oxygen_sat_measurement:       OxygenSatMeasurement.create(value: 100),
-#     oxygen_supp_measurement:      OxygenSuppMeasurement.create(value: false),
-#     temperature_measurement:      TemperatureMeasurement.create(value: 37),
-#     concious_measurement:         ConciousMeasurement.create(value: 'A'),
-#     respiration_rate_measurement: RespirationRateMeasurement.create(value: 18),
-#     sys_bp_measurement:           SysBpMeasurement.create(value: 110),
-#     dia_bp_measurement:           DiaBpMeasurement.create(value: (110*0.8).floor)
-#   )
-# 
-#   puts "- Creating current observation"
-# 
-#   reset_values
-# end
-
-
