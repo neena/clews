@@ -9,8 +9,8 @@
       %strong= link_to (patient.name || "Name N/R"), patient
       - if Time.zone.now > patient.observation_due_at
         %span{ style: 'background: #FFC5C7' }
-          = "Observation was due #{ distance_of_time_in_words(Time.zone.now, patient.observation_due_at) } ago"
+          = "Observation was due #{ time_ago_in_words(patient.observation_due_at) } ago"
       - else
         %span
-          = "Observation due in #{ distance_of_time_in_words(Time.zone.now, patient.observation_due_at) }"
+          = "Observation due in #{ distance_of_time_in_words_to_now(patient.observation_due_at) }"
 
