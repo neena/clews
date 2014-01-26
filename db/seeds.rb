@@ -28,7 +28,7 @@ end
 
   72.times do |i|
     p.observations.create(
-      recorded_at:                  (DateTime.now - (i*4).hours),
+      recorded_at:                  (Time.zone.now - (i*4).hours),
       pulse_measurement:            PulseMeasurement.create(value: pulse_value),
       oxygen_sat_measurement:       OxygenSatMeasurement.create(value: oxygen_sat_value),
       oxygen_supp_measurement:      OxygenSuppMeasurement.create(value: oxygen_supp_value),
