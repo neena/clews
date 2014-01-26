@@ -9,35 +9,48 @@
 # Not perfect, works with EWSConfig but pretty hack-ily
 
 require 'securerandom'
+require_relative './mock_values'
 
 Admin.create email: 'admin@example.com', password: 'password'
 
 5.times do
   w = Ward.create(name: Faker::Lorem.word.titleize + " Ward")
-  puts "Created ward: #{ w.name }"
+  puts "= Created ward: #{ w.name }"
 end
 
-50.times do |i|
+30.times do |i|
+  default_values
+
   p = Patient.create(mrn: SecureRandom.uuid,
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
                      ward: Ward.first(:order => "RANDOM()"))
 
-  puts "Created patient: #{ p.name }"
+  puts "= Created patient #{ i + 1 }: #{ p.name }"
 
-  72.times do |i|
+  20.times do |i|
+    if i == 0
+      recorded_at = Time.zone.now
+    else
+      recorded_at = Time.zone.now - (i*rand(1..8)).hours
+    end
+
     p.observations.create(
-      recorded_at: (DateTime.now - (i*4).hours),
-      pulse_measurement: PulseMeasurement.create(value: rand(EWSConfig["Pulse"]["min2"]..EWSConfig["Pulse"]["max2"])),
-      oxygen_sat_measurement: OxygenSatMeasurement.create(value: rand(EWSConfig["OxygenSat"]["min2"]..EWSConfig["OxygenSat"]["min0"])),
-      oxygen_supp_measurement: OxygenSuppMeasurement.create(value: [true,false].sample),
-      temperature_measurement: TemperatureMeasurement.create(value: rand(EWSConfig["Temperature"]["min2"]..EWSConfig["Temperature"]["max1"])),
-      concious_measurement: ConciousMeasurement.create(value: ["A", "V", "P", "U"].sample),
-      respiration_rate_measurement: RespirationRateMeasurement.create(value: rand(EWSConfig["RespirationRate"]["min2"]..EWSConfig["RespirationRate"]["max2"])),
-      sys_bp_measurement: SysBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
-      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
+      recorded_at:                  recorded_at,
+      pulse_measurement:            PulseMeasurement.create(value: pulse_value),
+      oxygen_sat_measurement:       OxygenSatMeasurement.create(value: oxygen_sat_value),
+      oxygen_supp_measurement:      OxygenSuppMeasurement.create(value: oxygen_supp_value),
+      temperature_measurement:      TemperatureMeasurement.create(value: temperature_value),
+      concious_measurement:         ConciousMeasurement.create(value: concious_value),
+      respiration_rate_measurement: RespirationRateMeasurement.create(value: respiration_rate_value),
+      sys_bp_measurement:           SysBpMeasurement.create(value: sys_bp_value),
+      dia_bp_measurement:           DiaBpMeasurement.create(value: dia_bp_value)
     )
 
-    puts "- Creating observation #{i+1}"
+    puts "- Creating historic observation #{i+1}"
   end
+
+  # Probably don't need this as calling default_values effectively
+  # resets them anyway
+  reset_values
 end

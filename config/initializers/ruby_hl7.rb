@@ -3,8 +3,8 @@ require 'thread'
 require 'socket'
 require 'ruby-hl7'
 
-TCP_IP = '127.0.0.1'
-PORT = 2100
+TCP_IP = ENV['HL7_IP']   || '127.0.0.1'
+PORT   = ENV['HL7_PORT'] ||  2100
 
 def parseHL7(raw_data)
 	hl7 = HL7::Message.new(raw_data)
