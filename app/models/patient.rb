@@ -24,7 +24,14 @@ class Patient < ActiveRecord::Base
     mrn
   end
 
-  def getData type #in HighCharts ready format. 
+  # Public: Returns just the relevant Observation
+  #
+  # Returns one Observation
+  def latest_observations
+    observations.limit(10)
+  end
+
+  def getData type #in HighCharts ready format.
     type.chop! if type[-1,1] == "s"
     if type == 'bp_measurement'
       observations.inject([]) do |data, item|
