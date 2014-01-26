@@ -9,10 +9,10 @@
   .h2= @patient.mrn
 
 %ul#details
-	%li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
-	%li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 
-	%li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
-	%li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
+  %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
+  %li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 
+  %li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
+  %li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
 
 .visible-sm.visible-xs
   = render "patientbuttons"
@@ -33,13 +33,13 @@
 #bp-chart.col-lg-12.chart
 
 .table-wrapper
-	%table.footer.lead
-		= render "row", observations: @patient.observations, title: 'Conciousness', type: 'concious'
-		= render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
-		%tr
-			%td
-				%strong EWS
-			- @patient.observations.each do |observation|
-				%td
-					%span.label{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
-						= observation.getEWS[:score]
+  %table.footer.lead
+    = render "row", observations: @patient.observations, title: 'Conciousness', type: 'concious'
+    = render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
+    %tr
+      %td
+        %strong EWS
+      - @patient.observations.each do |observation|
+        %td
+          %span.label{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
+            = observation.getEWS[:score]

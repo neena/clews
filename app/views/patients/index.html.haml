@@ -1,10 +1,10 @@
 = render 'ward_filter'
 
 %ul
-	- @patients.each do |patient|
-		%li.lead 
-			%strong= link_to (patient.name || "Name N/R"), patient 
-			= patient.mrn
-			%span.score{:style => "background: #{EWSColor(patient.getEWS[:rating])};"} 
-				= patient.getEWS[:score]
+  - @patients.each do |patient|
+    %li.lead 
+      %strong= link_to (patient.name || "Name N/R"), patient 
+      = patient.mrn
+      %span.score{:style => "background: #{EWSColor(patient.getEWS[:rating])};"} 
+        = patient.getEWS[:score]
 
