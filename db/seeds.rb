@@ -39,8 +39,22 @@ end
       dia_bp_measurement:           DiaBpMeasurement.create(value: dia_bp_value)
     )
 
-    puts "- Creating observation #{i+1}"
+    puts "- Creating historic observation #{i+1}"
   end
+
+  p.observations.create(
+    recorded_at:                  (Time.zone.now),
+    pulse_measurement:            PulseMeasurement.create(value: pulse_value),
+    oxygen_sat_measurement:       OxygenSatMeasurement.create(value: oxygen_sat_value),
+    oxygen_supp_measurement:      OxygenSuppMeasurement.create(value: oxygen_supp_value),
+    temperature_measurement:      TemperatureMeasurement.create(value: temperature_value),
+    concious_measurement:         ConciousMeasurement.create(value: concious_value),
+    respiration_rate_measurement: RespirationRateMeasurement.create(value: respiration_rate_value),
+    sys_bp_measurement:           SysBpMeasurement.create(value: sys_bp_value),
+    dia_bp_measurement:           DiaBpMeasurement.create(value: dia_bp_value)
+  )
+
+  puts "- Creating current observation"
 
   reset_values
 end
