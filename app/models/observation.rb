@@ -11,7 +11,7 @@ class Observation < ActiveRecord::Base
     accepts_nested_attributes_for "#{m}_measurement".to_sym
   end
 
-  validates :recorded_at, :uniqueness => true
+  # validates :recorded_at, :uniqueness => true
   validates_presence_of :recorded_at, :patient_id
 
   before_save :generate_ews
