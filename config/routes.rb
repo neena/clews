@@ -1,14 +1,15 @@
 EwsSystem::Application.routes.draw do
-    root 'patients#index'
+  root 'patients#index'
 
-    resources :patients do
-      get 'download', on: :member
-      get 'rounds',   on: :collection
-    end
+  resources :patients do
+    get 'download', on: :member
+    get 'rounds',   on: :collection
+  end
 
-    resources :observations
+  resources :observations
+  resources :wards
 
-    get 'glance' => 'admin#glance'
+  get 'glance' => 'admin#glance'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

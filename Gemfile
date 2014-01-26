@@ -17,6 +17,7 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'formtastic', "~>2.3.0.rc2"
 gem 'formtastic-bootstrap'
+gem 'cocoon'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
