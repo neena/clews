@@ -1,10 +1,7 @@
 class Patient < ActiveRecord::Base
   belongs_to :ward
-  has_many :observations, 
-      dependent: :destroy,
-            after_add: :update_observation_due_at
-  
-  before_save :check_threshold!
+  has_many :observations,
+            after_add: [:update_observation_due_at, :check_threshold!]
 
   validates :mrn, :uniqueness => true
 
@@ -86,7 +83,7 @@ class Patient < ActiveRecord::Base
   end
   
   # If the patient EWS score is above 5 send the { ward manager ?? } an email
-  def check_threshold!
+  def check_threshold!(observation)
     puts "CHECKING THRESHOLD"
     ews_score = getEWS[:score]
     message   = get_ews_message(ews_score)
@@ -97,6 +94,7 @@ class Patient < ActiveRecord::Base
 
   private
   def update_observation_due_at(observation)
+    puts "UPDATING OBSERVATION DUE AT"
     next_observation = NextObservationDue.calculate(observation.recorded_at, observation.rating)
     self.update_attribute(:observation_due_at, next_observation)
   end

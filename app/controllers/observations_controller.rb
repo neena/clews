@@ -9,8 +9,8 @@ class ObservationsController < ApplicationController
 	end
 
 	def create
-		@observation = Observation.new(observation_params )
-		@observation.recorded_at = DateTime.now
+		@patient = Patient.find(params[:observation][:patient_id])
+		@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
 		if @observation.save
 			redirect_to @observation.patient
 		else
@@ -28,6 +28,6 @@ class ObservationsController < ApplicationController
 				data["#{type}_measurement_attributes".to_sym] = [:value]
 				data
 			end
-			params.require(:observation).permit(:patient_id, hash)
+			params.require(:observation).permit(hash)
 		end
 end
