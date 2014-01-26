@@ -8,9 +8,10 @@ EwsSystem::Application.routes.draw do
     end
 
   resources :observations
-  resources :wards
+  
 
     namespace :admin do
+      resources :wards
       get 'glance' => 'glance#index'
     end
 

@@ -17,8 +17,6 @@ gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem 'formtastic', "~>2.3.0.rc2"
 gem 'formtastic-bootstrap'
-gem 'cocoon'
-
 gem 'devise'
 
 group :doc do
