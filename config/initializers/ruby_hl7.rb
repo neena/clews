@@ -39,6 +39,8 @@ def parseHL7(raw_data)
 					m = TemperatureMeasurement.new
 				when '0002-4bb8'
 					m = OxygenSatMeasurement.new
+				when '0002-f99c'
+					m = ConciousMeasurement.new
 				end
 				if m
 					m.observation = o

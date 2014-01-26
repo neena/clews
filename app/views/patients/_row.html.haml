@@ -1,7 +1,7 @@
 %tr
-	%td
-		%strong= title
-	- observations.each do |observation|
-		%td
-			%span.label.label-default{:style => "background: #{EWSColor(eval("observation.#{type}_measurement").try {|m| m.getEWS})};"}
-				= eval("observation.#{type}_measurement").try {|m| m.value}.humanize || 'nr'
+  %td
+    %strong= title
+  - observations.each do |observation|
+    %td
+      %span.label.label-default{:style => "background: #{EWSColor(eval("observation.#{type}_measurement").try {|m| m.getEWS})};"}
+        = eval("observation.#{type}_measurement").try {|m| m.value}.humanize || 'nr'

@@ -7,9 +7,11 @@ EwsSystem::Application.routes.draw do
       get 'rounds',   on: :collection
     end
 
-    resources :observations
+  resources :observations
+  
 
     namespace :admin do
+      resources :wards
       get 'glance' => 'glance#index'
     end
 
