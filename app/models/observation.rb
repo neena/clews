@@ -1,46 +1,57 @@
 class Observation < ActiveRecord::Base
-	belongs_to :patient
+  belongs_to :patient
 
-	default_scope { order('recorded_at ASC') }
+  default_scope { order('recorded_at ASC') }
+  scope :incomplete, lambda { where status: 'incomplete' }
 
-	@@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
+  @@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
 
-	@@measurement_types.each do |m|
-		has_one "#{m}_measurement".to_sym, :dependent => :destroy
-		accepts_nested_attributes_for "#{m}_measurement".to_sym
-	end
+  @@measurement_types.each do |m|
+    has_one "#{m}_measurement".to_sym, :dependent => :destroy
+    accepts_nested_attributes_for "#{m}_measurement".to_sym
+  end
 
-	validates :recorded_at, :uniqueness => true
-	validates_presence_of :recorded_at, :patient_id
+  validates :recorded_at, :uniqueness => true
+  validates_presence_of :recorded_at, :patient_id
 
-	def getEWS
-		#Calucalate Score
-    score = sum_measurement_scores(measurement_data)
+  before_save :generate_ews
 
-		#Calculate rating (scale from 0 to 3)
-		rating = calculate_rating(score, measurement_data)
+  def measurements
+    @@measurement_types.inject({}) do |data, m|
+      data[m.to_sym] = eval("#{m}_measurement")
+      data
+    end
+  end
 
-		#Check if data was complete
-		complete = !incomplete_data?(measurement_data)
-		
-		#Return all output
-    { score: score,
-      rating: rating,
-      complete: complete }
-	end
+  def complete?
+    status == 'complete'
+  end
 
-	def measurements
-		@@measurement_types.inject({}) do |data, m|
-			data[m.to_sym] = eval("#{m}_measurement")
-			data
-		end
-	end
+  def getEWS
+    { score: score, rating: rating, complete: complete? }
+  end
 
-	def self.measurement_types 
-		@@measurement_types
-	end
+  def self.measurement_types
+    @@measurement_types
+  end
 
   private
+
+  def generate_ews
+    #Calucalate Score
+    self.score = sum_measurement_scores(measurement_data)
+
+    #Calculate rating (scale from 0 to 3)
+    self.rating = calculate_rating(self.score, measurement_data)
+
+    #Check if data was complete
+    case !incomplete_data?(measurement_data)
+    when true
+      self.status = 'complete'
+    else
+      self.status = 'incomplete'
+    end
+  end
 
   def measurement_data
     [concious_measurement,
@@ -53,17 +64,17 @@ class Observation < ActiveRecord::Base
   end
 
   def sum_measurement_scores(measurements)
-		measurements.inject(0) do |sum, mesurement|
-			mesurement ? sum + mesurement.getEWS : sum
-		end
+    measurements.inject(0) do |sum, mesurement|
+      mesurement ? sum + mesurement.getEWS : sum
+    end
   end
 
   def calculate_rating(score, measurements)
     rating = 0
 
-    case 
+    case
     when score == 0
-      rating = 0 
+      rating = 0
     when score <= 4
       rating = 1
     when score <= 6
@@ -81,7 +92,6 @@ class Observation < ActiveRecord::Base
   end
 
   def incomplete_data?(measurements)
-    measurements.any?(&:blank?)
+    measurements.any?(&:nil?)
   end
-
 end

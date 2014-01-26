@@ -1,13 +1,17 @@
 EwsSystem::Application.routes.draw do
+  devise_for :admins
     root 'patients#index'
 
     resources :patients do
       get 'download', on: :member
+      get 'rounds',   on: :collection
     end
 
     resources :observations
 
-    get 'glance' => 'admin#glance'
+    namespace :admin do
+      get 'glance' => 'glance#index'
+    end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -49,7 +53,7 @@ EwsSystem::Application.routes.draw do
   #       get 'recent', on: :collection
   #     end
   #   end
-  
+
   # Example resource route with concerns:
   #   concern :toggleable do
   #     post 'toggle'

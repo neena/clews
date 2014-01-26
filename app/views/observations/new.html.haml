@@ -7,7 +7,7 @@
       - when 'oxygen_supp'
         = m.input :value, label: "Supplementary Oxygen?"
       - when 'concious'
-        = m.input :value, as: :select, collection: ["A", "V", "P", "U"], label: "Conciousness"
+        = m.input :value, as: :select, collection: %w(A V P U).map { |val| [humanise_consciousness(val), val] }, label: "Conciousness"
       - else
         = m.input :value, label: "#{type}_measurements".classify.constantize.title, input_html: {type: 'tel'}
   = f.actions do

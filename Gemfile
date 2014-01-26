@@ -18,6 +18,8 @@ gem 'wkhtmltopdf-binary'
 gem 'formtastic', "~>2.3.0.rc2"
 gem 'formtastic-bootstrap'
 
+gem 'devise'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -29,5 +31,6 @@ end
 
 group :test do
   gem 'delorean'
+  gem 'mocha'
 end
 

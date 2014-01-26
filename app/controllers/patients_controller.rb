@@ -19,6 +19,25 @@ class PatientsController < ApplicationController
 		end
 	end
 
+  def rounds
+		@ward = params[:ward] || cookies[:ward]
+		cookies.delete :ward
+		cookies.permanent[:ward] = @ward || "all"
+		@filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
+
+    if @ward && @ward != "all"
+      ward = Ward.find(@ward)
+      @patients = (ward.patients.due_observation(1) + ward.patients.no_observation).flatten
+    else
+			@patients = (Patient.due_observation(1) + Patient.no_observation).flatten
+    end
+
+		respond_to do |format|
+			format.html
+			format.json { render json: @patients.to_json(methods: [:getEWS]) }
+		end
+  end
+
 	def show
 		respond_to do |format|
 			format.html do

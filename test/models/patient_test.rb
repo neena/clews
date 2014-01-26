@@ -2,7 +2,7 @@ require 'test_helper'
 
 class PatientTest < ActiveSupport::TestCase
   
-  def setup 
+  setup do 
     @patient = Patient.new
   end
 
@@ -22,4 +22,22 @@ class PatientTest < ActiveSupport::TestCase
     assert_equal @patient.get_ews_message(5), "We recommend that the frequency of monitoring should be increased to a minimum of hourly"
     assert_equal @patient.get_ews_message(7), "We recommend continuous monitoring and recording of vital signs for this patient"
   end
+
+  test 'updates next observation date after adding an observation' do
+    @patient = Patient.create(mrn: SecureRandom.uuid)
+    Observation.any_instance.stubs(:rating).returns(0)
+
+    Delorean.time_travel_to(Time.zone.parse('2014-01-01 00:00:00 UTC +00:00')) do
+      @patient.observations.create(recorded_at: Time.zone.now)
+
+      observation = @patient.observations.last
+      expected = NextObservationDue.calculate(observation.recorded_at, observation.rating)
+
+      # Shit test, dunno how to get the dates to compare properly
+      # See: http://stackoverflow.com/questions/12811207/comparison-of-date-with-activesupporttimewithzone-failed
+      assert_equal expected.to_s, @patient.observation_due_at.to_s
+    end
+
+  end
+
 end
