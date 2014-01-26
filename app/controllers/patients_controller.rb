@@ -10,7 +10,11 @@ class PatientsController < ApplicationController
       @patients = Patient.all
     end
 
-    @patients = sorted_patients
+    if @order == 'EWS'
+      @patients = @patients.sort_by{|p| [- p.getEWS[:score], p.surname]}
+    else
+      @patients = @patients.sort_by(&:surname)
+    end
 
     respond_to do |format|
       format.html
@@ -96,13 +100,5 @@ class PatientsController < ApplicationController
 
     @ward_filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
     @order_filter = ['Surname','EWS']
-  end
-
-  def sorted_patients
-    if @order == 'EWS'
-      @patients.sort_by{|p| [- p.getEWS[:score], p.surname]}
-    else
-      @patients.sort_by(&:surname)
-    end
   end
 end
