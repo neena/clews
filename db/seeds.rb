@@ -15,7 +15,7 @@ Admin.create email: 'admin@example.com', password: 'password'
 
 5.times do
   w = Ward.create(name: Faker::Lorem.word.titleize + " Ward")
-  puts "Created ward: #{ w.name }"
+  puts "= Created ward: #{ w.name }"
 end
 
 50.times do |i|
@@ -24,7 +24,7 @@ end
                      surname: Faker::Name.last_name,
                      ward: Ward.first(:order => "RANDOM()"))
 
-  puts "Created patient: #{ p.name }"
+  puts "= Created patient: #{ p.name }"
 
   72.times do |i|
     p.observations.create(
