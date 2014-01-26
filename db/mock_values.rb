@@ -46,7 +46,11 @@ def value_from_range(range, current = nil, direction = nil)
 end
 
 def value_from_array(array, current)
-
+  if rand(100) > 85
+    array.sample
+  else
+    current
+  end
 end
 
 def reset_values
