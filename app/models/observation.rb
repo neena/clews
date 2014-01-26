@@ -2,6 +2,7 @@ class Observation < ActiveRecord::Base
   belongs_to :patient
 
   default_scope { order('recorded_at ASC') }
+  scope :incomplete, lambda { where status: 'incomplete' }
 
   @@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
 

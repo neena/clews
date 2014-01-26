@@ -1,0 +1,8 @@
+%div
+  = form_tag '', :method => :get, :class => 'form-inline patient-header' do
+    Patients from
+    = select_tag "ward", options_for_select(@ward_filter, @ward), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+    - if controller.action_name == 'index'
+      ordered by
+      = select_tag "order", options_for_select(@order_filter, @order), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+    = submit_tag "Filter", :class => "btn btn-primary btn-lg"

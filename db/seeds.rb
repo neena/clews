@@ -7,14 +7,17 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Not perfect, works with EWSConfig but pretty hack-ily
+
 require 'securerandom'
+
+Admin.create email: 'admin@example.com', password: 'password'
 
 5.times do
   w = Ward.create(name: Faker::Lorem.word.titleize + " Ward")
   puts "Created ward: #{ w.name }"
 end
 
-10.times do |i|
+50.times do |i|
   p = Patient.create(mrn: SecureRandom.uuid,
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
