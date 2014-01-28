@@ -11,7 +11,7 @@ span.score {
   line-height: 1.6em;
   margin-right: 5px;
   text-align: center;
-  width: 1.6em; 
+  width: 1.6em;
 }
 
 #details{
@@ -23,7 +23,7 @@ span.score {
 .navbar {
   margin-top: 20px;
 }
-// Styles for non-pdf docs. 
+// Styles for non-pdf docs.
 #main{
   #details{
     font-size: 1.65em;
@@ -32,11 +32,11 @@ span.score {
   }
 
   .chart {
-  	height: 500px;
+    height: 500px;
     padding-left: 0;
   }
 
-  .patient-header{ // On index, the title with dropdown. 
+  .patient-header{ // On index, the title with dropdown.
     h1{
       display: inline !important;
       position: relative;
@@ -46,14 +46,14 @@ span.score {
       display: none !important;
       }
     }
-    select{ 
+    select{
       @media (max-width: 768px) {
         margin-bottom: 10px;
       }
     }
     margin-bottom: 20px;
   }
-  
+
   padding: 0 15px 100px 15px;
 
   table.footer {
@@ -82,8 +82,13 @@ table.footer {
   overflow-x: scroll;
 }
 
-.page-break { 
-  page-break-after:always; 
+.page-break {
+  page-break-after:always;
+}
+
+form.patient-header {
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 /* Overwrite the default to keep the scrollbar always visible

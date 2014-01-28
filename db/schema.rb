@@ -11,7 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140105175000) do
+ActiveRecord::Schema.define(version: 20140125145458) do
+
+  create_table "admins", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true
+  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
 
   create_table "concious_measurements", force: true do |t|
     t.string   "value"
@@ -36,6 +54,9 @@ ActiveRecord::Schema.define(version: 20140105175000) do
     t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "score",       default: 0
+    t.integer  "rating",      default: 0
+    t.string   "status",      default: "incomplete"
   end
 
   create_table "oxygen_sat_measurements", force: true do |t|
@@ -62,8 +83,11 @@ ActiveRecord::Schema.define(version: 20140105175000) do
     t.string   "surname"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "ward"
+    t.integer  "ward_id"
+    t.datetime "observation_due_at"
   end
+
+  add_index "patients", ["ward_id"], name: "index_patients_on_ward_id"
 
   create_table "pulse_measurements", force: true do |t|
     t.float   "value"
@@ -98,5 +122,11 @@ ActiveRecord::Schema.define(version: 20140105175000) do
   end
 
   add_index "temperature_measurements", ["observation_id"], name: "index_temperature_measurements_on_observation_id"
+
+  create_table "wards", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
 end

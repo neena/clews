@@ -1,0 +1,7 @@
+%h1 All Wards
+%ul
+  - @wards.each do |ward|
+    %li
+      = ward.name
+      = link_to 'edit', edit_admin_ward_path(ward)
+      / = link_to 'delete', delete_ward_path(ward)

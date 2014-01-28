@@ -3,7 +3,7 @@ require 'thread'
 require 'socket'
 require 'ruby-hl7'
 
-TCP_IP = '192.168.1.39'
+TCP_IP = '127.0.0.1'
 PORT = 2100
 
 def parseHL7(raw_data)
@@ -39,6 +39,8 @@ def parseHL7(raw_data)
 					m = TemperatureMeasurement.new
 				when '0002-4bb8'
 					m = OxygenSatMeasurement.new
+				when '0002-f99c'
+					m = ConciousMeasurement.new
 				end
 				if m
 					m.observation = o
