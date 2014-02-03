@@ -15,7 +15,8 @@ def parseHL7(raw_data)
 		if !Patient.find_by_mrn(hl7[:PID].patient_id_list)
 			p = Patient.create(
 				mrn: hl7[:PID].patient_id_list,
-				surname: hl7[:PID].patient_name.split('^')[0]
+				surname: hl7[:PID].patient_name.split('^')[0].titleize,
+				given_name: hl7[:PID].patient_name.split('^').drop(1).join(' ').titleize
 			)
 		else
 			p = Patient.find_by_mrn(hl7[:PID].patient_id_list)
