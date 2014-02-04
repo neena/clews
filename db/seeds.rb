@@ -17,7 +17,7 @@ Admin.create email: 'admin@example.com', password: 'password'
   puts "Created ward: #{ w.name }"
 end
 
-50.times do |i|
+10.times do |i|
   p = Patient.create(mrn: SecureRandom.uuid,
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
