@@ -77,24 +77,27 @@ class Patient < ActiveRecord::Base
     n >= lower_bound && n <= upper_bound
   end
   
-  def get_ews_message(score)
-    if score == 0
+  def get_ews_message(rating)
+    case rating
+    when 0
       MESSAGES[:minimum]
-    elsif score_within(score, 1,4)
+    when 1
       MESSAGES[:standard]
-    elsif score_within(score, 5,6)
+    when 2
       MESSAGES[:frequent]
-    else
+    when 3
       MESSAGES[:continuous]
-    end
+    end 
   end
   
   # If the patient EWS score is above 5 send the { ward manager ?? } an email
   def check_threshold!(observation)
-    ews_score = getEWS[:score]
-    message   = get_ews_message(ews_score)
-    if ews_score > 5
-      NotificationMailer.observation_email(self, message).deliver
+    ews_rating = getEWS[:rating]
+    message   = get_ews_message(ews_rating)
+    if ews_rating > 1
+      ward.emails.each do |email|
+        NotificationMailer.observation_email(self, message, ward.email).deliver
+      end
     end
   end
 
