@@ -1,10 +1,7 @@
 class MeasurementGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
   source_root File.expand_path('../templates', __FILE__)
-  # argument :measurement_type, :type => :string, :default => "generic", :desc => "The measurement type eg. <-type->Measurement. Expects camelcased eg. 'HeartRate' "
   check_class_collision suffix: "Measurement"
-  # These end up in options hash
-  # class_option :view_engine, :type => :string, :aliases => "-t", :desc => "Template engine for the views. Available options are 'erb' and 'haml'.", :default => "erb"
   class_option :numeric, :type => :boolean, :default => true, :aliases => "-n"
   class_option :ews, :type => :boolean, :default => false, :aliases => "-e"
 
