@@ -1,0 +1,20 @@
+Description:
+    Generates a Measurement:
+   	The model extends from the Measurement base class
+   	The migration only has a value (and standard belongs to, timestamps etc.)
+   	Adds blank EWSConfig to the config file if EWS is marked true
+   	Can take numeric or string fields
+
+   	View implementation must be done manually. 
+
+   	NAME must be in camel cased form eg. HeartRate
+
+Example:
+    rails generate measurement HeartRate -n true -e true
+
+    This will create:
+        Blank model in app/models/measurements called HeartRateMeasurement
+        Migration with value as float (if -n is false, then string) heart_rate_measurements
+        Adds a has_many to the Observation class 'heart_rate'
+        config/ews_boundaries.yml gets blank spaces to fill out the boundaries (only if -e is true) HeartRate
+

@@ -54,13 +54,10 @@ class Observation < ActiveRecord::Base
   end
 
   def measurement_data
-    [concious_measurement,
-     sys_bp_measurement,
-     pulse_measurement,
-     oxygen_sat_measurement,
-     oxygen_supp_measurement,
-     respiration_rate_measurement,
-     temperature_measurement]
+    EWSConfig.keys.inject([]) do |data, m|
+      data.push(eval("#{m.underscore}_measurement"))
+      data
+    end
   end
 
   def sum_measurement_scores(measurements)
