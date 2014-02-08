@@ -1,7 +1,9 @@
 class MeasurementGenerator < Rails::Generators::NamedBase
   include Rails::Generators::Migration
+  
   source_root File.expand_path('../templates', __FILE__)
   check_class_collision suffix: "Measurement"
+
   class_option :numeric, :type => :boolean, :default => true, :aliases => "-n"
   class_option :ews, :type => :boolean, :default => false, :aliases => "-e"
 
