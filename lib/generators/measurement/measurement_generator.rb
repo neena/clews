@@ -17,8 +17,15 @@ class MeasurementGenerator < Rails::Generators::NamedBase
 
   def configure_for_ews 
     if options[:ews]
-      insert_into_file "app/models/observation.rb", file_name+",\n    ", 
-                after: "def measurement_data\n    ["
+      prepend_to_file "config/ews_boundaries.yml" do
+        "#{name}:\n#{
+        if options[:numeric]
+          ['min2','min1','min0','max0','max1','max2']
+        else
+          [0,1,2,3].map(&:to_s)
+        end.map{|i| "  #{i}: ~"}.join("\n")
+        }\n\n"
+      end
     end
   end
 
