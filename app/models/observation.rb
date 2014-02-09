@@ -49,7 +49,7 @@ class Observation < ActiveRecord::Base
     self.rating = calculate_rating(self.score, measurement_data)
 
     #Check if data was complete
-    case !incomplete_data?(measurement_data)
+    case !incomplete_data?
     when true
       self.status = 'complete'
     else
@@ -92,7 +92,7 @@ class Observation < ActiveRecord::Base
     return rating
   end
 
-  def incomplete_data?(measurements)
-    measurements.any?(&:nil?)
+  def incomplete_data?
+    measurements.values.any?(&:nil?)
   end
 end

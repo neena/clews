@@ -10,4 +10,14 @@ class VipMeasurement < Measurement
 		["ALL of the following signs are evident and extensive:<br>- Pain along path of cannula<br>- Redness around site<br>- Swelling<br>- Palpable venous cord<br>- Pyrexia".html_safe, 5]]
 	end
 
+	def rating
+		case value
+		when 0 
+			1
+		when 1
+			2
+		else
+			3
+		end
+	end
 end

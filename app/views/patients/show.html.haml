@@ -8,7 +8,7 @@
     %small [Data Missing]
   .h2= @patient.mrn
 
-%ul.no-bullets
+%ul#details.no-bullets
   %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
   %li= "VIP Score: #{@patient.observations.last.vip_measurement.try(:value).humanize || 'N/R'}" 
   %li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 

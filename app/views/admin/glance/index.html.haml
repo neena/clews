@@ -13,4 +13,4 @@
 						- observation.measurements.each do | type, mes |
 							%li
 								%strong= "#{type.to_s.humanize}:"
-								.label.label-primary{:style => "background: #{EWSColor(mes.try {|m| m.getEWS})};"}= mes.try {|m| m.value.humanize} || '?'
+								.label.label-primary{:style => "background: #{EWSColor(mes.try(:getEWS))};"}= mes.try {|m| m.value.humanize} || '?'
