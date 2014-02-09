@@ -10,7 +10,7 @@ class MeasurementGenerator < Rails::Generators::NamedBase
 
   def generate_measurement
     template "model.rb", "app/models/measurements/#{file_name}.rb"
-    migration_template "migration.rb", "db/migrate/create_#{file_name}"
+    migration_template "migration.rb", "db/migrate/create_#{file_name}s"
     insert_into_file "app/models/observation.rb", "'#{name.underscore}',", after: "@@measurement_types = ["
   end
 

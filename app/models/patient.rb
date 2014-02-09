@@ -63,6 +63,10 @@ class Patient < ActiveRecord::Base
   def getEWS
     observations.last.try{|o| o.getEWS} || {score: 0, complete: false, rating: 0}
   end
+
+  def getVIP
+    observations.last.getVIP
+  end
   
   ## Patient notifications
   
