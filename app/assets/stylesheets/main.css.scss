@@ -1,6 +1,6 @@
 $font-size-base: 5;
 
-span.score {
+span.ews-score {
   background: #cccccc;
   border-radius: 0.8em;
   -moz-border-radius: 0.8em;
@@ -14,7 +14,7 @@ span.score {
   width: 1.6em;
 }
 
-#details{
+.no-bullets{
   margin-left: 0;
   padding-left: 0;
   list-style: none;
@@ -104,4 +104,16 @@ Does not work in Firefox but yolo */
     border-radius: 5px;
     background-color: rgba(0,0,0,.5);
     -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+}
+
+/* Patching up formtastic-bootstrap CSS*/
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+  margin-left: 0;
+  position: relative;
+  right: 20px;
+}
+.radio {
+  position: relative;
+  left: 20px;
+  text-indent: -10px;
 }

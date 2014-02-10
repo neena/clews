@@ -2,6 +2,7 @@ class ObservationsController < ApplicationController
 
 	def new
 		@observation = Observation.new
+		@observation.patient = Patient.find_by_mrn(params[:mrn]) || nil
 		# Observation.where(recorded_at: (DateTime.now - 5.minutes)..DateTime.now).select {|o| o.measurements.any?{|k,v| v.nil?} }.last || Observation.new
 		Observation.measurement_types.each do |type|
 			eval("@observation.build_#{type}_measurement") #unless eval("@observation.#{type}_measurement")
@@ -12,7 +13,7 @@ class ObservationsController < ApplicationController
 		@patient = Patient.find(params[:observation][:patient_id])
 		@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
 		if @observation.save
-			redirect_to @observation.patient
+			redirect_to rounds_patients_path
 		else
 			render :new
 		end

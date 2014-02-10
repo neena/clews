@@ -4,7 +4,7 @@ class Observation < ActiveRecord::Base
   default_scope { order('recorded_at ASC') }
   scope :incomplete, lambda { where status: 'incomplete' }
 
-  @@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
+  @@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'vip', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
 
   @@measurement_types.each do |m|
     has_one "#{m}_measurement".to_sym, :dependent => :destroy
@@ -31,6 +31,10 @@ class Observation < ActiveRecord::Base
     { score: score, rating: rating, complete: complete? }
   end
 
+  def getVIP
+    vip_measurement.try(:value)
+  end
+
   def self.measurement_types
     @@measurement_types
   end
@@ -45,7 +49,7 @@ class Observation < ActiveRecord::Base
     self.rating = calculate_rating(self.score, measurement_data)
 
     #Check if data was complete
-    case !incomplete_data?(measurement_data)
+    case !incomplete_data?
     when true
       self.status = 'complete'
     else
@@ -54,13 +58,10 @@ class Observation < ActiveRecord::Base
   end
 
   def measurement_data
-    [concious_measurement,
-     sys_bp_measurement,
-     pulse_measurement,
-     oxygen_sat_measurement,
-     oxygen_supp_measurement,
-     respiration_rate_measurement,
-     temperature_measurement]
+    EWSConfig.keys.inject([]) do |data, m|
+      data.push(eval("#{m.underscore}_measurement"))
+      data
+    end
   end
 
   def sum_measurement_scores(measurements)
@@ -91,7 +92,7 @@ class Observation < ActiveRecord::Base
     return rating
   end
 
-  def incomplete_data?(measurements)
-    measurements.any?(&:nil?)
+  def incomplete_data?
+    measurements.values.any?(&:nil?)
   end
 end

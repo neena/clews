@@ -1,5 +1,5 @@
 - @patient.observations.each_slice(20).with_index do | observations, i |
-  %ul.lead#details
+  %ul.lead.no-bullets#details
     %li 
       %strong NHS Number:
       = @patient.mrn

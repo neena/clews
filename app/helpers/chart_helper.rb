@@ -22,7 +22,7 @@ module ChartHelper
 						chart.chart(renderTo: renderto, type: 'column', events: {load:"renderImages", redraw:"renderImages"})
 						chart.plotOptions(column: {pointWidth:20})
 					else
-						chart.chart(renderTo: renderto, type: 'column')
+						chart.chart(renderTo: renderto, type: 'column', zoomType: 'x')
 						chart.plotOptions(column: {pointWidth:10})
 					end
 					chart.series(name: @patient.name,borderWidth: 0,data: data, color: "rgba(255,0,0,#{pdf ? 0 : 1})")

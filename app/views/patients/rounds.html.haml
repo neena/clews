@@ -3,10 +3,11 @@
 
 = render 'filter'
 
-%ul
+%ul.no-bullets
   - @patients.each do |patient|
     %li.lead
-      %strong= link_to (patient.name || "Name N/R"), patient
+      = check_box_tag "done?", "done", false, style: "height: 1em; width: 1em;"
+      %strong= link_to (patient.name || "Name N/R"), new_observation_path(mrn: patient.mrn)
       - if Time.zone.now > patient.observation_due_at
         %span{ style: 'background: #FFC5C7' }
           = "Observation was due #{ time_ago_in_words(patient.observation_due_at) } ago"

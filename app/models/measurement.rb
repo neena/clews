@@ -28,7 +28,8 @@ class Measurement < ActiveRecord::Base
 				end || 0
 			end
 		else
-			raise StandardError, "Could not load data for #{self.class.name} from YML file"
+			0
+			# raise StandardError, "Could not load data for #{self.class.name} from YML file"
 		end
 	end
 

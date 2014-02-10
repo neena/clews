@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140125145458) do
+ActiveRecord::Schema.define(version: 20140209142724) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -123,10 +123,19 @@ ActiveRecord::Schema.define(version: 20140125145458) do
 
   add_index "temperature_measurements", ["observation_id"], name: "index_temperature_measurements_on_observation_id"
 
+  create_table "vip_measurements", force: true do |t|
+    t.integer  "observation_id"
+    t.integer  "value"
+    t.datetime "recorded_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "wards", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.text     "emails"
   end
 
 end
