@@ -18,10 +18,11 @@ Admin.create email: 'admin@example.com', password: 'password'
 end
 
 10.times do |i|
-  p = Patient.create(mrn: SecureRandom.uuid,
+  p = Patient.create(mrn: "D#{Faker::Number.number(9)}",
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
-                     ward: Ward.first(:order => "RANDOM()"))
+                     ward: Ward.first(:order => "RANDOM()"),
+                     mrsa_carrier: [true, false, nil].sample)
 
   puts "Created patient: #{ p.name }"
 
