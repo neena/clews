@@ -67,6 +67,8 @@ module ChartHelper
 			"#ffa53f"
 		when 3
 			"#ba0001"
+		when nil
+			"#b3b3b3"
 		end	  
 	end
 end

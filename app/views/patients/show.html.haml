@@ -39,6 +39,13 @@
     = render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
     %tr
       %td
+        %strong VIP Score
+      - @patient.observations.each do |observation|
+        %td
+          %span.label{:style => "background: #{EWSColor(observation.vip_measurement.try{|v| v.value.rating})};"}
+            = observation.vip_measurement.try(:value) || 'n/r'
+    %tr
+      %td
         %strong EWS
       - @patient.observations.each do |observation|
         %td
