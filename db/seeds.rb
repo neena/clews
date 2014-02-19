@@ -35,9 +35,9 @@ end
       concious_measurement: ConciousMeasurement.create(value: ["A", "V", "P", "U"].sample),
       respiration_rate_measurement: RespirationRateMeasurement.create(value: rand(EWSConfig["RespirationRate"]["min2"]..EWSConfig["RespirationRate"]["max2"])),
       sys_bp_measurement: SysBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
-      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
+      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
+      vip_measurement: VipMeasurement.create(value: rand(0..5))
     )
-
     puts "- Creating observation #{i+1}"
   end
 end
