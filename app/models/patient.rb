@@ -47,17 +47,12 @@ class Patient < ActiveRecord::Base
       end
     else    
       observations.inject([]) do |data, item|
-        if eval("item.#{type}")
-          data.push({
-            x: item.recorded_at.to_i*1000, 
-            y: eval("item.#{type}").value
-          }) 
-        else
-          data
-        end
+        data.push({
+          x: item.recorded_at.to_i*1000, 
+          y: eval("item.#{type}").try(:value)
+        }) 
       end
     end || []
-    # Attempt to implement this at some point http://www.highcharts.com/demo/area-missing/gray
   end
 
   def getEWS

@@ -19,25 +19,9 @@
 .visible-sm.visible-xs
   = render "patientbuttons"
 
-/ #test-chart.col-lg-12.chart
-
-/ = @pulse_chart
-/ #pulse-chart.col-lg-12.chart
 - @charts_data.each do |chart_data|
   = content_tag "div", id: chart_data[:id], class: "col-lg-12 chart", data: chart_data do
     = "Loading #{chart_data[:title]} Chart..."
-
-/ = @oxygen_chart
-/ #oxygen-sat-chart.col-lg-12.chart
-
-/ = @temperature_chart
-/ #temperature-chart.col-lg-12.chart
-
-/ = @respiration_rate_chart
-/ #respiration-rate-chart.col-lg-12.chart
-
-/ = @bp_chart
-/ #bp-chart.col-lg-12.chart
 
 .table-wrapper
   %table.footer.lead

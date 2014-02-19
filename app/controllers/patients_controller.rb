@@ -84,9 +84,8 @@ class PatientsController < ApplicationController
       getChartData('pulse'),
       getChartData('oxygen sat'),
       getChartData('temperature'),
-      getChartData('temperature')
-      # ,
-      # getChartData('bp')
+      getChartData('respiration rate'),
+      getChartData('bp')
     ]
     @pulse_chart = createChart('Pulse', 'pulse', pdf)
     @oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)

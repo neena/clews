@@ -4,14 +4,15 @@ module ChartHelper
 		table = type.gsub(" ","_")+"_measurements"
 		data = @patient.getData(table)
 		id = type.gsub(" ","-")+"-chart"
+		bands = createPlotBands(type)
 		if type == "bp"
 			title = "Blood Pressure"
-			yAxisTitle = "Blood Pressure (mmHg)"
+			units = "mmHg"
 		else
 			title = table.classify.constantize.human_name
-			yAxisTitle = table.classify.constantize.title
+			units = table.classify.constantize.units
 		end
-		{series: data, title: title, yAxisTitle: yAxisTitle, type: type, id: id}
+		{series: data, title: title, units: units, type: type, id: id, bands: bands}
 	end
 
 	def createChart title, type, pdf=false
@@ -57,16 +58,16 @@ module ChartHelper
 	end
 
 	def createPlotBands type
+		type = type.gsub(" ","_").classify
 		bands = []
 		bounds = EWSConfig[type]
 		if bounds
-			bands.push(from: bounds['min0'], to: bounds['max0'], color: EWSColor(0))
-			bands.push(from: bounds['min1'], to: bounds['min0'], color: EWSColor(1))
-			bands.push(from: bounds['max0'], to: bounds['max1'], color: EWSColor(1))
-			bands.push(from: bounds['min2'], to: bounds['min1'], color: EWSColor(2))
-			bands.push(from: bounds['max1'], to: bounds['max2'], color: EWSColor(2))
-			bands.push(from: bounds['max2'], to: bounds['max2']*10, color: EWSColor(3))
+			bands.push(from: 0, to: bounds['min0'], color: EWSColor(1))
+			bands.push(from: bounds['max0'], to: 1000, color: EWSColor(1))
+			bands.push(from: 0, to: bounds['min1'], color: EWSColor(2))
+			bands.push(from: bounds['max1'], to: 1000, color: EWSColor(2))
 			bands.push(from: 0, to: bounds['min2'], color: EWSColor(3))
+			bands.push(from: bounds['max2'], to: 1000, color: EWSColor(3))
 		else
 			{}
 		end
