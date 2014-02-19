@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140209142724) do
+ActiveRecord::Schema.define(version: 20140219144957) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20140209142724) do
     t.datetime "updated_at"
     t.integer  "ward_id"
     t.datetime "observation_due_at"
+    t.boolean  "mrsa_carrier"
   end
 
   add_index "patients", ["ward_id"], name: "index_patients_on_ward_id"
