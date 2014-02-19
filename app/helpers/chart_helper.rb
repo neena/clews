@@ -1,4 +1,19 @@
 module ChartHelper
+
+	def getChartData type 
+		table = type.gsub(" ","_")+"_measurements"
+		data = @patient.getData(table)
+		id = type.gsub(" ","-")+"-chart"
+		if type == "bp"
+			title = "Blood Pressure"
+			yAxisTitle = "Blood Pressure (mmHg)"
+		else
+			title = table.classify.constantize.human_name
+			yAxisTitle = table.classify.constantize.title
+		end
+		{series: data, title: title, yAxisTitle: yAxisTitle, type: type, id: id}
+	end
+
 	def createChart title, type, pdf=false
 		@table = type.gsub(" ","_")+"_measurements"
 		puts @table

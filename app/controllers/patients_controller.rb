@@ -80,6 +80,14 @@ class PatientsController < ApplicationController
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
 
     #Create charts
+    @charts_data = [
+      getChartData('pulse'),
+      getChartData('oxygen sat'),
+      getChartData('temperature'),
+      getChartData('temperature')
+      # ,
+      # getChartData('bp')
+    ]
     @pulse_chart = createChart('Pulse', 'pulse', pdf)
     @oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)
     @temperature_chart = createChart('Temperature', 'temperature', pdf)
