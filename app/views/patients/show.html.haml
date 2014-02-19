@@ -1,4 +1,4 @@
-%h1
+%h2
   .pull-right.hidden-sm.hidden-xs
     = render "patientbuttons"
   = @patient.name || "Name not recorded"
@@ -6,10 +6,10 @@
     = @patient.getEWS[:score]
   - unless @patient.getEWS[:complete]
     %small [Data Missing]
-  .h2= @patient.mrn
+  .h3= @patient.mrn
 
 %ul#details.no-bullets
-  %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'N/R'}" 
+  %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}" 
   %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
   %li= "VIP Score: #{@patient.observations.last.vip_measurement.try(:value).humanize || 'N/R'}" 
   %li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 
@@ -43,7 +43,7 @@
         %strong VIP Score
       - @patient.observations.each do |observation|
         %td
-          %span.label{:style => "background: #{EWSColor(observation.vip_measurement.try{|v| v.value.rating})};"}
+          %span.label{:style => "background: #{EWSColor(observation.vip_measurement.try{|v| v.rating})};"}
             = observation.vip_measurement.try(:value) || 'n/r'
     %tr
       %td
