@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140209142724) do
+ActiveRecord::Schema.define(version: 20140212213738) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -137,5 +137,28 @@ ActiveRecord::Schema.define(version: 20140209142724) do
     t.datetime "updated_at"
     t.text     "emails"
   end
+
+  create_table "waterlows", force: true do |t|
+    t.float   "height"
+    t.float   "weight"
+    t.float   "bmi"
+    t.float   "bmi_score"
+    t.string  "skin_type"
+    t.integer "skin_type_score"
+    t.string  "mobility"
+    t.integer "mobility_score"
+    t.string  "continence"
+    t.integer "continence_score"
+    t.string  "sex"
+    t.integer "age"
+    t.float   "weight_loss"
+    t.float   "weight_loss_score"
+    t.boolean "appetite"
+    t.integer "nutrition_score"
+    t.text    "special_risks"
+    t.integer "patient_id"
+  end
+
+  add_index "waterlows", ["patient_id"], name: "index_waterlows_on_patient_id"
 
 end

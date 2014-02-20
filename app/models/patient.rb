@@ -2,6 +2,7 @@ class Patient < ActiveRecord::Base
   belongs_to :ward
   has_many :observations,
             after_add: [:update_observation_due_at, :check_threshold!]
+  has_many :waterlows
 
   validates :mrn, :uniqueness => true
 
