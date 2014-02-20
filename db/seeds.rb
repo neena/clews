@@ -18,10 +18,11 @@ Admin.create email: 'admin@example.com', password: 'password'
 end
 
 10.times do |i|
-  p = Patient.create(mrn: SecureRandom.uuid,
+  p = Patient.create(mrn: "D#{Faker::Number.number(9)}",
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
-                     ward: Ward.first(:order => "RANDOM()"))
+                     ward: Ward.first(:order => "RANDOM()"),
+                     mrsa_carrier: [true, false, nil].sample)
 
   puts "Created patient: #{ p.name }"
 
@@ -35,9 +36,9 @@ end
       concious_measurement: ConciousMeasurement.create(value: ["A", "V", "P", "U"].sample),
       respiration_rate_measurement: RespirationRateMeasurement.create(value: rand(EWSConfig["RespirationRate"]["min2"]..EWSConfig["RespirationRate"]["max2"])),
       sys_bp_measurement: SysBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
-      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"]))
+      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
+      vip_measurement: VipMeasurement.create(value: rand(0..5))
     )
-
     puts "- Creating observation #{i+1}"
   end
 end
