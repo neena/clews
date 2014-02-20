@@ -17,7 +17,7 @@ Admin.create email: 'admin@example.com', password: 'password'
   puts "Created ward: #{ w.name }"
 end
 
-10.times do |i|
+30.times do |i|
   p = Patient.create(mrn: "D#{Faker::Number.number(9)}",
                      given_name: Faker::Name.first_name,
                      surname: Faker::Name.last_name,
@@ -36,7 +36,7 @@ end
       concious_measurement: ConciousMeasurement.create(value: ["A", "V", "P", "U"].sample),
       respiration_rate_measurement: RespirationRateMeasurement.create(value: rand(EWSConfig["RespirationRate"]["min2"]..EWSConfig["RespirationRate"]["max2"])),
       sys_bp_measurement: SysBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
-      dia_bp_measurement: DiaBpMeasurement.create(value: rand(EWSConfig["SysBp"]["min2"]..EWSConfig["SysBp"]["max2"])),
+      dia_bp_measurement: DiaBpMeasurement.create(value: SysBpMeasurement.last.value*rand(0.7..0.85)),
       vip_measurement: VipMeasurement.create(value: rand(0..5))
     )
     puts "- Creating observation #{i+1}"

@@ -80,18 +80,21 @@ class PatientsController < ApplicationController
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
 
     #Create charts
-    @charts_data = [
-      getChartData('pulse'),
-      getChartData('oxygen sat'),
-      getChartData('temperature'),
-      getChartData('respiration rate'),
-      getChartData('bp')
-    ]
-    @pulse_chart = createChart('Pulse', 'pulse', pdf)
-    @oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)
-    @temperature_chart = createChart('Temperature', 'temperature', pdf)
-    @respiration_rate_chart = createChart('Respiratory Rate', 'respiration rate', pdf)
-    @bp_chart = createChart('Blood Presure', 'bp', pdf)
+    unless pdf
+      @charts_data = [
+        getChartData('pulse'),
+        getChartData('oxygen sat'),
+        getChartData('temperature'),
+        getChartData('respiration rate'),
+        getChartData('bp')
+      ]
+    else
+      @pulse_chart = createChart('Pulse', 'pulse', pdf)
+      @oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)
+      @temperature_chart = createChart('Temperature', 'temperature', pdf)
+      @respiration_rate_chart = createChart('Respiratory Rate', 'respiration rate', pdf)
+      @bp_chart = createChart('Blood Presure', 'bp', pdf)
+    end
   end
 
   def filters

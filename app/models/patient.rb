@@ -1,6 +1,7 @@
 class Patient < ActiveRecord::Base
   belongs_to :ward
   has_many :observations,
+            dependent: :destroy,
             after_add: [:update_observation_due_at, :check_threshold!]
 
   validates :mrn, :uniqueness => true
@@ -39,7 +40,8 @@ class Patient < ActiveRecord::Base
           data.push({
             x: item.recorded_at.to_i*1000, 
             y: item.sys_bp_measurement.value,
-            low: item.dia_bp_measurement.value
+            low: item.dia_bp_measurement.value,
+            ews: item.sys_bp_measurement.getEWS
           }) 
         else
           data

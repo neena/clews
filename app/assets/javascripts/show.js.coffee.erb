@@ -1,4 +1,4 @@
-$ ->
+$(document).on 'ready page:load', ->
 	Highcharts.setOptions({
 		chart: {
 			zoomType: 'x'
@@ -46,7 +46,7 @@ $ ->
 			series: [{
 				name: $(@).data("units")
 				data: $(@).data("series")
-			}]
+			}],
 			tooltip: {
 				formatter: if $(@).data("type") == "bp" 
 					-> 
