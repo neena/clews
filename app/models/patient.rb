@@ -5,6 +5,7 @@ class Patient < ActiveRecord::Base
   has_many :waterlows
 
   validates :mrn, :uniqueness => true
+  validates_inclusion_of :sex, :in => ["m", "f", nil]
 
   default_scope { order(:surname) }
 
@@ -19,6 +20,11 @@ class Patient < ActiveRecord::Base
     else 
       nil
     end
+  end
+
+  def age
+    now = Time.now.utc.to_date
+    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
   end
 
   def to_param

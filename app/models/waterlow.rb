@@ -1,33 +1,52 @@
 class Waterlow < ActiveRecord::Base
 	belongs_to :patient
 
-	serialize :special_risks, Array 
+	serialize :special_risks, Hash # in form 'risk' => score
 
-	before_save :set_scores
+	before_save :set_score
+	before_validation :strip_whitespace
 
 	validates_presence_of :height, :patient_id
 	validates_inclusion_of :appetite, :in => [true, false], :if => :has_not_lost_weight?
 
 	def weight_lost
-		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - weight # This weird line prevents errors during build/create/save
+		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - self.weight # This weird line prevents errors during build/create/save
 	end
 
 	private
 
-	def set_scores
-		set_bmi(height, weight)
-		set_skin_type_score(skin_type)
-		set_nutrition_score(weight, appetite)
+	def strip_whitespace
+		changes.keys.each do |name|
+			if send(name).is_a? String
+				send("#{name}=", send(name).strip.downcase)
+			elsif name == "special_risks"
+				special_risks.keys.each do |risk|
+					special_risks[risk.strip.downcase] = special_risks[risk]
+					special_risks.delete(risk)
+				end
+			end
+		end
+	end
+
+	def set_score
+		self.score = [bmi_score,
+									skin_type_score,
+									get_nutrition_score,
+									sex_score(patient.sex),
+									age_score(patient.age),
+									continence_score,
+									mobility_score].compact.sum
 		#Set scores of various aspects
 	end
 
-	def set_bmi(height, weight)
-		height = height/100 if height > 5
-		set_bmi_score(self.bmi = weight/(height*height))
+	def set_bmi
+		self.height = height/100 if height > 5
+		self.bmi = weight/(height*height)
 	end
 
-	def set_bmi_score(bmi)
-		self.bmi_score = if bmi < 20
+	def bmi_score
+		set_bmi if weight_changed? || height_changed?
+		if bmi < 20
 			3
 		elsif bmi < 25
 			0
@@ -38,8 +57,8 @@ class Waterlow < ActiveRecord::Base
 		end 
 	end
 
-	def set_skin_type_score(skin_type)
-		self.skin_type_score = case skin_type.try(&:downcase)
+	def skin_type_score
+		case skin_type
 		when "healthy"
 			0
 		when "tissue paper", "dry", "oedematous", "clammy, pyrexia"
@@ -53,16 +72,12 @@ class Waterlow < ActiveRecord::Base
 		end
 	end
 
-	def has_lost_weight?
-		if patient.waterlows.count > 0 
-			weight_lost >= 0.5 
+	def get_nutrition_score
+		if weight_changed? || appetite_changed?
+			set_nutrition_score(self.weight, self.appetite)
 		else
-			nil
+			self.nutrition_score
 		end
-	end
-
-	def has_not_lost_weight?
-		!has_lost_weight?
 	end
 
 	def set_nutrition_score(weight, appetite)
@@ -86,5 +101,76 @@ class Waterlow < ActiveRecord::Base
 				1
 			end
 		end
+	end
+
+	def sex_score(sex)
+		case sex.try(&:downcase)
+		when "m"
+			1
+		when "f"
+			2
+		end
+	end
+
+	def age_score(age)
+		case age
+		when 14..49
+			1
+		when 50..64
+			2
+		when 65..74
+			3
+		when 75..80
+			4
+		when proc {|age| age >= 81}
+			5
+		end
+	end
+
+	def continence_score
+		case continence
+		when "complete", "catheterised"
+			0
+		when "urine incontinence"
+			1
+		when "faecal incontinence"
+			2
+		when "urinary and faecal incontinence"
+			3
+		end
+	end
+
+	def mobility_score
+		case mobility
+		when "fully"
+			0
+		when "restless", "fidgety"
+			1
+		when "apathetic"
+			2
+		when "restricted"
+			3
+		when "bedbound"
+			4
+		when "chairbound"
+			5
+		end
+	end
+	def special_risks_score
+		special_risks.inject(0) do |total_score, (risk, score)|
+			total_score + score
+		end
+	end
+
+	def has_lost_weight?
+		if (patient.waterlows.length > 0 && patient.waterlows.last != self) || patient.waterlows.length > 1 
+			weight_lost >= 0.5 
+		else
+			nil
+		end
+	end
+
+	def has_not_lost_weight?
+		!has_lost_weight?
 	end
 end
