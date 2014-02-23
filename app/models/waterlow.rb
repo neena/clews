@@ -5,16 +5,11 @@ class Waterlow < ActiveRecord::Base
 
 	before_save :set_scores
 
-	validates_presence_of :height, :weight, :patient_id
+	validates_presence_of :height, :patient_id
 	validates_inclusion_of :appetite, :in => [true, false], :if => :has_not_lost_weight?
 
-	def score
-		#return score
-		0
-	end
-
 	def weight_lost
-		patient.waterlows[-2].weight - weight
+		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - weight # This weird line prevents errors during build/create/save
 	end
 
 	private
@@ -59,7 +54,11 @@ class Waterlow < ActiveRecord::Base
 	end
 
 	def has_lost_weight?
-		patient.waterlows.presence ? weight_lost >= 0.5 : nil
+		if patient.waterlows.count > 0 
+			weight_lost >= 0.5 
+		else
+			nil
+		end
 	end
 
 	def has_not_lost_weight?

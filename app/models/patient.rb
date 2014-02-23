@@ -108,7 +108,7 @@ class Patient < ActiveRecord::Base
 
   private
   def update_observation_due_at(observation)
-    if observation == observations.last
+    if observation.recorded_at.to_i >= observations.last.recorded_at.to_i
       next_observation = NextObservationDue.calculate(observation.recorded_at, observation.rating)
       self.update_attribute(:observation_due_at, next_observation)
     end
