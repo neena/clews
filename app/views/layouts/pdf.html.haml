@@ -12,6 +12,8 @@
     = wicked_pdf_javascript_include_tag "bootstrap"
     = wicked_pdf_javascript_include_tag "highcharts"
     = wicked_pdf_javascript_include_tag "bp-chart"
+    / Hack to ensure proper display of degrees symbol
+    %meta{"charset" => "utf-8"}
     = yield(:head)
   %body#pdf
     .container

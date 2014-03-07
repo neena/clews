@@ -18,6 +18,32 @@ module ChartHelper
     {series: data, title: title, units: units, type: type, id: id, bands: bands}
   end
 
+  def createPdfChart type
+    data = getChartData(type)
+
+    @charts = data[:series].each_slice(20).with_index.inject([]) do |charts, (series, index)|
+      charts.push(Highcharts.new do |chart|
+        chart.chart(renderTo: "#{data[:id]}#{index}", zoomType: 'x')
+        chart.title(data[:title]) 
+        chart.credits(enabled: false)
+        chart.xAxis(type: 'datetime', minorTickInterval: 14400000, dateTimeLabelFormats: {day: '%e %b %y', hour: '%I:%M%P'})
+        chart.yAxis(title: "#{data[:title]} #{data[:units].try{|u| "(#{u})"}}", minorTickInterval: 'auto')
+        chart.series(name: @patient.name, data: series)
+        chart.legend(enabled: false)
+        chart.plotOptions(line: { animation: false, enableMouseTracking: false, shadow: false})
+        #Handle special case of blood pressure
+        if type == "bp" 
+          chart.chart(renderTo: "#{data[:id]}#{index}", type: 'column')#, events: {load:"renderImages", redraw:"renderImages"}) I'm deprecating this. 
+          chart.plotOptions(column: {pointWidth:5})
+          chart.series(name: @patient.name,borderWidth: 0,data: series, color: "rgba(255,0,0,0)")
+          chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + this.point.low + 'mmHg '; }")
+        end
+      end)
+      charts
+    end
+    @charts
+  end
+
   def createChart title, type, pdf=false
     @table = type.gsub(" ","_")+"_measurements"
     puts @table
@@ -50,14 +76,6 @@ module ChartHelper
       end)
     end
     pdf ? @charts : @charts.first
-
-    #THIS NEEDS A TIDY UP DREADFULLY. DO IT. 
-    #MAYBE SWITCH TO D3, OR ACTUALLY WRITE SOME JAVASCRIPT
-    #I DON'T CARE BUT THIS GEM IS A MESS AND YOU'RE NOT HELPING ANYONE. 
-
-    #Its really quite ugly code tbh. 
-    #Just use Javascript ffs. 
-
   end
 
   def createPlotBands type
