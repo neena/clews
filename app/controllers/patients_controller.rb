@@ -95,12 +95,6 @@ class PatientsController < ApplicationController
         getChartData('bp')
       ]
     end
-    #   @pulse_chart = createChart('Pulse', 'pulse', pdf)
-    #   @oxygen_chart = createChart('Oxygen', 'oxygen sat', pdf)
-    #   @temperature_chart = createChart('Temperature', 'temperature', pdf)
-    #   @respiration_rate_chart = createChart('Respiratory Rate', 'respiration rate', pdf)
-    #   @bp_chart = createChart('Blood Presure', 'bp', pdf)
-    # end
   end
 
   def filters
