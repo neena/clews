@@ -1,4 +1,40 @@
 $(document).on 'ready page:load', ->
+
+	loadChart = (chart) -> 
+		$('#'+chart.id).highcharts({
+			chart: {
+				renderTo: chart.id,
+				type: 'column' if chart.type == "bp"
+			},
+			title: {
+				text: chart.title
+			},
+			yAxis: {
+				title: {
+					text: if chart.units
+						chart.title + " (" + chart.units + ")"
+					else
+						chart.title
+				},
+				plotBands: chart.bands
+			},
+			series: [{
+				name: chart.units
+				data: chart.series
+			}],
+			tooltip: {
+				formatter: if chart.type == "bp" 
+					-> 
+						'<b>' + new Date(this.x).toLocaleString('en-GB') + 
+						'</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + 
+						this.point.low + 'mmHg '
+				else 
+					->
+						'<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + 
+						this.series.chart.title.text + ': ' + this.y + this.series.name
+			}
+		})
+
 	Highcharts.setOptions({
 		chart: {
 			zoomType: 'x'
@@ -26,36 +62,11 @@ $(document).on 'ready page:load', ->
 	})
 
 	$('.chart').each ->
-		$(@).highcharts({
-			chart: {
-				renderTo: $(@).attr("id"),
-				type: 'column' if $(@).data("type") == "bp"
-			},
-			title: {
-				text: $(@).data("title")
-			},
-			yAxis: {
-				title: {
-					text: if $(@).data("units")
-						$(@).data("title") + " (" + $(@).data("units") + ")"
-					else
-						$(@).data("title")
-				},
-				plotBands: $(@).data("bands")
-			},
-			series: [{
-				name: $(@).data("units")
-				data: $(@).data("series")
-			}],
-			tooltip: {
-				formatter: if $(@).data("type") == "bp" 
-					-> 
-						'<b>' + new Date(this.x).toLocaleString('en-GB') + 
-						'</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + 
-						this.point.low + 'mmHg '
-				else 
-					->
-						'<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + 
-						this.series.chart.title.text + ': ' + this.y + this.series.name
-			}
+		chart = $(@)
+		data = $.ajax({
+			type: "GET",
+			dataType: "json",
+			url: document.URL + "/chart.json",
+			data: "type="+$(@).data("type"),
+			success: loadChart
 		})
