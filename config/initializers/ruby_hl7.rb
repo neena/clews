@@ -72,30 +72,30 @@ def parseHL7(raw_data)
 end
 
 
-Thread.new do
-	Thread.abort_on_exception = true #Kill any useless failure threads
+# Thread.new do
+# 	Thread.abort_on_exception = true #Kill any useless failure threads
 
-	srv = TCPServer.open(TCP_IP, PORT)
-	puts "proxy_server listening on port: %i" % PORT
+# 	srv = TCPServer.open(TCP_IP, PORT)
+# 	puts "proxy_server listening on port: %i" % PORT
 
-	loop do
-		Thread.start(srv.accept) do |message|
-			puts "Recieved message"
-			# message.puts "\vMSH|^~\\&|||||20140122192021||ACK^^ACK_ALL|US232012490000000018|P|2.4\rMSA|AA|US232012490000000018\u001C\r"
-			raw_data = ""
-			# This first section (looping through the data may be unecessary)
-			# raw_data = message.read
+# 	loop do
+# 		Thread.start(srv.accept) do |message|
+# 			puts "Recieved message"
+# 			# message.puts "\vMSH|^~\\&|||||20140122192021||ACK^^ACK_ALL|US232012490000000018|P|2.4\rMSA|AA|US232012490000000018\u001C\r"
+# 			raw_data = ""
+# 			# This first section (looping through the data may be unecessary)
+# 			# raw_data = message.read
 
-			while (m = message.recv(10))
-				raw_data += m
-				break if raw_data.include? "\r\x1C\r"
-			end
-			p raw_data
-			# message.puts 
-			# message.write(parseHL7(raw_data.split("\r")))
-			message.puts parseHL7(raw_data.split("\r"))
-			message.close
-		end
-	end
-end
+# 			while (m = message.recv(10))
+# 				raw_data += m
+# 				break if raw_data.include? "\r\x1C\r"
+# 			end
+# 			p raw_data
+# 			# message.puts 
+# 			# message.write(parseHL7(raw_data.split("\r")))
+# 			message.puts parseHL7(raw_data.split("\r"))
+# 			message.close
+# 		end
+# 	end
+# end
 

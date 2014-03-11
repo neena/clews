@@ -1,19 +1,19 @@
 EwsSystem::Application.routes.draw do
   devise_for :admins
-    root 'patients#index'
+  root 'patients#index'
 
     resources :patients do
       get 'download', on: :member
       get 'rounds',   on: :collection
     end
 
-  resources :observations
+  resources :observations, :waterlows
   
 
-    namespace :admin do
-      resources :wards
-      get 'glance' => 'glance#index'
-    end
+  namespace :admin do
+    resources :wards
+    get 'glance' => 'glance#index'
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
