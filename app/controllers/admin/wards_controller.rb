@@ -12,8 +12,8 @@ class Admin::WardsController < AdminController
   end
 
   def create
-    @ward = Ward.new(params.require(:ward).permit(:name))
-    if @ward.save
+    @ward = Ward.new(params.require(:ward).permit(:name, :email_addresses))
+    if @ward.save 
       redirect_to admin_wards_path
     else
       render 'new'
@@ -22,7 +22,7 @@ class Admin::WardsController < AdminController
 
   def update
     @ward = Ward.find(params[:id])
-    if @ward.update(params.require(:ward).permit(:name))
+    if @ward.update(params.require(:ward).permit(:name, :email_addresses))
       redirect_to admin_wards_path
     else
       render 'edit'
