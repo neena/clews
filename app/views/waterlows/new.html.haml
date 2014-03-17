@@ -1,3 +1,12 @@
 = semantic_form_for @waterlow do |f|
-	= f.inputs
-	= f.actions
+	= f.inputs do 
+		= f.input :patient, as: :select, collection: Patient.all
+		= f.input :height, input_html: {type: 'tel'}
+		= f.input :weight, input_html: {type: 'tel'}
+		= f.input :skin_type, as: :select, collection: Waterlow::SKIN_TYPE_SCORER.keys
+		= f.input :mobility, as: :select, collection: Waterlow::MOBILITY_SCORER.keys
+		= f.input :continence, as: :select, collection: Waterlow::CONTINENCE_SCORER.keys
+		= f.input :appetite
+		= f.input :special_risks
+	= f.actions do
+		= f.submit

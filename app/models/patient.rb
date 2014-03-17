@@ -23,8 +23,12 @@ class Patient < ActiveRecord::Base
   end
 
   def age
-    now = Time.now.utc.to_date
-    now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+    if dob
+      now = Time.now.utc.to_date
+      now.year - dob.year - ((now.month > dob.month || (now.month == dob.month && now.day >= dob.day)) ? 0 : 1)
+    else
+      0
+    end
   end
 
   def to_param

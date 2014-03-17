@@ -1,13 +1,12 @@
 class WaterlowsController < ApplicationController
 
 	def new
-		@waterlow = Waterlow.new
-		@waterlow.patient = Patient.find_by_mrn(params[:mrn]) || nil
+		@patient = Patient.find_by_mrn(params[:mrn]) || nil
+		@waterlow = @patient.try(&:waterlows).try(&:last).try(&:clone) || Waterlow.new(patient: @patient)
 	end
 
 	def create
-		@patient = Patient.find(params[:observation][:patient_id])
-		@waterlow = @patient.waterlows.new(observation_params.merge({recorded_at: DateTime.now}))
+		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite))
 		if @waterlow.save
 			redirect_to rounds_patients_path
 		else

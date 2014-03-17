@@ -6,8 +6,29 @@ class Waterlow < ActiveRecord::Base
 	before_save :set_score
 	before_validation :strip_whitespace
 
-	validates_presence_of :height, :patient_id
+	validates_presence_of :patient_id
 	validates_inclusion_of :appetite, :in => [true, false], :if => :has_not_lost_weight?
+
+	# scorers (could move whole logic to front end but yolo)
+	SKIN_TYPE_SCORER = {"healthy" => 0,
+											"tissue paper" => 1,
+											"dry" => 1,
+											"oedematous" => 1,
+											"clammy/pyrexia" => 1,
+											"discoloured- grade 1 pressure ulcer" => 2,
+											"broken/spot- grade 2-4 pressure ulcer" => 3}
+
+	MOBILITY_SCORER = {"fully mobile" => 0,
+										"restless/fidgety" => 1,
+										"apathetic" => 2,
+										"restricted" => 3,
+										"bedbound/traction" => 4,
+										"chairbound (eg. wheelchair)" => 5}
+
+	CONTINENCE_SCORER = {"complete/catheterised" => 0,
+											"urinary incontinent" => 1,
+											"faecal incontinent" => 2,
+											"urinary and faecal incontinent" => 3}
 
 	def weight_lost
 		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - self.weight # This weird line prevents errors during build/create/save
@@ -58,18 +79,7 @@ class Waterlow < ActiveRecord::Base
 	end
 
 	def skin_type_score
-		case skin_type
-		when "healthy"
-			0
-		when "tissue paper", "dry", "oedematous", "clammy, pyrexia"
-			1
-		when "discoloured grade 1"
-			2
-		when "broken/spots grade 2", "broken/spots grade 3", "broken/spots grade 4"
-			3
-		else
-			nil
-		end
+		SKIN_TYPE_SCORER[skin_type]
 	end
 
 	def get_nutrition_score
@@ -141,20 +151,7 @@ class Waterlow < ActiveRecord::Base
 	end
 
 	def mobility_score
-		case mobility
-		when "fully"
-			0
-		when "restless", "fidgety"
-			1
-		when "apathetic"
-			2
-		when "restricted"
-			3
-		when "bedbound"
-			4
-		when "chairbound"
-			5
-		end
+		MOBILITY_SCORER[mobility]
 	end
 	def special_risks_score
 		special_risks.inject(0) do |total_score, (risk, score)|

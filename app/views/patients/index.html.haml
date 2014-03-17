@@ -7,4 +7,5 @@
       = patient.mrn
       %span.ews-score{:style => "background: #{EWSColor(patient.getEWS[:rating])};"}
         = patient.getEWS[:score]
+      %span.ews-score= patient.waterlows.last.score unless patient.waterlows.blank?
 
