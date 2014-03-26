@@ -1,6 +1,6 @@
 = semantic_form_for @waterlow do |f|
 	= f.inputs do 
-		= f.input :patient, as: :select, collection: Patient.all
+		= f.input :patient, as: :select, collection: Patient.all, input_html: {onchange: "reloadFormAs(this.value);"}
 		= f.input :height, input_html: {type: 'tel'}
 		= f.input :weight, input_html: {type: 'tel'}
 		= f.input :skin_type, as: :select, collection: Waterlow::SKIN_TYPE_SCORER.keys
