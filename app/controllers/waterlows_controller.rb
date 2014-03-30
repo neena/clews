@@ -2,7 +2,7 @@ class WaterlowsController < ApplicationController
 
 	def new
 		@patient = Patient.find_by_mrn(params[:mrn]) || Patient.find_by_id(params[:patient_id]) || nil
-		@waterlow = @patient.try(&:waterlows).try(&:last).try(&:clone) || Waterlow.new(patient: @patient)
+		@waterlow = @patient.try(&:waterlows).try(&:last).try(&:dup) || Waterlow.new(patient: @patient)
 	end
 
 	def create

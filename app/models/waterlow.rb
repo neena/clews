@@ -30,6 +30,26 @@ class Waterlow < ActiveRecord::Base
 											"faecal incontinent" => 2,
 											"urinary and faecal incontinent" => 3}
 
+	SPECIAL_RISKS_SCORER = {"terminal cachexia" => 8, ## Tissue malnutrition
+													"multiple organ failure" => 8,
+													"single organ failure (resp., renal, cardiac)" => 5,
+													"peripheral vascular disease" => 5,
+													"anaemia (hb < 8)" => 2,
+													"smoking" => 1, 
+													"diabetes, ms, cva (4)" => 4, ## Neurological defecit
+													"diabetes, ms, cva (5)" => 5,
+													"diabetes, ms, cva (6)" => 6,
+													"motor/sensory (4)" => 4,
+													"motor/sensory (5)" => 5,
+													"motor/sensory (6)" => 6,
+													"paraplegia (4)" => 4,
+													"paraplegia (5)" => 5,
+													"paraplegia (6)" => 6,
+													"orthopaedic, spinal" => 5, ## Major surgery trauma
+													"on table more than 2 hours" => 5,
+													"on table more than 6 hours" => 8,
+													"long-term, high dose steroids, cytotoxics, high-dose anti-inflammatory" => 4 } ## Medication
+
 	def weight_lost
 		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - self.weight # This weird line prevents errors during build/create/save
 	end

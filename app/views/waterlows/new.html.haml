@@ -7,6 +7,5 @@
 		= f.input :mobility, as: :select, collection: Waterlow::MOBILITY_SCORER.keys
 		= f.input :continence, as: :select, collection: Waterlow::CONTINENCE_SCORER.keys
 		= f.input :appetite
-		= f.input :special_risks
-	= f.actions do
+		= f.input :special_risks, as: :check_boxes, collection: Waterlow::SPECIAL_RISKS_SCORER.map{|k,v| {k.titleize => {k => v}}}.reduce(:merge)
 		= f.submit
