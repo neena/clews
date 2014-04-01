@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140223151753) do
+ActiveRecord::Schema.define(version: 20140330114845) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -148,11 +148,11 @@ ActiveRecord::Schema.define(version: 20140223151753) do
     t.string  "skin_type"
     t.string  "mobility"
     t.string  "continence"
-    t.boolean "appetite"
     t.integer "nutrition_score"
     t.text    "special_risks"
     t.integer "patient_id"
     t.integer "score"
+    t.string  "appetite"
   end
 
   add_index "waterlows", ["patient_id"], name: "index_waterlows_on_patient_id"

@@ -1,11 +1,11 @@
 = semantic_form_for @waterlow do |f|
 	= f.inputs do 
 		= f.input :patient, as: :select, collection: Patient.all, input_html: {onchange: "reloadFormAs(this.value);"}
-		= f.input :height, input_html: {type: 'tel'}
-		= f.input :weight, input_html: {type: 'tel'}
+		= f.input :height, input_html: {type: 'tel'}, label: "Height (m)"
+		= f.input :weight, input_html: {type: 'tel'}, label: "Weight (kg)"
 		= f.input :skin_type, as: :select, collection: Waterlow::SKIN_TYPE_SCORER.keys
 		= f.input :mobility, as: :select, collection: Waterlow::MOBILITY_SCORER.keys
 		= f.input :continence, as: :select, collection: Waterlow::CONTINENCE_SCORER.keys
-		= f.input :appetite
+		= f.input :appetite, as: :select, collection: Waterlow::APPETITE_SCORER.keys
 		= f.input :special_risks, as: :check_boxes, collection: Waterlow::SPECIAL_RISKS_SCORER.map{|k,v| {k.titleize => {k => v}}}.reduce(:merge)
 		= f.submit

@@ -30,7 +30,7 @@ class Waterlow < ActiveRecord::Base
 											"faecal incontinent" => 2,
 											"urinary and faecal incontinent" => 3}
 
-	SPECIAL_RISKS_SCORER = {"terminal cachexia" => 8, ## Tissue malnutrition
+	SPECIAL_RISKS_SCORER = {"terminal cachexia" => 8, 
 													"multiple organ failure" => 8,
 													"single organ failure (resp., renal, cardiac)" => 5,
 													"peripheral vascular disease" => 5,
@@ -49,6 +49,11 @@ class Waterlow < ActiveRecord::Base
 													"on table more than 2 hours" => 5,
 													"on table more than 6 hours" => 8,
 													"long-term, high dose steroids, cytotoxics, high-dose anti-inflammatory" => 4 } ## Medication
+
+	APPETITE_SCORER = {"average" => 0,
+										"poor" => 1,
+										"ng tube fluids only" => 2,
+										"nil by mouth/anorexic" => 3}
 
 	def weight_lost
 		patient.waterlows[patient.waterlows.last == self ? -2 : -1 ].weight - self.weight # This weird line prevents errors during build/create/save
@@ -125,11 +130,7 @@ class Waterlow < ActiveRecord::Base
 		elsif has_lost_weight? == nil # Weight loss is unsure 
 			2
 		else
-			if appetite
-				0
-			else
-				1
-			end
+			APPETITE_SCORER[appetite]
 		end
 	end
 

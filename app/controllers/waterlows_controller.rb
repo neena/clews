@@ -6,7 +6,7 @@ class WaterlowsController < ApplicationController
 	end
 
 	def create
-		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite))
+		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite, :special_risks))
 		if @waterlow.save
 			redirect_to rounds_patients_path
 		else
