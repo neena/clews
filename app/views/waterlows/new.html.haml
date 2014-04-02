@@ -1,3 +1,8 @@
+.text-center
+	.btn-group
+		.btn.btn-default= link_to "Observation", new_observation_path
+		.btn.btn-default.disabled= link_to "Waterlow", new_waterlow_path
+
 = semantic_form_for @waterlow do |f|
 	= f.inputs do 
 		= f.input :patient, as: :select, collection: Patient.all, input_html: {onchange: "reloadFormAs(this.value);"}
