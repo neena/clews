@@ -7,7 +7,7 @@ class Waterlow < ActiveRecord::Base
 	before_validation :strip_whitespace
 
 	validates_presence_of :patient_id
-	validates_inclusion_of :appetite, :in => [true, false], :if => :has_not_lost_weight?
+	validates_presence_of :appetite, :if => :has_not_lost_weight?
 
 	# scorers (could move whole logic to front end but yolo)
 	SKIN_TYPE_SCORER = {"healthy" => 0,
@@ -63,12 +63,14 @@ class Waterlow < ActiveRecord::Base
 
 	def strip_whitespace
 		changes.keys.each do |name|
-			if send(name).is_a? String
+			if self.send(name).is_a? String
 				send("#{name}=", send(name).strip.downcase)
 			elsif name == "special_risks"
 				special_risks.keys.each do |risk|
-					special_risks[risk.strip.downcase] = special_risks[risk]
-					special_risks.delete(risk)
+					unless risk.downcase == risk
+						special_risks[risk.strip.downcase] = special_risks[risk]
+						special_risks.delete(risk)
+					end
 				end
 			end
 		end
@@ -81,7 +83,8 @@ class Waterlow < ActiveRecord::Base
 									sex_score(patient.sex),
 									age_score(patient.age),
 									continence_score,
-									mobility_score].compact.sum
+									mobility_score,
+									special_risks_score].compact.sum
 		#Set scores of various aspects
 	end
 

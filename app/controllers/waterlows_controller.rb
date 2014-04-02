@@ -6,7 +6,8 @@ class WaterlowsController < ApplicationController
 	end
 
 	def create
-		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite, :special_risks))
+		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite))
+		@waterlow.special_risks = params[:waterlow][:special_risks].reject(&:empty?).map{|i| eval(i)}.reduce(:merge)
 		if @waterlow.save
 			redirect_to rounds_patients_path
 		else
@@ -15,15 +16,6 @@ class WaterlowsController < ApplicationController
 	end
 
 	def update
-
+		
 	end
-
-	private
-		def observation_params 
-			hash = Observation.measurement_types.inject({}) do |data, type|
-				data["#{type}_measurement_attributes".to_sym] = [:value]
-				data
-			end
-			params.require(:observation).permit(hash)
-		end
 end

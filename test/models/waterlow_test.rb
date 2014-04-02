@@ -43,10 +43,10 @@ class WaterlowTest < ActiveSupport::TestCase
     @waterlow_opts[:skin_type] = "Dry"
     assert_equal 1, @patient.waterlows.create(@waterlow_opts).send(:skin_type_score)
 
-    @waterlow_opts[:skin_type] = "discoloured grade 1"
+    @waterlow_opts[:skin_type] = "discoloured- grade 1 pressure ulcer"
     assert_equal 2, @patient.waterlows.create(@waterlow_opts).send(:skin_type_score)
 
-    @waterlow_opts[:skin_type] = "bRokeN/SpOts GraDE 2"
+    @waterlow_opts[:skin_type] = "bRokeN/SpOt- GraDE 2-4 pressure ULCER"
     assert_equal 3, @patient.waterlows.create(@waterlow_opts).send(:skin_type_score)
   end
 
