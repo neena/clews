@@ -1,3 +1,4 @@
-= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
-= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
-= link_to 'Delete Patient', patient_path(@patient), method: :delete, data: { confirm: "Are you sure you want to delete #{@patient.name}" } , :class => 'btn btn-danger'
+%ul.no-bullets
+	%li= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+	%li= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+	%li= link_to 'Delete Patient', patient_path(@patient), method: :delete, data: { confirm: "Are you sure you want to delete #{@patient.name}" } , :class => 'btn btn-danger'

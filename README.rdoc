@@ -1,6 +1,6 @@
 = ClEWS, the clever EWS
 
-An EHR built on Ruby on Rails that can take a HL7 feed from a machine. This EWS is built to work with the Philips SureSigns VS2+ Vital Signs Monitor, but I'm working on testing it with other machines. 
+An EHR built on Ruby on Rails that can take a HL7 feed from a machine. This EWS is built to work with the Philips SureSigns VS4 Vital Signs Monitor, but I'm working on testing it with other machines. 
 
 == Patches and Dependencies
 * The Highcharts-Js-Rails gem has been patched to allow Javascript onLoad events (for the rendering of the blood pressure carats)

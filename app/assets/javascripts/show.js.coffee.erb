@@ -1,0 +1,61 @@
+$(document).on 'ready page:load', ->
+	Highcharts.setOptions({
+		chart: {
+			zoomType: 'x'
+		},
+		credits: {
+			enabled: false
+		},
+		xAxis: {
+			type: 'datetime',
+			minorTickInterval: 14400000, 
+			dateTimeLabelFormats: {
+				day: '%e %b %y', 
+				hour: '%I:%M%P'
+			}
+		},
+		yAxis: {
+			minorTickInterval: 'auto'
+		},
+		legend: {
+			enabled: false
+		}
+		tooltip: {
+			formatter: -> '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + this.y
+		}
+	})
+
+	$('.chart').each ->
+		$(@).highcharts({
+			chart: {
+				renderTo: $(@).attr("id"),
+				type: 'column' if $(@).data("type") == "bp"
+			},
+			title: {
+				text: $(@).data("title")
+			},
+			yAxis: {
+				title: {
+					text: if $(@).data("units")
+						$(@).data("title") + " (" + $(@).data("units") + ")"
+					else
+						$(@).data("title")
+				},
+				plotBands: $(@).data("bands")
+			},
+			series: [{
+				name: $(@).data("units")
+				data: $(@).data("series")
+			}],
+			tooltip: {
+				formatter: if $(@).data("type") == "bp" 
+					-> 
+						'<b>' + new Date(this.x).toLocaleString('en-GB') + 
+						'</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + 
+						this.point.low + 'mmHg '
+				else 
+					->
+						'<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br>' + 
+						this.series.chart.title.text + ': ' + this.y + this.series.name
+			}
+		})

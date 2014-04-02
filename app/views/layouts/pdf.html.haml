@@ -7,11 +7,13 @@
     = wicked_pdf_stylesheet_link_tag "application"
     = wicked_pdf_stylesheet_link_tag "bootstrap"
     = wicked_pdf_stylesheet_link_tag "main"
-    = javascript_include_tag "http://code.jquery.com/jquery-1.10.0.min.js"
-    = javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"
+    = wicked_pdf_javascript_include_tag "jquery"
+    = wicked_pdf_javascript_include_tag "jquery_ujs"
     = wicked_pdf_javascript_include_tag "bootstrap"
     = wicked_pdf_javascript_include_tag "highcharts"
     = wicked_pdf_javascript_include_tag "bp-chart"
+    / Hack to ensure proper display of degrees symbol
+    %meta{"charset" => "utf-8"}
     = yield(:head)
   %body#pdf
     .container

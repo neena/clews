@@ -34,7 +34,11 @@ class Measurement < ActiveRecord::Base
 	end
 
 	def self.title 
-		"#{name.titleize} #{"(#{units})" if units.present?}"
+		"#{human_name} #{"(#{units})" if units.present?}"
+	end
+
+	def self.human_name
+		name.titleize[0..-12]
 	end
 end
 
