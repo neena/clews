@@ -57,6 +57,15 @@ class PatientsController < ApplicationController
     end
   end
 
+  def chart 
+    @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
+    respond_to do |format|
+      format.json do 
+        render json: getChartData(params[:type]) if params[:type]
+      end
+    end
+  end
+
   def download
     load_patient_and_charts true
 
@@ -87,13 +96,9 @@ class PatientsController < ApplicationController
       @respiration_rate_chart = createPdfChart('respiration rate')
       @bp_chart = createPdfChart('bp')
     else
-      @charts_data = [
-        getChartData('pulse'),
-        getChartData('oxygen sat'),
-        getChartData('temperature'),
-        getChartData('respiration rate'),
-        getChartData('bp')
-      ]
+      @charts_data = ['pulse', 'oxygen sat', 'temperature', 'respiration rate', 'bp'].inject([]) do | data, type |
+        data.push({type: type, id: type.gsub(" ","-")+"-chart"})
+      end
     end
   end
 
