@@ -39,6 +39,5 @@ end
       dia_bp_measurement: DiaBpMeasurement.create(value: SysBpMeasurement.last.value*rand(0.7..0.85)),
       vip_measurement: VipMeasurement.create(value: rand(0..5))
     )
-    puts "- Creating observation #{i+1}"
   end
 end
