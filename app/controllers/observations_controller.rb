@@ -13,16 +13,12 @@ class ObservationsController < ApplicationController
 		@patient = Patient.find(params[:observation][:patient_id])
 		@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
 		if @observation.save
-			redirect_to rounds_patients_path
+			redirect_to rounds_patients_path, notice: "Successfully saved observation for #{@patient.name}."
 		else
-			render :new
+			render :new, alert: "Observation invalid. Please check you've filled everything out correctly."
 		end
 	end
-
-	def update
-
-	end
-
+	
 	private
 		def observation_params 
 			hash = Observation.measurement_types.inject({}) do |data, type|

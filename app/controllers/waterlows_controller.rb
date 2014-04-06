@@ -9,9 +9,9 @@ class WaterlowsController < ApplicationController
 		@waterlow = Waterlow.new(params.require(:waterlow).permit(:patient_id, :height, :weight, :skin_type, :mobility, :continence, :appetite))
 		@waterlow.special_risks = params[:waterlow][:special_risks].reject(&:empty?).map{|i| eval(i)}.reduce(:merge)
 		if @waterlow.save
-			redirect_to rounds_patients_path
+			redirect_to rounds_patients_path, notice: "Successfully saved Waterlow for #{Patient.find(params[:patient_id]).name}"
 		else
-			render :new
+			render :new, alert: "Invalid Waterlow. Please check you've filled this out correctly. "
 		end
 	end
 
