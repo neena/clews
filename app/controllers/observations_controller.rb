@@ -10,13 +10,20 @@ class ObservationsController < ApplicationController
 	end
 
 	def create
-		@patient = Patient.find(params[:observation][:patient_id])
-		@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
-		if @observation.save
-			redirect_to rounds_patients_path, notice: "Successfully saved observation for #{@patient.name}."
+		if !params[:observation][:patient_id].blank?
+			@patient = Patient.find(params[:observation][:patient_id]) 
+			@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
+			if @observation.save
+				redirect_to rounds_patients_path, message: "Successfully saved observation for #{@patient.name}."
+			else
+				flash.alert = "Observation invalid. Please check you've filled everything out correctly."
+				render :new
+			end
 		else
-			render :new, alert: "Observation invalid. Please check you've filled everything out correctly."
-		end
+			@observation = Observation.new(observation_params.merge({recorded_at: DateTime.now}))
+			flash.alert = "Observation invalid. No patient selected."
+			render :new
+		end	
 	end
 	
 	private
