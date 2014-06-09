@@ -57,6 +57,19 @@ class PatientsController < ApplicationController
     end
   end
 
+  def new
+    @patient = Patient.new
+  end
+
+  def create
+    @patient = Patient.new(params.require(:patient).permit(:ward_id, :surname, :given_name, :mrn, :dob, :sex))
+    if @patient.save
+      redirect_to patients_path
+    else
+      render 'new'
+    end
+  end
+
   def chart 
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
     respond_to do |format|

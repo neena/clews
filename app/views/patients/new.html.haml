@@ -1,3 +1,8 @@
 = semantic_form_for @patient do |f|
-	= f.inputs
+	= f.input :ward
+	= f.input :surname
+	= f.input :given_name
+	= f.input :mrn, label: "MRN"
+	= f.input :dob, as: :date_select, start_year: 1898, end_year: Date.today.year
+	= f.input :sex, as: :select, collection: [["Male", "m"], ["Female", "f"]]
 	= f.actions
