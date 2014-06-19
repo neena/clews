@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140330114845) do
+ActiveRecord::Schema.define(version: 20140619212221) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -30,6 +30,18 @@ ActiveRecord::Schema.define(version: 20140330114845) do
 
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
+
+  create_table "archive_patients", force: true do |t|
+    t.string   "mrn"
+    t.string   "given_name"
+    t.string   "surname"
+    t.datetime "observation_due_at"
+    t.boolean  "mrsa_carrier"
+    t.string   "sex"
+    t.datetime "dob"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "concious_measurements", force: true do |t|
     t.string   "value"

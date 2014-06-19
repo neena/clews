@@ -32,7 +32,7 @@ class Patient < ActiveRecord::Base
     end
   end
 
-  def to_param
+  def to_param ## Default of find method. 
     mrn
   end
 
@@ -74,6 +74,11 @@ class Patient < ActiveRecord::Base
 
   def getVIP
     observations.last.getVIP
+  end
+
+  def archive
+    keys = ArchivePatient.new.attributes.keys
+    ArchivePatient.new(self.as_json.select{|k,v| keys.include? k })
   end
   
   ## Patient notifications
