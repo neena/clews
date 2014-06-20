@@ -3,10 +3,6 @@ class ObservationsController < ApplicationController
 	def new
 		@observation = Observation.new
 		@observation.patient = Patient.find_by_mrn(params[:mrn]) || Patient.find_by_id(params[:patient_id])  || nil
-		# Observation.where(recorded_at: (DateTime.now - 5.minutes)..DateTime.now).select {|o| o.measurements.any?{|k,v| v.nil?} }.last || Observation.new
-		Observation.measurement_types.each do |type|
-			eval("@observation.build_#{type}_measurement") #unless eval("@observation.#{type}_measurement")
-		end
 	end
 
 	def create

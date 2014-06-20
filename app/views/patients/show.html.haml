@@ -10,9 +10,9 @@
 
 %ul#details.no-bullets
   %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}" 
-  %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp_measurement.try(:value).humanize || 'N/R'}" 
-  %li= "VIP Score: #{@patient.observations.last.vip_measurement.try(:value).humanize || 'N/R'}" 
-  %li= "Conciousness Level: #{@patient.observations.last.concious_measurement.try(:value) || 'N/R'}" 
+  %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp.humanize || 'N/R'}" 
+  %li= "VIP Score: #{@patient.observations.last.vip.humanize || 'N/R'}" 
+  %li= "Conciousness Level: #{@patient.observations.last.concious || 'N/R'}" 
   %li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
   %li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
 
@@ -32,8 +32,8 @@
         %strong VIP Score
       - @patient.observations.each do |observation|
         %td
-          %span.label{:style => "background: #{EWSColor(observation.vip_measurement.try{|v| v.rating})};"}
-            = observation.vip_measurement.try(:value) || 'n/r'
+          %span.label{:style => "background: #{EWSColor(observation.measurement('vip').rating)};"}
+            = observation.vip || 'n/r'
     %tr
       %td
         %strong EWS

@@ -7,15 +7,14 @@
   = f.inputs do
     = f.input :patient, as: :select, collection: Patient.all, input_html: {onchange: "reloadFormAs(this.value);"}
   - Observation.measurement_types.each do |type|
-    = f.semantic_fields_for "#{type}_measurement".to_sym do |m|
-      - case type
-      - when 'oxygen_supp'
-        = m.input :value, label: "Supplementary Oxygen?"
-      - when 'concious'
-        = m.input :value, as: :select, collection: %w(A V P U).map { |val| [humanise_consciousness(val), val] }, label: "Conciousness"
-      - when 'vip'
-        = m.input :value, as: :select, collection: options_for_select((0..5).to_a, @observation.patient.try(:getVIP)), label: "VIP Score <small>#{link_to "(Read More)", "http://www.ivteam.com/vipbb.pdf"}</small>".html_safe
-      - else
-        = m.input :value, label: "#{type}_measurements".classify.constantize.title, input_html: {type: 'tel'}
+    - case type
+    - when 'oxygen_supp'
+      = f.input type.to_sym, label: "Supplementary Oxygen?"
+    - when 'concious'
+      = f.input type.to_sym, as: :select, collection: %w(A V P U).map { |val| [humanise_consciousness(val), val] }, label: "Conciousness"
+    - when 'vip'
+      = f.input type.to_sym, as: :select, collection: options_for_select((0..5).to_a, @observation.patient.try(:getVIP)), label: "VIP Score <small>#{link_to "(Read More)", "http://www.ivteam.com/vipbb.pdf"}</small>".html_safe
+    - else
+      = f.input type.to_sym, label: "#{type}_measurements".classify.constantize.title, input_html: {type: 'tel'}
   = f.actions do
     = f.submit

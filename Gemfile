@@ -26,6 +26,8 @@ end
 
 group :development do
   gem 'faker'
+  gem 'rails-perftest'
+  gem 'ruby-prof'
 end
 
 group :test do
