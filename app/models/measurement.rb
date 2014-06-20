@@ -1,8 +1,14 @@
-class Measurement < ActiveRecord::Base
-	self.abstract_class = true
+class Measurement
+	include ActiveModel::Validations
+	include ActiveModel::Conversion
+	extend ActiveModel::Naming
 
-	belongs_to :observation 
 	validate :valid_value
+	attr_accessor :value
+
+	def initialize val
+		@value = val
+	end
 
 	def self.units
 		nil

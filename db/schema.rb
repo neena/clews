@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140330114845) do
+ActiveRecord::Schema.define(version: 20140620182102) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -31,51 +31,24 @@ ActiveRecord::Schema.define(version: 20140330114845) do
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
 
-  create_table "concious_measurements", force: true do |t|
-    t.string   "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "concious_measurements", ["observation_id"], name: "index_concious_measurements_on_observation_id"
-
-  create_table "dia_bp_measurements", force: true do |t|
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "dia_bp_measurements", ["observation_id"], name: "index_dia_bp_measurements_on_observation_id"
-
   create_table "observations", force: true do |t|
     t.integer  "patient_id"
     t.datetime "recorded_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "score",       default: 0
-    t.integer  "rating",      default: 0
-    t.string   "status",      default: "incomplete"
+    t.integer  "score",            default: 0
+    t.integer  "rating",           default: 0
+    t.string   "status",           default: "incomplete"
+    t.string   "concious"
+    t.float    "dia_bp"
+    t.float    "sys_bp"
+    t.float    "oxygen_sat"
+    t.boolean  "oxygen_supp"
+    t.float    "pulse"
+    t.integer  "respiration_rate"
+    t.float    "temperature"
+    t.integer  "vip"
   end
-
-  create_table "oxygen_sat_measurements", force: true do |t|
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "oxygen_sat_measurements", ["observation_id"], name: "index_oxygen_sat_measurements_on_observation_id"
-
-  create_table "oxygen_supp_measurements", force: true do |t|
-    t.boolean  "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "oxygen_supp_measurements", ["observation_id"], name: "index_oxygen_supp_measurements_on_observation_id"
 
   create_table "patients", force: true do |t|
     t.string   "mrn"
@@ -91,48 +64,6 @@ ActiveRecord::Schema.define(version: 20140330114845) do
   end
 
   add_index "patients", ["ward_id"], name: "index_patients_on_ward_id"
-
-  create_table "pulse_measurements", force: true do |t|
-    t.float   "value"
-    t.integer "observation_id"
-  end
-
-  add_index "pulse_measurements", ["observation_id"], name: "index_pulse_measurements_on_observation_id"
-
-  create_table "respiration_rate_measurements", force: true do |t|
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "respiration_rate_measurements", ["observation_id"], name: "index_respiration_rate_measurements_on_observation_id"
-
-  create_table "sys_bp_measurements", force: true do |t|
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "sys_bp_measurements", ["observation_id"], name: "index_sys_bp_measurements_on_observation_id"
-
-  create_table "temperature_measurements", force: true do |t|
-    t.float    "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer  "observation_id"
-  end
-
-  add_index "temperature_measurements", ["observation_id"], name: "index_temperature_measurements_on_observation_id"
-
-  create_table "vip_measurements", force: true do |t|
-    t.integer  "observation_id"
-    t.integer  "value"
-    t.datetime "recorded_at"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "wards", force: true do |t|
     t.string   "name"
