@@ -31,7 +31,7 @@ class Observation < ActiveRecord::Base
   end
 
   def getVIP
-    vip_measurement.try(:value)
+    vip
   end
 
   def self.measurement_types
