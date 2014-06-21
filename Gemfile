@@ -19,6 +19,8 @@ gem 'formtastic', "~>2.3.0.rc2"
 gem 'formtastic-bootstrap'
 gem 'devise'
 
+gem 'rails-perftest'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -26,7 +28,6 @@ end
 
 group :development do
   gem 'faker'
-  gem 'rails-perftest'
   gem 'ruby-prof'
 end
 
