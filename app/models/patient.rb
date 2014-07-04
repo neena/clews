@@ -44,7 +44,6 @@ class Patient < ActiveRecord::Base
   end
 
   def getData type #in HighCharts ready format.
-    data_type = type.gsub("_measurements", "") || type.gsub("_measurement", "")
     if data_type == 'bp'
       observations.inject([]) do |data, item|
         if item.sys_bp && item.dia_bp

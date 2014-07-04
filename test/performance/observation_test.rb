@@ -12,11 +12,13 @@ class ObservationTest < ActionDispatch::PerformanceTest
 	  w = Ward.create(name: "X Ward")
 	end
 
+	ward_ids = Ward.all.map(&:id)
+
 	30.times do |i|
 	  p = Patient.create(mrn: "D#{rand(1000000..9999999)}",
 	                     given_name: "Name",
 	                     surname: "Surname",
-	                     ward: Ward.first(:order => "RANDOM()"),
+	                     ward: Ward.find(ward_ids.sample),
 	                     mrsa_carrier: [true, false, nil].sample)
 
 	  72.times do |i|
@@ -35,9 +37,9 @@ class ObservationTest < ActionDispatch::PerformanceTest
 	  end
 	end
 
-  test "patient_chart_pages" do
-  	Patient.all.each do |p|
-	    get "/patients/#{p.mrn}"
+	test "patient_chart_pages" do
+		Patient.all.each do |p|
+			get "/patients/#{p.mrn}"
 		end
-  end
+	end
 end
