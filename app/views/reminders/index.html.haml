@@ -1,0 +1,23 @@
+%div
+  = form_tag '', :method => :get, :class => 'form-inline patient-header' do
+    Tasks from 
+    = select_tag "ward", options_for_select(@ward_filter, @ward), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+    due within
+    = select_tag "time", options_for_select(@time_filter, @time), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+    = submit_tag "Filter", :class => "btn btn-primary btn-lg"
+
+
+%ul.no-bullets
+  - @reminders.each do |reminder|
+    %li.lead.reminder{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
+      %strong= reminder.title
+      = when_is(reminder)
+      %p.small
+        %strong= link_to (reminder.patient.name || "Name N/R"), reminder.patient
+        = reminder.patient.mrn
+        %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
+          = reminder.patient.getEWS[:score]
+      %p.description.collapse
+        = reminder.text
+        %br
+        %strong= link_to "Mark as Complete", [:complete, reminder]

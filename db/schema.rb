@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140330114845) do
+ActiveRecord::Schema.define(version: 20140707084722) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -98,6 +98,18 @@ ActiveRecord::Schema.define(version: 20140330114845) do
   end
 
   add_index "pulse_measurements", ["observation_id"], name: "index_pulse_measurements_on_observation_id"
+
+  create_table "reminders", force: true do |t|
+    t.string   "title"
+    t.integer  "patient_id"
+    t.string   "text"
+    t.datetime "due"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "done"
+  end
+
+  add_index "reminders", ["patient_id"], name: "index_reminders_on_patient_id"
 
   create_table "respiration_rate_measurements", force: true do |t|
     t.float    "value"

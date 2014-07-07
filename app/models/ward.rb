@@ -1,5 +1,6 @@
 class Ward < ActiveRecord::Base
 	has_many :patients
+	has_many :reminders, through: :patients
 
 	serialize :emails, Array 
 

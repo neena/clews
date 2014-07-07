@@ -9,6 +9,10 @@ EwsSystem::Application.routes.draw do
     end
 
   resources :observations, :waterlows
+
+  resources :reminders do
+    get 'complete', on: :member
+  end
   
 
   namespace :admin do
