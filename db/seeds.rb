@@ -3,7 +3,7 @@
 # rake db:seed all=true or rake db:seed patients=true wards=true 
 
 if ENV['all'] == 'true'
-  load_patients, load_wards, load_waterlows, load_reminders = true
+  load_patients, load_wards, load_waterlows, load_reminders = true, true, true, true
 else
   load_patients, load_wards, load_waterlows, load_reminders = [ENV['patients'], ENV['wards'], ENV['waterlows'], ENV['reminders']].map(&:present?)
 end
@@ -23,7 +23,7 @@ if load_patients
     p = Patient.create(mrn: "D#{Faker::Number.number(9)}",
                        given_name: Faker::Name.first_name,
                        surname: Faker::Name.last_name,
-                       ward: Ward.first(:order => "RANDOM()"),
+                       ward: Ward.find(Ward.all.map(&:id).sample),
                        mrsa_carrier: [true, false, nil].sample)
 
     puts "Created patient: #{ p.name }"

@@ -119,6 +119,7 @@ class Patient < ActiveRecord::Base
     if observation.recorded_at.to_i >= observations.last.recorded_at.to_i
       next_observation = NextObservationDue.calculate(observation.recorded_at, observation.rating)
       self.update_attribute(:observation_due_at, next_observation)
+      Reminder.create(due: next_observation, patient: self, title: "Vital signs observations")
     end
   end
 end

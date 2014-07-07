@@ -106,7 +106,7 @@ ActiveRecord::Schema.define(version: 20140707084722) do
     t.datetime "due"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "done"
+    t.boolean  "done",       default: false
   end
 
   add_index "reminders", ["patient_id"], name: "index_reminders_on_patient_id"
