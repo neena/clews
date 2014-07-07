@@ -4,7 +4,6 @@ module ChartHelper
     table = type.gsub(" ","_")
     data = @patient.getData(table)
     table += "_measurements"
-    data_class = table.classify.constantize
     id = type.gsub(" ","-")+"-chart"
     bands = createPlotBands(type)
     if type == "bp"
@@ -14,6 +13,7 @@ module ChartHelper
         datum[:color] = EWSColor(datum[:ews])
       end
     else
+      data_class = table.classify.constantize
       title = data_class.human_name
       units = data_class.units
     end

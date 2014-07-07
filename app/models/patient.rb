@@ -44,7 +44,7 @@ class Patient < ActiveRecord::Base
   end
 
   def getData type #in HighCharts ready format.
-    if data_type == 'bp'
+    if type == 'bp'
       observations.inject([]) do |data, item|
         if item.sys_bp && item.dia_bp
           data.push({
@@ -61,7 +61,7 @@ class Patient < ActiveRecord::Base
       observations.inject([]) do |data, item|
         data.push({
           x: item.recorded_at.to_i*1000, 
-          y: eval("item.#{data_type}")
+          y: eval("item.#{type}")
         }) 
       end
     end || []
