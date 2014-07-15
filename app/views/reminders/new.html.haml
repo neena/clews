@@ -1,0 +1,7 @@
+%h1 New Reminder
+= semantic_form_for @reminder do |f|
+  = f.input :patient, as: :select
+  = f.input :title
+  = f.input :text, as: :text, label: "Description"
+  = f.input :due, as: :datetime
+  = f.actions

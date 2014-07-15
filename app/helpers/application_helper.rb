@@ -28,4 +28,12 @@ module ApplicationHelper
     darkness = 0 if darkness < 0.0001
     darkness
   end
+
+  def actionPath(reminder)
+    if reminder.reminder_type == "vital_signs"
+      new_observation_url + "?mrn=" + reminder.patient.mrn
+    else
+      nil
+    end
+  end
 end

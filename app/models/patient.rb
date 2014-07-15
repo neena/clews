@@ -3,8 +3,8 @@ class Patient < ActiveRecord::Base
   has_many :observations,
             dependent: :destroy,
             after_add: [:update_observation_due_at, :check_threshold!]
-  has_many :waterlows
-  has_many :reminders
+  has_many :waterlows, dependent: :destroy
+  has_many :reminders, dependent: :destroy
 
   validates :mrn, :uniqueness => true
   validates_inclusion_of :sex, :in => ["m", "f", nil]

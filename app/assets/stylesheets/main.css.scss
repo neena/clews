@@ -93,6 +93,13 @@ form.patient-header {
 
 .reminder{
   padding-left: 10px;
+  &:hover{
+    cursor: pointer; 
+
+  }
+  .buttons{
+    font-size: 2em;
+  }
 }
 
 /* Overwrite the default to keep the scrollbar always visible

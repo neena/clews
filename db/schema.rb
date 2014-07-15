@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140707084722) do
+ActiveRecord::Schema.define(version: 20140711144423) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -106,7 +106,8 @@ ActiveRecord::Schema.define(version: 20140707084722) do
     t.datetime "due"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "done",       default: false
+    t.boolean  "done",          default: false
+    t.string   "reminder_type"
   end
 
   add_index "reminders", ["patient_id"], name: "index_reminders_on_patient_id"

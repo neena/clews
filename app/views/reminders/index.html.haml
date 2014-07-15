@@ -9,15 +9,20 @@
 
 %ul.no-bullets
   - @reminders.each do |reminder|
-    %li.lead.reminder{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
-      %strong= reminder.title
-      = when_is(reminder)
-      %p.small
+    %li.lead.reminder.row{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
+      .col-lg-10.col-md-10.col-sm-10.col-xs-10
         %strong= link_to (reminder.patient.name || "Name N/R"), reminder.patient
         = reminder.patient.mrn
         %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
           = reminder.patient.getEWS[:score]
-      %p.description.collapse
-        = reminder.text
-        %br
-        %strong= link_to "Mark as Complete", [:complete, reminder]
+        %p.small
+          %strong= reminder.title
+          = when_is(reminder)
+        - if reminder.text
+          %p.description.collapse
+            = reminder.text
+      .col-lg-2.col-md-2.col-sm-2.col-xs-2.buttons
+        = link_to actionPath(reminder) do 
+          %span.glyphicon.glyphicon-share-alt
+        = link_to [:complete, reminder] do
+          %span.glyphicon.glyphicon-ok-circle
