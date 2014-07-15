@@ -23,10 +23,6 @@ class ObservationsController < ApplicationController
 	
 	private
 		def observation_params 
-			hash = Observation.measurement_types.inject({}) do |data, type|
-				data["#{type}_measurement_attributes".to_sym] = [:value]
-				data
-			end
-			params.require(:observation).permit(hash)
+			params.require(:observation).permit(Observation.measurement_types.map(&:to_sym))
 		end
 end
