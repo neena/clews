@@ -8,8 +8,14 @@
     = image_tag "clews-logo-xsmall.png", height: 20
 
 .collapse.navbar-collapse.navbar-links
-  %ul.nav.navbar-nav.navbar-right
-    %li= link_to "Patients", patients_path
-    %li= link_to "Rounds", rounds_patients_path
-    %li= link_to "Glance", admin_glance_path
-    %li= link_to "Record", new_observation_path
+  .navbar-right
+    - if user_signed_in?
+      .navbar-text= "Hello #{current_user.given_name}!"
+    - else
+      = link_to "Sign In", new_user_session_path, class: "btn btn-primary navbar-btn"
+  %ul.nav.navbar-nav.navbar-left
+    %li{:class => "#{'active' if current_page?(patients_path)}"}= link_to "Patients", patients_path
+    %li{:class => "#{'active' if current_page?(rounds_patients_path)}"}= link_to "Rounds", rounds_patients_path
+    %li{:class => "#{'active' if current_page?(admin_glance_path)}"}= link_to "Glance", admin_glance_path
+    %li{:class => "#{'active' if current_page?(new_observation_path)}"}= link_to "Record", new_observation_path
+

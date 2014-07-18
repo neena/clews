@@ -1,4 +1,5 @@
 EwsSystem::Application.routes.draw do
+  devise_for :users
   devise_for :admins
   root 'patients#index'
 
