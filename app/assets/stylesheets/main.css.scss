@@ -1,4 +1,5 @@
 $font-size-base: 5;
+$navbar-height: 50px;
 
 span.ews-score {
   background: #cccccc;
@@ -21,7 +22,21 @@ span.ews-score {
 }
 
 .navbar {
-  margin-top: 20px;
+  background-color: #357ebd;
+  margin: 0;
+}
+
+ul.nav.navbar-nav li a{
+  color: white;
+  font-size: 1.2em;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #357ebd;
+  &:hover{
+    background-color: white;
+    border: 1px solid white;
+  }
 }
 // Styles for non-pdf docs.
 #main{
@@ -54,7 +69,7 @@ span.ews-score {
     margin-bottom: 20px;
   }
 
-  padding: 0 15px 100px 15px;
+  // padding: 0 15px 100px 15px;
 
   table.footer {
     // margin: 50px 0;

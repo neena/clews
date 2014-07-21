@@ -9,8 +9,19 @@
 
 .collapse.navbar-collapse.navbar-links
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to "Patients", patients_path
-    %li= link_to "Rounds", rounds_patients_path
-    %li= link_to "Glance", admin_glance_path
-    %li= link_to "Record", new_observation_path
-    %li= link_to "Scan", "zxing://scan/?ret=#{u patients_url}%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13"
+    %li
+      = link_to patients_path do
+        %i.fa.fa-users.fa-lg 
+        Patients
+    %li
+      = link_to rounds_patients_path do
+        %i.fa.fa-th-list.fa-lg
+        Tasks
+    %li
+      = link_to new_observation_path do
+        %i.fa.fa-pencil.fa-lg
+        Record
+    %li.visible-xs
+      = link_to "zxing://scan/?ret=#{u patients_url}%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13" do
+        %i.fa.fa-camera.fa-lg
+        Scan
