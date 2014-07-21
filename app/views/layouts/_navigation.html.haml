@@ -13,3 +13,4 @@
     %li= link_to "Rounds", rounds_patients_path
     %li= link_to "Glance", admin_glance_path
     %li= link_to "Record", new_observation_path
+    %li= link_to "Scan", "zxing://scan/?ret=#{u patients_url}%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13"
