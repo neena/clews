@@ -10,9 +10,8 @@
   %body
     %nav.navbar.navbar-default.navbar-static-top{:role => "navigation"}
       .container= render 'layouts/navigation'
-    .container
-      #main
-        = render 'layouts/messages'
-        #content= yield
+    #main
+      = render 'layouts/messages'
+      #content= yield
 
       
