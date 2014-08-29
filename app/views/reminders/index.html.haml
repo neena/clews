@@ -1,6 +1,6 @@
 %div
   = form_tag '', :method => :get, :class => 'form-inline patient-header' do
-    Tasks from 
+    Tasks from
     = select_tag "ward", options_for_select(@ward_filter, @ward), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
     due within
     = select_tag "time", options_for_select(@time_filter, @time), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
@@ -9,20 +9,28 @@
 
 %ul.no-bullets
   - @reminders.each do |reminder|
-    %li.lead.reminder.row{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
-      .col-lg-10.col-md-10.col-sm-10.col-xs-10
-        %strong= link_to (reminder.patient.name || "Name N/R"), reminder.patient
-        = reminder.patient.mrn
-        %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
-          = reminder.patient.getEWS[:score]
-        %p.small
+    %li.lead.reminder{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
+      .row
+        .col-md-8
           %strong= reminder.title
+          %br.visible-md
           = when_is(reminder)
-        - if reminder.text
-          %p.description.collapse
-            = reminder.text
-      .col-lg-2.col-md-2.col-sm-2.col-xs-2.buttons
-        = link_to actionPath(reminder) do 
-          %span.glyphicon.glyphicon-share-alt
-        = link_to [:complete, reminder] do
-          %span.glyphicon.glyphicon-ok-circle
+          %p.small
+            %strong= link_to (reminder.patient.name || "Name N/R"), reminder.patient
+            = reminder.patient.mrn
+            %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
+              = reminder.patient.getEWS[:score]
+        .col-md-4
+          -# - if reminder.reminder_type == "vital-signs"
+          %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
+            %span.glyphicon.glyphicon-search
+            Info
+          = link_to actionPath(reminder), class: "btn btn-default" do
+            %span.glyphicon.glyphicon-share-alt
+            Link
+          = link_to [:complete, reminder], class: "btn btn-success" do
+            %span.glyphicon.glyphicon-ok-circle
+            Done
+      - if reminder.text
+        .row{style:"margin-left:-5px; margin-top: 10px"}
+          .description.collapse.col-xs-12{id: "reminder-#{reminder.id}"}= reminder.text
