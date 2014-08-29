@@ -32,5 +32,5 @@
             %span.glyphicon.glyphicon-ok-circle
             Done
       - if reminder.text
-        .row{style:"margin-left:-5px; margin-top: 10px"}
-          .description.collapse.col-xs-12{id: "reminder-#{reminder.id}"}= reminder.text
+        .row.description.collapse{style:"margin-left:-15px; margin-top: 10px",id: "reminder-#{reminder.id}"}
+          .col-xs-12= reminder.text
