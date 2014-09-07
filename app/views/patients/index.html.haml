@@ -9,6 +9,7 @@
         = patient.mrn
         %span.ews-score{:style => "background: #{EWSColor(patient.getEWS[:rating])};"}
           = patient.getEWS[:score]
+        %br.visible-xs
         %ul.buttons
           %li
             = link_to patient do
@@ -19,8 +20,7 @@
               %i.fa.fa-check
               Task
           %li
-            = link_to new_observation_path(mrn: patient.mrn) do 
+            = link_to new_observation_path(mrn: patient.mrn) do
               %i.fa.fa-pencil
               Record
         / %span.label.label-primary= "Waterlow: #{patient.waterlows.last.score}" unless patient.waterlows.blank?
-

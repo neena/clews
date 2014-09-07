@@ -3,6 +3,9 @@ class ObservationsController < ApplicationController
 	def new
 		@observation = Observation.new
 		@observation.patient = Patient.find_by_mrn(params[:mrn]) || Patient.find_by_id(params[:patient_id])  || nil
+
+		# Set defaults
+		@observation.oxygen_supp = false
 	end
 
 	def create
@@ -13,16 +16,16 @@ class ObservationsController < ApplicationController
 				redirect_to rounds_patients_path, notice: "Successfully saved observation for #{@patient.name}."
 			else
 				render :new, alert: "Observation invalid. Please check you've filled everything out correctly."
-			end 
+			end
 		else
 			@observation = Observation.new(observation_params.merge({recorded_at: DateTime.now}))
 			render :new, alert: "Please select a patient."
 		end
 
 	end
-	
+
 	private
-		def observation_params 
+		def observation_params
 			params.require(:observation).permit(Observation.measurement_types.map(&:to_sym))
 		end
 end

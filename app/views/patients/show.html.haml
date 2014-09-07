@@ -1,20 +1,21 @@
 .title-bar
-  %h2.container
-    = @patient.name || "Name not recorded"
-    %span.ews-score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"}
-      = @patient.getEWS[:score]
-    - unless @patient.getEWS[:complete]
-      %small [Data Missing]
-    .h3= @patient.mrn
+  .container
+    %h2
+      = @patient.name || "Name not recorded"
+      %span.ews-score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"}
+        = @patient.getEWS[:score]
+      - unless @patient.getEWS[:complete]
+        %small [Data Missing]
+      .h3= @patient.mrn
 
 .container
   .pull-right.hidden-sm.hidden-xs
     = render "patientbuttons"
   %ul#details.no-bullets
-    %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}" 
-    %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp.humanize || 'N/R'}" 
-    %li= "VIP Score: #{@patient.observations.last.vip.humanize || 'N/R'}" 
-    %li= "Conciousness Level: #{@patient.observations.last.concious || 'N/R'}" 
+    %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}"
+    %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp.humanize || 'N/R'}"
+    %li= "VIP Score: #{@patient.observations.last.vip.humanize || 'N/R'}"
+    %li= "Conciousness Level: #{@patient.observations.last.concious || 'N/R'}"
     %li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
     %li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
 

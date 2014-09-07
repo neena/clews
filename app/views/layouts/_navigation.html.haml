@@ -11,7 +11,7 @@
   %ul.nav.navbar-nav.navbar-right
     %li
       = link_to patients_path do
-        %i.fa.fa-users.fa-lg 
+        %i.fa.fa-users.fa-lg
         Patients
     %li
       = link_to rounds_patients_path do
@@ -21,15 +21,15 @@
       = link_to new_observation_path do
         %i.fa.fa-pencil.fa-lg
         Record
-    %li.hidden-lg
-      = link_to "zxing://scan/?ret=#{u patients_url}%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13" do
-        %i.fa.fa-camera.fa-lg
-        Scan
+    - if request.env['HTTP_USER_AGENT'].downcase.match(/android/)
+      %li
+        = link_to "zxing://scan/?ret=#{(u new_observation_url)}%3F%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13" do
+          %i.fa.fa-camera.fa-lg
+          Scan
     - if admin_signed_in? # Admin user is signed in
       %li.dropdown
         %a.dropdown-toggle{"data-toggle" => "dropdown"}
           %i.fa.fa-gears.fa-lg
-          Settings
           %i.fa.fa-caret-down
         %ul.dropdown-menu{"role" => "menu"}
           %li
@@ -57,4 +57,3 @@
             = link_to new_admin_session_path do
               %i.fa.fa-sign-in.fa-lg
               Sign in
-

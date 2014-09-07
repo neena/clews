@@ -21,6 +21,8 @@ gem 'devise'
 gem 'font-awesome-sass'
 
 gem 'rails-perftest'
+gem 'capistrano'
+gem 'capistrano-ext'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -36,4 +38,3 @@ group :test do
   gem 'delorean'
   gem 'mocha'
 end
-
