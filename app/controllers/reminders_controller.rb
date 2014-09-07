@@ -31,12 +31,15 @@ class RemindersController < ApplicationController
     redirect_to reminders_url
   end
 
-  def new 
+  def new
     @reminder = Reminder.new(due: (Time.now + 4.hours)) # Defaults go here
     @reminder.patient = Patient.find_by_mrn(params[:mrn]) || Patient.find_by_id(params[:patient_id])  || nil
   end
 
   def create
     @reminder = Reminder.new(params.require(:reminder).permit(:title, :patient_id, :text, :due))
+    if @reminder.save
+      redirect_to reminders_path
+    end
   end
 end

@@ -5,6 +5,7 @@
     due within
     = select_tag "time", options_for_select(@time_filter, @time), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
     = submit_tag "Filter", :class => "btn btn-primary btn-lg"
+= link_to "Create New Reminder", new_reminder_path, class: "btn btn-primary btn-lg"
 
 
 %ul.no-bullets
@@ -27,7 +28,7 @@
             Info
           = link_to actionPath(reminder), class: "btn btn-default" do
             %span.glyphicon.glyphicon-share-alt
-            Link
+            Record
           = link_to [:complete, reminder], class: "btn btn-success" do
             %span.glyphicon.glyphicon-ok-circle
             Done
