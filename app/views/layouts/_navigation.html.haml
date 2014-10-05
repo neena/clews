@@ -4,12 +4,56 @@
     %span.icon-bar
     %span.icon-bar
     %span.icon-bar
-  = link_to root_path, :class => 'navbar-brand' do
-    = image_tag "clews-logo-xsmall.png", height: 20
+  = link_to root_path, :class => 'navbar-brand', :style => 'padding: 10px;' do
+    = image_tag "clews-logo-white-xsmall.png", height: 30
 
 .collapse.navbar-collapse.navbar-links
   %ul.nav.navbar-nav.navbar-right
-    %li= link_to "Patients", patients_path
-    %li= link_to "Rounds", reminders_path
-    %li= link_to "Glance", admin_glance_path
-    %li= link_to "Record", new_observation_path
+    %li
+      = link_to patients_path do
+        %i.fa.fa-users.fa-lg
+        Patients
+    %li
+      = link_to rounds_patients_path do
+        %i.fa.fa-th-list.fa-lg
+        Tasks
+    %li
+      = link_to new_observation_path do
+        %i.fa.fa-pencil.fa-lg
+        Record
+    - if request.env['HTTP_USER_AGENT'].downcase.match(/android/)
+      %li
+        = link_to scan_patients_path do
+          %i.fa.fa-camera.fa-lg
+          Scan
+    - if admin_signed_in? # Admin user is signed in
+      %li.dropdown
+        %a.dropdown-toggle{"data-toggle" => "dropdown"}
+          %i.fa.fa-gears.fa-lg
+          %i.fa.fa-caret-down
+        %ul.dropdown-menu{"role" => "menu"}
+          %li
+            = link_to admin_wards_path do
+              %i.fa.fa-bars.fa-lg
+              Wards
+          %li
+            = link_to admin_glance_path do
+              %i.fa.fa-eye
+              Glance
+    %li.dropdown
+      %a.dropdown-toggle{"data-toggle" => "dropdown"}
+        %i.fa.fa-user.fa-lg
+        %i.fa.fa-caret-down
+      %ul.dropdown-menu{"role" => "menu"}
+        - if admin_signed_in?
+          %li
+            %a= current_admin.email
+          %li
+            = link_to destroy_admin_session_path, method: :delete do
+              %i.fa.fa-sign-out.fa-lg
+              Sign out
+        - else
+          %li
+            = link_to new_admin_session_path do
+              %i.fa.fa-sign-in.fa-lg
+              Sign in

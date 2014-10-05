@@ -6,11 +6,6 @@ class Observation < ActiveRecord::Base
 
   @@measurement_types = ['pulse', 'oxygen_sat', 'oxygen_supp', 'vip', 'sys_bp', 'dia_bp', 'respiration_rate', 'concious', 'temperature']
 
-  @@measurement_types.each do |m|
-    has_one "#{m}_measurement".to_sym, :dependent => :destroy
-    accepts_nested_attributes_for "#{m}_measurement".to_sym
-  end
-
   # validates :recorded_at, :uniqueness => true
   validates_presence_of :recorded_at, :patient_id
 
@@ -18,7 +13,7 @@ class Observation < ActiveRecord::Base
 
   def measurements
     @@measurement_types.inject({}) do |data, m|
-      data[m.to_sym] = eval("#{m}_measurement")
+      data[m.to_sym] = eval(m)
       data
     end
   end
@@ -31,15 +26,18 @@ class Observation < ActiveRecord::Base
     { score: score, rating: rating, complete: complete? }
   end
 
+  def measurement type # Present measurement data in wrapper of object
+    "#{type}_measurement".classify.constantize.new(eval(type))
+  end
+
   def getVIP
-    vip_measurement.try(:value)
+    vip
   end
 
   def self.measurement_types
     @@measurement_types
   end
-
-  private
+  # private
 
   def generate_ews
     #Calucalate Score
@@ -59,14 +57,14 @@ class Observation < ActiveRecord::Base
 
   def measurement_data
     EWSConfig.keys.inject([]) do |data, m|
-      data.push(eval("#{m.underscore}_measurement"))
+      data.push(measurement(m.underscore))
       data
     end
   end
 
   def sum_measurement_scores(measurements)
-    measurements.inject(0) do |sum, mesurement|
-      mesurement ? sum + mesurement.getEWS : sum
+    measurements.inject(0) do |sum, measurement|
+      measurement ? sum + measurement.getEWS : sum
     end
   end
 
