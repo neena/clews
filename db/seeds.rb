@@ -1,6 +1,6 @@
 # uses ENV variables
 # To use, write a command like so
-# rake db:seed all=true or rake db:seed patients=true wards=true 
+# rake db:seed all=true or rake db:seed patients=true wards=true
 
 if ENV['all'] == 'true'
   load_patients, load_wards, load_waterlows, load_reminders = true, true, true, true
@@ -27,6 +27,7 @@ if load_patients
                        mrsa_carrier: [true, false, nil].sample)
 
     puts "Created patient: #{ p.name }"
+  end
 
   72.times do |i|
     p.observations.create(
