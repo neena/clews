@@ -23,7 +23,7 @@
         Record
     - if request.env['HTTP_USER_AGENT'].downcase.match(/android/)
       %li
-        = link_to "zxing://scan/?ret=#{(u new_observation_url)}%3F%2F%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13" do
+        = link_to scan_patients_path do
           %i.fa.fa-camera.fa-lg
           Scan
     - if admin_signed_in? # Admin user is signed in

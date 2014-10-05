@@ -1,15 +1,17 @@
 EwsSystem::Application.routes.draw do
   devise_for :admins
   root 'patients#index'
+  
 
     resources :patients do
       get 'download', on: :member
       get 'chart', on: :member
       get 'rounds',   on: :collection
+      get 'scan', on: :collection
     end
 
   resources :observations, :waterlows
-  
+
 
   namespace :admin do
     resources :wards

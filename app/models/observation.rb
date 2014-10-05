@@ -37,7 +37,6 @@ class Observation < ActiveRecord::Base
   def self.measurement_types
     @@measurement_types
   end
-
   # private
 
   def generate_ews
