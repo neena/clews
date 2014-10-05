@@ -1,6 +1,7 @@
-= semantic_form_for [:admin, @ward] do |f|
-  = f.inputs do
-    = f.input :name
-    = f.input :email_addresses
-  = f.actions do 
-    = f.action :submit
+.container
+  = semantic_form_for [:admin, @ward] do |f|
+    = f.inputs do
+      = f.input :name
+      = f.input :email_addresses
+    = f.actions do
+      = f.action :submit

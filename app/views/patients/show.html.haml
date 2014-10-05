@@ -29,7 +29,7 @@
         - @patient.observations.each do |observation|
           %td
             %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12},100%, 45%);"}
-              %strong= observation.recorded_at.strftime('%-d/%-m')
+              %strong= observation.recorded_at.strftime('%-d %b')
       %tr
         %td
           %strong Time
