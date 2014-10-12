@@ -2,7 +2,7 @@ class Patient < ActiveRecord::Base
   belongs_to :ward
   has_many :observations,
             dependent: :destroy,
-            after_add: [:update_observation_due_at, :check_threshold!]
+            after_add: [:check_threshold!]
   has_many :waterlows, dependent: :destroy
   has_many :reminders, dependent: :destroy
 
@@ -14,12 +14,12 @@ class Patient < ActiveRecord::Base
   scope :no_observation, lambda { where(['observation_due_at IS NULL']) }
   scope :due_observation, lambda { |h| where(['observation_due_at < ?', Time.zone.now + h.hours]).order('observation_due_at ASC') }
 
-  def name 
+  def name
     if surname && given_name
       "#{surname}, #{given_name}"
     elsif surname || given_name
       surname || given_name
-    else 
+    else
       nil
     end
   end
@@ -49,21 +49,21 @@ class Patient < ActiveRecord::Base
       observations.inject([]) do |data, item|
         if item.sys_bp && item.dia_bp
           data.push({
-            x: item.recorded_at.to_i*1000, 
+            x: item.recorded_at.to_i*1000,
             y: item.sys_bp,
             low: item.dia_bp,
             ews: item.measurement('sys_bp').getEWS
-          }) 
+          })
         else
           data
         end
       end
-    else    
+    else
       observations.inject([]) do |data, item|
         data.push({
-          x: item.recorded_at.to_i*1000, 
+          x: item.recorded_at.to_i*1000,
           y: eval("item.#{type}")
-        }) 
+        })
       end
     end || []
   end
@@ -75,9 +75,9 @@ class Patient < ActiveRecord::Base
   def getVIP
     observations.last.getVIP
   end
-  
+
   ## Patient notifications
-  
+
   MESSAGES = {
     minimum: "The minimum frequency of monitoring should be 12 hourly",
     standard: "4-6 hourly with scores of 1-4, unless more or less frequent monitoring is considered appropriate",
@@ -88,7 +88,7 @@ class Patient < ActiveRecord::Base
   def score_within(n, lower_bound, upper_bound)
     n >= lower_bound && n <= upper_bound
   end
-  
+
   def get_ews_message(rating)
     case rating
     when 0
@@ -99,9 +99,9 @@ class Patient < ActiveRecord::Base
       MESSAGES[:frequent]
     when 3
       MESSAGES[:continuous]
-    end 
+    end
   end
-  
+
   # If the patient EWS score is above 5 send the { ward manager ?? } an email
   def check_threshold!(observation)
     ews_rating = getEWS[:rating]
@@ -113,12 +113,12 @@ class Patient < ActiveRecord::Base
     end
   end
 
-  private
+
   def update_observation_due_at(observation)
     if observation.recorded_at.to_i >= observations.last.recorded_at.to_i
       next_observation = NextObservationDue.calculate(observation.recorded_at, observation.rating)
       self.update_attribute(:observation_due_at, next_observation)
-      Reminder.create(due: next_observation, patient: self, title: "Vital signs observations")
+      Reminder.create(due: next_observation, patient: self, title: "Vital signs observations", reminder_type: "vital_signs")
     end
   end
 end

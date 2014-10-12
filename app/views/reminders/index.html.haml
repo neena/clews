@@ -28,7 +28,7 @@
               %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
                 %i.fa.fa-info-circle
                 Info
-            - if reminder.reminder_type == 'vital-signs'
+            - if reminder.reminder_type == 'vital_signs'
               = link_to actionPath(reminder), class: "btn btn-default" do
                 %i.fa.fa-external-link
                   Record

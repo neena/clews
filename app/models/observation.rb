@@ -10,6 +10,7 @@ class Observation < ActiveRecord::Base
   validates_presence_of :recorded_at, :patient_id
 
   before_save :generate_ews
+  after_save :patient_callbacks
 
   def measurements
     @@measurement_types.inject({}) do |data, m|
@@ -37,7 +38,8 @@ class Observation < ActiveRecord::Base
   def self.measurement_types
     @@measurement_types
   end
-  # private
+
+  private
 
   def generate_ews
     #Calucalate Score
@@ -92,5 +94,9 @@ class Observation < ActiveRecord::Base
 
   def incomplete_data?
     measurements.values.any?(&:nil?)
+  end
+
+  def patient_callbacks
+    self.patient.update_observation_due_at(self)
   end
 end
