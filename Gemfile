@@ -21,6 +21,7 @@ gem 'font-awesome-sass'
 gem 'rails-perftest'
 gem 'capistrano'
 gem 'capistrano-ext'
+gem 'faker'
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
@@ -28,7 +29,6 @@ group :doc do
 end
 
 group :development do
-  gem 'faker'
   gem 'ruby-prof'
   gem 'sqlite3'
   gem 'thin'
