@@ -26,14 +26,14 @@
           .col-md-4
             - if reminder.text
               %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
-                %span.glyphicon.glyphicon-search
+                %i.fa.fa-info-circle
                 Info
             - if reminder.reminder_type == 'vital-signs'
               = link_to actionPath(reminder), class: "btn btn-default" do
-                %span.glyphicon.glyphicon-share-alt
+                %i.fa.fa-external-link
                   Record
             = link_to [:complete, reminder], class: "btn btn-success" do
-              %span.glyphicon.glyphicon-ok-circle
+              %i.fa.fa-check-square-o
               Done
         - if reminder.text
           .row.description.collapse{style:"margin-left:-15px; margin-top: 10px",id: "reminder-#{reminder.id}"}
