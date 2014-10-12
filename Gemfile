@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 
 gem 'rails', '4.0.0'
-gem 'sqlite3'
 gem 'sass-rails', '~> 4.0.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.0.0'
@@ -11,7 +10,6 @@ gem 'turbolinks'
 gem 'jbuilder', '~> 1.2'
 gem 'ruby-hl7'
 gem 'haml'
-gem 'thin'
 gem 'highcharts-js-rails'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
@@ -32,9 +30,15 @@ end
 group :development do
   gem 'faker'
   gem 'ruby-prof'
+  gem 'sqlite3'
+  gem 'thin'
 end
 
 group :test do
   gem 'delorean'
   gem 'mocha'
+end
+
+group :production do
+  gem 'pg'
 end
