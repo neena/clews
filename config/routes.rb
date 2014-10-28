@@ -6,11 +6,15 @@ EwsSystem::Application.routes.draw do
     resources :patients do
       get 'download', on: :member
       get 'chart', on: :member
-      get 'rounds',   on: :collection
+      get 'scan', on: :collection
     end
 
   resources :observations, :waterlows
-  
+
+  resources :reminders do
+    get 'complete', on: :member
+  end
+
 
   namespace :admin do
     resources :wards

@@ -1,0 +1,14 @@
+.title-bar
+  .container
+    %h1
+      New Task
+      = "for #{@reminder.patient.name}" if @reminder.patient
+      %h3= @reminder.patient.mrn if @reminder.patient
+.container.not-flush
+  = semantic_form_for @reminder do |f|
+    = f.input :patient, as: :select, input_html: {onchange: "reloadFormAs(this.value);"}
+    = f.input :title
+    = f.input :text, as: :text, label: "Description"
+    = f.input :due, as: :datetime
+    = f.actions do
+      = f.action :submit, button_html: { class: "btn btn-primary" }

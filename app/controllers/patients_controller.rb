@@ -57,10 +57,10 @@ class PatientsController < ApplicationController
     end
   end
 
-  def chart 
+  def chart
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
     respond_to do |format|
-      format.json do 
+      format.json do
         render json: getChartData(params[:type]) if params[:type]
       end
     end
@@ -82,6 +82,10 @@ class PatientsController < ApplicationController
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
     redirect_to patients_url
     @patient.destroy
+  end
+
+  def scan
+    redirect_to "zxing://scan/?ret=#{Rack::Utils.escape(new_observation_url+ "?mrn=")}%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13, RSS_14"
   end
 
   private
@@ -117,4 +121,5 @@ class PatientsController < ApplicationController
     # @ward_filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
     @order_filter = ['Surname','EWS']
   end
+
 end

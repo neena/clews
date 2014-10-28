@@ -1,43 +1,55 @@
-%h2
-  .pull-right.hidden-sm.hidden-xs
-    = render "patientbuttons"
-  = @patient.name || "Name not recorded"
-  %span.ews-score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"}
-    = @patient.getEWS[:score]
-  - unless @patient.getEWS[:complete]
-    %small [Data Missing]
-  .h3= @patient.mrn
+.title-bar
+  .container
+    %h2
+      = @patient.name || "Name not recorded"
+      %span.ews-score{:style => "background: #{EWSColor(@patient.getEWS[:rating])};"}
+        = @patient.getEWS[:score]
+      - unless @patient.getEWS[:complete]
+        %small [Data Missing]
+      .h3= @patient.mrn
+    %ul#details.no-bullets
+      %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}"
+      %li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
+      %li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
+    %ul.inline
+      %li= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+      %li= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
+      %li= link_to 'Delete Patient', patient_path(@patient), method: :delete, data: { confirm: "Are you sure you want to delete #{@patient.name}" } , :class => 'btn btn-danger'
 
-%ul#details.no-bullets
-  %li= "MRSA: #{@patient.mrsa_carrier.humanize || 'unknown'}" 
-  %li= "Supplementary Oxygen: #{@patient.observations.last.oxygen_supp.humanize || 'N/R'}" 
-  %li= "VIP Score: #{@patient.observations.last.vip.humanize || 'N/R'}" 
-  %li= "Conciousness Level: #{@patient.observations.last.concious || 'N/R'}" 
-  %li= "Time on Ward: #{distance_of_time_in_words(Time.now - @patient.observations.first.recorded_at)}"
-  %li= "Time Since Last Observations: #{distance_of_time_in_words(Time.now - @patient.observations.last.recorded_at)}"
+.container
+  - @charts_data.each do |chart_data|
+    = content_tag "div", id: chart_data[:id], class: "col-lg-12 chart", data: chart_data do
+      = "Loading #{chart_data[:title]} Chart..."
 
-.visible-sm.visible-xs
-  = render "patientbuttons"
-
-- @charts_data.each do |chart_data|
-  = content_tag "div", id: chart_data[:id], class: "col-lg-12 chart", data: chart_data do
-    = "Loading #{chart_data[:title]} Chart..."
-
-.table-wrapper
-  %table.footer.lead
-    = render "row", observations: @patient.observations, title: 'Conciousness', type: 'concious'
-    = render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
-    %tr
-      %td
-        %strong VIP Score
-      - @patient.observations.each do |observation|
+  .table-wrapper
+    %table.footer.lead
+      %tr
         %td
-          %span.label{:style => "background: #{EWSColor(observation.measurement('vip').rating)};"}
-            = observation.vip || 'n/r'
-    %tr
-      %td
-        %strong EWS
-      - @patient.observations.each do |observation|
+          %strong Date
+        - @patient.observations.each do |observation|
+          %td
+            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12},100%, 45%);"}
+              %strong= observation.recorded_at.strftime('%-d %b')
+      %tr
         %td
-          %span.label{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
-            = observation.getEWS[:score]
+          %strong Time
+        - @patient.observations.each do |observation|
+          %td
+            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12 + 0.5*observation.recorded_at.strftime('%k').to_i},100%, 45%);"}
+              = observation.recorded_at.strftime('%H:%I')
+      = render "row", observations: @patient.observations, title: 'Conscious?', type: 'concious'
+      = render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'
+      %tr
+        %td
+          %strong VIP Score
+        - @patient.observations.each do |observation|
+          %td
+            %span.label.light{:style => "background: #{EWSColor(observation.measurement('vip').rating)};"}
+              = observation.vip || 'n/r'
+      %tr
+        %td
+          %strong EWS
+        - @patient.observations.each do |observation|
+          %td
+            %span.label.light{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
+              = observation.getEWS[:score]

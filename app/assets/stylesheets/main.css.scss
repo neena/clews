@@ -1,4 +1,6 @@
 $font-size-base: 5;
+$navbar-color: #357ebd;
+
 
 span.ews-score {
   background: #cccccc;
@@ -20,9 +22,54 @@ span.ews-score {
   list-style: none;
 }
 
-.navbar {
-  margin-top: 20px;
+ul.inline{
+  > li{
+    @media (min-width: 500px){
+      display: inline;
+    }
+    @media (max-width: 500px){
+      > a{width: 100%;}
+    }
+    margin: 5px 0;
+  }
+  list-style: none;
+  margin-left: 0;
+  padding-left: 0;
 }
+
+// Navbar
+
+.navbar {
+  background-color: $navbar-color;
+  margin-bottom: 0;
+  li > a {
+    font-size: 1.2em;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+ul.nav.navbar-nav > li{
+  > a {
+    color: white;
+  }
+  border-width: 1px 1px 1px 0;
+  border-style: solid;
+  border-color: $navbar-color white;
+  &:hover{
+    background-color: white;
+    border: 1px solid white;
+  }
+}
+
+ul.dropdown-menu > li > a {
+   padding: 10px 20px;
+}
+
+
+
+
 // Styles for non-pdf docs.
 #main{
   #details{
@@ -51,15 +98,26 @@ span.ews-score {
         margin-bottom: 10px;
       }
     }
-    margin-bottom: 20px;
   }
 
-  padding: 0 15px 100px 15px;
+  // padding: 0 15px 100px 15px;
 
   table.footer {
     // margin: 50px 0;
     overflow-x: scroll;
   }
+
+  .title-bar{
+    background-color: #c8d7e5;
+    padding: 20px 0;
+    h1, h2, h3, h4, h5{
+      margin-top: 0;
+    }
+  }
+}
+
+.not-flush{
+  margin-top: 20px;
 }
 
 #pdf{
@@ -89,6 +147,17 @@ table.footer {
 form.patient-header {
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.reminder{
+  padding-left: 10px;
+  &:hover{
+    cursor: pointer;
+
+  }
+  .buttons{
+    font-size: 2em;
+  }
 }
 
 /* Overwrite the default to keep the scrollbar always visible

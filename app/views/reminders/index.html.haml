@@ -1,0 +1,40 @@
+.title-bar
+  .container
+    = form_tag '', :method => :get, :class => 'form-inline patient-header' do
+      Tasks from
+      = select_tag "ward", options_for_select(@ward_filter, @ward), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+      due within
+      = select_tag "time", options_for_select(@time_filter, @time), :include_blank => false, :class => "form-control input-lg", :onchange => "this.form.submit();"
+      = submit_tag "Filter", :class => "btn btn-primary btn-lg"
+
+.container.not-flush
+  %ul.no-bullets
+    %li.lead.reminder{style: "border-left: solid 10px #428bca"}
+      %strong= link_to "Create New Task", new_reminder_path
+    - @reminders.each do |reminder|
+      %li.lead.reminder{style: "border-left: solid 10px rgba(255,55,70,#{ReminderColor(reminder)})"}
+        .row
+          .col-md-8
+            %strong= reminder.title
+            %br.visible-md
+            = when_is(reminder)
+            %p.small
+              %strong= link_to (reminder.patient.name || "Name N/R"), reminder.patient
+              = reminder.patient.mrn
+              %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
+                = reminder.patient.getEWS[:score]
+          .col-md-4
+            - if reminder.text
+              %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
+                %i.fa.fa-info-circle
+                Info
+            - if reminder.reminder_type == 'vital_signs'
+              = link_to actionPath(reminder), class: "btn btn-default" do
+                %i.fa.fa-external-link
+                  Record
+            = link_to [:complete, reminder], class: "btn btn-success" do
+              %i.fa.fa-check-square-o
+              Done
+        - if reminder.text
+          .row.description.collapse{style:"margin-left:-15px; margin-top: 10px",id: "reminder-#{reminder.id}"}
+            .col-xs-12= reminder.text
