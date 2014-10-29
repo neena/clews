@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  before_save :generate_initials
+
   def name
     if surname && given_name
       "#{surname}, #{given_name}"
@@ -30,5 +32,11 @@ class User < ActiveRecord::Base
     rank == "manager"
   end
 
-  # Set up initials
+
+  private
+
+  def generate_initials
+    initials = (given_name[0] + surname[0]).upcase
+    self.initials = initials + ((User.all.select{|u| u.initials =~ /^#{initials}[0-9]*$/}.map{|u| u.initials.sub(initials, "").to_i}.sort.last || 0) + 1).to_s
+  end
 end
