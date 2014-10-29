@@ -1,4 +1,5 @@
 class Admin::WardsController < AdminController
+  authorize_resource
   def index
     @wards = Ward.all
   end
@@ -13,7 +14,7 @@ class Admin::WardsController < AdminController
 
   def create
     @ward = Ward.new(params.require(:ward).permit(:name, :email_addresses))
-    if @ward.save 
+    if @ward.save
       redirect_to admin_wards_path
     else
       render 'new'

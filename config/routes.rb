@@ -3,6 +3,8 @@ EwsSystem::Application.routes.draw do
   devise_for :admins
   root 'patients#index'
 
+  get 'permission-denied' => 'static#permission-denied', as: :permission_denied
+
     resources :patients do
       get 'download', on: :member
       get 'chart', on: :member

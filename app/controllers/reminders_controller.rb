@@ -1,5 +1,6 @@
 class RemindersController < ApplicationController
   include ActionView::Helpers::DateHelper
+  authorize_resource
 
 	def index
 		@ward = params[:ward] || cookies[:ward]
@@ -12,7 +13,7 @@ class RemindersController < ApplicationController
     cookies.delete :time
     cookies.permanent[:time] = @time || "all"
 
-    @time_filter = [10, 30, 60, 120, 300, 720, 1440].map{|t| [time_ago_in_words(t.minutes.ago), t]}
+    @time_filter = [10, 30, 60, 120, 360, 720, 1440, 7200, 10080, 43200].map{|t| [time_ago_in_words(t.minutes.ago).sub("about", "").strip, t]}
 
     if @ward && @ward != "all"
 			@reminders = Ward.find(@ward).reminders.ordered

@@ -1,0 +1,28 @@
+.title-bar
+  .container
+    %h1 Access Denied
+    - unless user_signed_in?
+      .lead{style: "margin: 0"} You need to sign in to view this page
+
+.container.not-flush
+  .lead
+    - if user_signed_in?
+      %p You don't have permission to access this page.
+      %p= "You are currently signed in as #{current_user.name} (#{current_user.email})."
+      %p Please choose from the following actions:
+      = link_to "Return to the last viewed page", :back, class: "btn btn-default"
+      = link_to "Sign out of this account", destroy_user_session_path, method: :delete, class: "btn btn-warning"
+      = link_to "Go to the homepage", patients_path, class: "btn btn-primary"
+    - else
+      = form_tag session_path(:user), role: "form" do
+        .form-group
+          =label_tag "Email address"
+          = text_field_tag 'user[email]'
+        .form-group
+          = label_tag "Password"
+          = password_field_tag 'user[password]'
+        .form-group
+          = check_box_tag 'user[remember_me]'
+          = label_tag 'user[remember_me]', 'Remember me'
+        %button.btn.btn-primary.btn-lg Sign in
+        = link_to "Forgot your password?", new_password_path(:user)

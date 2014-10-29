@@ -1,6 +1,6 @@
 module ChartHelper
 
-  def getChartData type 
+  def getChartData type
     table = type.gsub(" ","_")
     data = @patient.getData(table)
     table += "_measurements"
@@ -26,7 +26,7 @@ module ChartHelper
     @charts = data[:series].each_slice(20).with_index.inject([]) do |charts, (series, index)|
       charts.push(Highcharts.new do |chart|
         chart.chart(renderTo: "#{data[:id]}#{index}", zoomType: 'x')
-        chart.title(data[:title]) 
+        chart.title(data[:title])
         chart.credits(enabled: false)
         chart.xAxis(type: 'datetime', minorTickInterval: 14400000, dateTimeLabelFormats: {day: '%e %b %y', hour: '%I:%M%P'})
         chart.yAxis(title: "#{data[:title]} #{data[:units].try{|u| "(#{u})"}}", minorTickInterval: 'auto')
@@ -34,8 +34,8 @@ module ChartHelper
         chart.legend(enabled: false)
         chart.plotOptions(line: { animation: false, enableMouseTracking: false, shadow: false})
         #Handle special case of blood pressure
-        if type == "bp" 
-          chart.chart(renderTo: "#{data[:id]}#{index}", type: 'column')#, events: {load:"renderImages", redraw:"renderImages"}) I'm deprecating this. 
+        if type == "bp"
+          chart.chart(renderTo: "#{data[:id]}#{index}", type: 'column')#, events: {load:"renderImages", redraw:"renderImages"}) I'm deprecating this.
           chart.plotOptions(column: {pointWidth:5})
           chart.series(name: @patient.name,borderWidth: 0,data: series, color: "rgba(255,0,0,0)")
           chart.tooltip(formatter: "function(){ return '<b>' + new Date(this.x).toLocaleString('en-GB') + '</b> <br> Systolic: ' + this.y + 'mmHg <br> Diastolic: ' + this.point.low + 'mmHg '; }")
@@ -49,11 +49,11 @@ module ChartHelper
   def createPlotBands type
     bands = []
     bounds = EWSConfig[type.gsub(" ","_").classify]
-    
+
     #Some setup
     big_number = 1000
 
-    
+
     if bounds
       bands.push(from: 0, to: bounds['min0'], color: lighten_color(EWSColor(1)))
       bands.push(from: bounds['max0'], to: big_number, color: lighten_color(EWSColor(1)))
@@ -75,7 +75,7 @@ module ChartHelper
     rgb[2] = (rgb[2].to_i * amount).round
     "#%02x%02x%02x" % rgb
   end
-    
+
   # Amount should be a decimal between 0 and 1. Higher means lighter
   def lighten_color(hex_color, amount=0.2)
     hex_color = hex_color.gsub('#','')
@@ -89,7 +89,7 @@ module ChartHelper
   def EWSColor score
     case score
     when 0
-      "#43EBD3"
+      "#808080"
     when 1
       "#51AF25"
     when 2
@@ -98,6 +98,6 @@ module ChartHelper
       "#EE442A"
     when nil
       "#B0B5B6"
-    end   
+    end
   end
 end

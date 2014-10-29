@@ -1,5 +1,5 @@
 class ObservationsController < ApplicationController
-
+	authorize_resource
 	def new
 		@observation = Observation.new
 		@observation.patient = Patient.find_by_mrn(params[:mrn]) || Patient.find_by_id(params[:patient_id])  || nil

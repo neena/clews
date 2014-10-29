@@ -28,14 +28,14 @@
           %strong Date
         - @patient.observations.each do |observation|
           %td
-            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12},100%, 45%);"}
+            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12},100%, 20%);"}
               %strong= observation.recorded_at.strftime('%-d %b')
       %tr
         %td
           %strong Time
         - @patient.observations.each do |observation|
           %td
-            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12 + 0.5*observation.recorded_at.strftime('%k').to_i},100%, 45%);"}
+            %span.label{:style => "background: hsl(#{(observation.recorded_at.strftime('%-d').to_i - 1)*12 + 0.5*observation.recorded_at.strftime('%k').to_i},100%, 20%);"}
               = observation.recorded_at.strftime('%H:%I')
       = render "row", observations: @patient.observations, title: 'Conscious?', type: 'concious'
       = render "row", observations: @patient.observations, title: 'Oxygen?', type: 'oxygen_supp'

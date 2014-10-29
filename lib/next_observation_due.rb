@@ -5,7 +5,7 @@ class NextObservationDue
     '2' => 1.hour,
     '3' => 1.minute
   }
-  
+
   # Public: Calculates when next Observation is due by
   #
   # last_observed - DateTime of last Observation

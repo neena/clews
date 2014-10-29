@@ -1,7 +1,7 @@
 class PatientsController < ApplicationController
   include ChartHelper
-
   before_action :filters, only: [:index, :rounds]
+  authorize_resource
 
   def index
     if @ward && @ward != "all"
@@ -14,20 +14,6 @@ class PatientsController < ApplicationController
       @patients = @patients.sort_by{|p| [- p.getEWS[:score], p.surname]}
     else
       @patients = @patients.sort_by(&:surname)
-    end
-
-    respond_to do |format|
-      format.html
-      format.json { render json: @patients.to_json(methods: [:getEWS]) }
-    end
-  end
-
-  def rounds
-    if @ward && @ward != "all"
-      ward = Ward.find(@ward)
-      @patients = (ward.patients.due_observation(1) + ward.patients.no_observation).flatten
-    else
-      @patients = (Patient.due_observation(1) + Patient.no_observation).flatten
     end
 
     respond_to do |format|
@@ -88,6 +74,20 @@ class PatientsController < ApplicationController
     redirect_to "zxing://scan/?ret=#{Rack::Utils.escape(new_observation_url+ "?mrn=")}%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13, RSS_14"
   end
 
+  def rounds
+    if @ward && @ward != "all"
+      ward = Ward.find(@ward)
+      @patients = (ward.patients.due_observation(1) + ward.patients.no_observation).flatten
+    else
+      @patients = (Patient.due_observation(1) + Patient.no_observation).flatten
+    end
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @patients.to_json(methods: [:getEWS]) }
+    end
+  end
+
   private
   def load_patient_and_charts pdf=false
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
@@ -120,6 +120,10 @@ class PatientsController < ApplicationController
     @ward_filter = Ward.all.sort_by{|p| p.name}.collect{|p| [p.name, p.id]}.unshift(["All Wards", "all"])
     # @ward_filter = Patient.select(:ward_id).distinct.select{|p| p.ward_id?}.sort_by{|p| p.ward.name}.collect{|p| [p.ward.name, p.ward.id]}.unshift(["All Wards", "all"])
     @order_filter = ['Surname','EWS']
+  end
+
+  def patient_params
+    params.require(:patient).permit(:id)
   end
 
 end

@@ -1,6 +1,6 @@
 .title-bar
   .container
-    %h1
+    %h2
       New Observation
       = "for #{@observation.patient.name}" if @observation.patient
     %h3= @observation.patient.mrn if @observation.patient
