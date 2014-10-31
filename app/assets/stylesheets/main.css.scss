@@ -57,17 +57,25 @@ ul.nav.navbar-nav > li{
   > a {
     color: white;
   }
-  border-width: 1px 1px 1px 0;
+  border-width: 0 1px 0 0;
   border-style: solid;
-  border-color: $navbar-color white;
+  border-color: white;
   &:hover{
-    background-color: white;
-    border: 1px solid white;
+    background-color: white !important;
+    color: black;
   }
 }
 
-ul.dropdown-menu > li > a {
+.navbar-default .navbar-nav .open ul.dropdown-menu {
+  background-color: #5597CD;
+  > li > a {
    padding: 10px 20px;
+   color: white;
+   &:hover {
+     color: #202020;
+     background-color: #f0f0f0;
+   }
+ }
 }
 
 
