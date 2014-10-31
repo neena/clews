@@ -12,6 +12,7 @@ class ObservationsController < ApplicationController
 		if !params[:observation][:patient_id].blank?
 			@patient = Patient.find(params[:observation][:patient_id])
 			@observation = @patient.observations.new(observation_params.merge({recorded_at: DateTime.now}))
+			@observation.user = current_user
 			if @observation.save
 				redirect_to reminders_path, notice: "Successfully saved observation for #{@patient.name}."
 			else

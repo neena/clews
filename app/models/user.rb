@@ -4,7 +4,11 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  before_save :generate_initials
+  before_create :generate_initials
+
+  has_many :observations
+  has_many :reminders, foreign_key: 'creator_id'
+  has_many :completed_reminders, foreign_key: 'completor_id', class_name: 'Reminder'
 
   def name
     if surname && given_name

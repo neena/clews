@@ -1,5 +1,6 @@
 class Observation < ActiveRecord::Base
   belongs_to :patient
+  belongs_to :user
 
   default_scope { order('recorded_at ASC') }
   scope :incomplete, lambda { where status: 'incomplete' }

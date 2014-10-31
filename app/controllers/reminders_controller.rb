@@ -27,6 +27,7 @@ class RemindersController < ApplicationController
   def complete
     @reminder = Reminder.find(params[:id])
     @reminder.done = true
+    @reminder.completor = current_user
     @reminder.save
 
     redirect_to reminders_url
@@ -39,6 +40,7 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(params.require(:reminder).permit(:title, :patient_id, :text, :due))
+    @reminder.creator = current_user
     if @reminder.save
       redirect_to reminders_path
     end

@@ -24,10 +24,9 @@
               %span.ews-score{:style => "background: #{EWSColor(reminder.patient.getEWS[:rating])};"}
                 = reminder.patient.getEWS[:score]
           .col-md-4
-            - if reminder.text
-              %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
-                %i.fa.fa-info-circle
-                Info
+            %button.btn.btn-primary{"data-toggle" =>"collapse", "data-target" => "#reminder-#{reminder.id}"}
+              %i.fa.fa-info-circle
+              Info
             - if reminder.reminder_type == 'vital_signs'
               = link_to actionPath(reminder), class: "btn btn-default" do
                 %i.fa.fa-external-link
@@ -35,6 +34,7 @@
             = link_to [:complete, reminder], class: "btn btn-success" do
               %i.fa.fa-check-square-o
               Done
-        - if reminder.text
-          .row.description.collapse{style:"margin-left:-15px; margin-top: 10px",id: "reminder-#{reminder.id}"}
-            .col-xs-12= reminder.text
+        .row.description.collapse{style:"margin-left:-15px; margin-top: 10px",id: "reminder-#{reminder.id}"}
+          .col-xs-12
+            %p= reminder.text
+            %p= "Created by: #{reminder.creator.try(&:name) || 'N/R'}"

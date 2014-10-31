@@ -14,7 +14,7 @@
     %ul.inline
       %li= link_to 'View PDF Report', patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
       %li= link_to 'Download PDF Report', download_patient_path(@patient, format: :pdf), :class => 'btn btn-primary'
-      %li= link_to 'Delete Patient', patient_path(@patient), method: :delete, data: { confirm: "Are you sure you want to delete #{@patient.name}" } , :class => 'btn btn-danger'
+      %li= link_to 'Discharge Patient', discharge_patient_path(@patient), data: { confirm: "Are you sure you want to delete #{@patient.name}" } , :class => 'btn btn-danger'
 
 .container
   - @charts_data.each do |chart_data|
@@ -53,3 +53,11 @@
           %td
             %span.label.light{:style => "background: #{EWSColor(observation.getEWS[:rating])};"}
               = observation.getEWS[:score]
+      %tr
+        %td
+          %strong Observer
+        - @patient.observations.each do |observation|
+          %td
+            - if observation.user
+              %span.label.label-default
+                = observation.user.initials
