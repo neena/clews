@@ -24,7 +24,7 @@
           Record
     - if request.env['HTTP_USER_AGENT'].downcase.match(/android/)
       %li
-        = link_to scan_patients_path do
+        = link_to URI.encode("zxing://scan/?ret=#{Rack::Utils.escape(new_observation_url+ "?mrn=")}%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13,RSS_14") do
           %i.fa.fa-camera.fa-lg
           Scan
     - if can? :read, Admin

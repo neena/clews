@@ -77,9 +77,9 @@ class PatientsController < ApplicationController
     # redirect_to patients_url
   end
 
-  def scan
-    redirect_to "zxing://scan/?ret=#{Rack::Utils.escape(new_observation_url+ "?mrn=")}%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13, RSS_14"
-  end
+  # def scan
+  #   redirect_to "zxing://scan/?ret=#{Rack::Utils.escape(new_observation_url+ "?mrn=")}%7BCODE%7D&SCAN_FORMATS=UPC_A,EAN_13, RSS_14"
+  # end
 
   def rounds
     if @ward && @ward != "all"
