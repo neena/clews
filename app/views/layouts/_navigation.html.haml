@@ -27,28 +27,35 @@
         = link_to scan_patients_path do
           %i.fa.fa-camera.fa-lg
           Scan
-    - if user_signed_in? && current_user.admin? # Admin user is signed in
+    - if can? :read, Admin
       %li.dropdown
-        %a.dropdown-toggle{"data-toggle" => "dropdown"}
+        %a.dropdown-toggle{"data-toggle" => "dropdown", "href" => "#"}
           %i.fa.fa-gears.fa-lg
           %i.fa.fa-caret-down
         %ul.dropdown-menu{"role" => "menu"}
-          %li
-            = link_to admin_wards_path do
-              %i.fa.fa-bars.fa-lg
-              Wards
-          %li
-            = link_to admin_glance_path do
-              %i.fa.fa-eye
-              Glance
-    %li.dropdown
-      %a.dropdown-toggle{"data-toggle" => "dropdown"}
+          - if can? :manage, Ward
+            %li
+              = link_to admin_wards_path do
+                %i.fa.fa-bars.fa-lg
+                Wards
+          - if can? :glance, Admin
+            %li
+              = link_to admin_glance_path do
+                %i.fa.fa-eye
+                Glance
+    %li.dropdown{"style" => (user_signed_in? ? "background-color: #{RankColor(current_user.rank)};" : "")}
+      %a.dropdown-toggle{"data-toggle" => "dropdown", "href" => "#"}
         %i.fa.fa-user.fa-lg
+        = current_user.initials if user_signed_in?
         %i.fa.fa-caret-down
-      %ul.dropdown-menu{"role" => "menu"}
+      %ul.dropdown-menu{"role" => "menu", "style" => (user_signed_in? ? "background-color: #{RankColor(current_user.rank)};" : "")}
         - if user_signed_in?
           %li
-            %a= current_user.email
+            %a
+              = current_user.name
+              %small= current_user.rank
+              %br
+              %small= current_user.email
           %li
             = link_to destroy_user_session_path, method: :delete do
               %i.fa.fa-sign-out.fa-lg

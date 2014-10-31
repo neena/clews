@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141029132417) do
+ActiveRecord::Schema.define(version: 20141029191344) do
 
   create_table "admins", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -48,7 +48,10 @@ ActiveRecord::Schema.define(version: 20141029132417) do
     t.integer  "respiration_rate"
     t.float    "temperature"
     t.integer  "vip"
+    t.integer  "user_id"
   end
+
+  add_index "observations", ["user_id"], name: "index_observations_on_user_id"
 
   create_table "patients", force: true do |t|
     t.string   "mrn"
@@ -61,6 +64,7 @@ ActiveRecord::Schema.define(version: 20141029132417) do
     t.boolean  "mrsa_carrier"
     t.string   "sex"
     t.datetime "dob"
+    t.boolean  "discharged",         default: false
   end
 
   add_index "patients", ["ward_id"], name: "index_patients_on_ward_id"
@@ -74,6 +78,8 @@ ActiveRecord::Schema.define(version: 20141029132417) do
     t.datetime "updated_at"
     t.boolean  "done",          default: false
     t.string   "reminder_type"
+    t.integer  "creator_id"
+    t.integer  "completor_id"
   end
 
   add_index "reminders", ["patient_id"], name: "index_reminders_on_patient_id"

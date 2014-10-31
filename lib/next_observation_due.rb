@@ -11,11 +11,11 @@ class NextObservationDue
   #
   # Returns DateTime of next Observation
   def self.calculate(last_observed, rating)
-    raise ArgumentError, 'Rating must be within range' if FREQUENCY[rating.to_s].nil?
+    raise ArgumentError, 'Rating must be within range' if (FREQUENCY[rating.to_s].nil? && rating != 3)
     if rating == 3
       DateTime.now
     else
-      FREQUENCY[rating.to_s].map{|h| DateTime.now.midnight + h}.find {|d| d > DateTime.now}
+      FREQUENCY[rating.to_s].map{|h| last_observed.midnight + h}.find {|d| d > last_observed} || FREQUENCY[rating.to_s].map{|h| last_observed.midnight + 1.day + h}.find {|d| d > last_observed} 
     end
   end
 end

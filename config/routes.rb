@@ -9,6 +9,7 @@ EwsSystem::Application.routes.draw do
       get 'download', on: :member
       get 'chart', on: :member
       get 'scan', on: :collection
+      patch 'discharge', on: :member
     end
 
   resources :observations, :waterlows

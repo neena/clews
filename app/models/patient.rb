@@ -9,7 +9,7 @@ class Patient < ActiveRecord::Base
   validates :mrn, :uniqueness => true
   validates_inclusion_of :sex, :in => ["m", "f", nil]
 
-  default_scope { order(:surname) }
+  default_scope { where(discharged: false).order(:surname) }
 
   scope :no_observation, lambda { where(['observation_due_at IS NULL']) }
   scope :due_observation, lambda { |h| where(['observation_due_at < ?', Time.zone.now + h.hours]).order('observation_due_at ASC') }

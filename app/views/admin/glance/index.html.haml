@@ -1,7 +1,7 @@
 .title-bar
 	.container
 		%h1 Observations with incomplete data.
-		
+
 .container.not-flush
 	#accordion.panel-group
 		- @observations.each_with_index do |observation, i|
@@ -17,4 +17,4 @@
 							- observation.measurements.each do | type, mes |
 								%li
 									%strong= "#{type.to_s.humanize}:"
-									.label.label-primary{:style => "background: #{EWSColor(mes.try(:getEWS))};"}= mes.try {|m| m.value.humanize} || '?'
+									.label.label-primary{:style => "background: #{EWSColor(mes.try(:getEWS))};"}= mes.try {|m| m.humanize} || '?'

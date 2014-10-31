@@ -9,7 +9,7 @@ class Ability
       can :manage, :all
     elsif user.nurse?
       can :manage, Patient
-      cannot :destroy, Patient
+      cannot [:destroy, :discharge], Patient
       can :manage, Reminder
       can :create, Observation
     elsif user.doctor?
@@ -19,7 +19,7 @@ class Ability
       can :manage, Patient
       can :manage, Reminder
       can :manage, Observation
-      can :read, Glance
+      can [:read, :glance], Admin
     end
     #
     # The first argument to `can` is the action you are giving the user

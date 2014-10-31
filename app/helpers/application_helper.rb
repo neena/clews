@@ -29,6 +29,19 @@ module ApplicationHelper
     darkness
   end
 
+  def RankColor(rank)
+    case rank
+    when "nurse"
+      "#094E88"
+    when "doctor"
+      "#2DC487"
+    when "admin"
+      "#6563D5"
+    when "manager"
+      "#FF990D"
+    end
+  end
+
   def actionPath(reminder)
     if reminder.reminder_type == "vital_signs"
       new_observation_url + "?mrn=" + reminder.patient.mrn

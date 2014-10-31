@@ -64,10 +64,17 @@ class PatientsController < ApplicationController
     send_data pdf_file, :type => 'pdf', :filename => "patient-#{@patient.name}-#{@patient.mrn}.pdf"
   end
 
-  def destroy
+  # def destroy
+  #   @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
+  #   redirect_to patients_url
+  #   @patient.destroy
+  # end
+
+  def discharge
     @patient = Patient.find_by_mrn(params[:id]) || Patient.find(params[:id])
-    redirect_to patients_url
-    @patient.destroy
+    @patient.discharged = true
+    @patient.save
+    # redirect_to patients_url
   end
 
   def scan
